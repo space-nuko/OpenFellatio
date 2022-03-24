@@ -162,7 +162,7 @@ class Maths
    {
       var _loc4_= new Point(param2.x - param1.x,param2.y - param1.y);
       var _loc5_= new Point(param3.x - param1.x,param3.y - param1.y);
-      return ASCompat.toNumber(dot(_loc4_,_loc5_));
+      return dot(_loc4_,_loc5_);
    }
 
    public static function normal(param1:Point, param2:Point, param3:Point) : Point
@@ -181,27 +181,35 @@ class Maths
       return new Point(_loc4_.x - _loc5_,_loc4_.y - _loc6_);
    }
 
-   public static function generateEdges(param1:Array<Line>) : Array<Line>
+   public static function generateEdges(param1:Array<Point>) : Array<Line>
    {
-      var _loc5_:Point = null;
-      var _loc6_:Point = null;
-      var _loc2_= new Array<Line>();
-      var _loc3_:UInt = param1.length;
-      var _loc4_:UInt = 0;
-      while(_loc4_ < _loc3_)
+      var startPos:Point = null;
+      var endPos:Point = null;
+      var result= new Array<Line>();
+      var pointCount:UInt = param1.length;
+      var i:UInt = 0;
+      while(i < pointCount)
       {
-         _loc5_ = new Point(param1[_loc4_].x,param1[_loc4_].y);
-         if(_loc4_ == _loc3_ - 1)
+         startPos = new Point(param1[i].x,param1[i].y);
+         if(i == pointCount - 1)
          {
-            _loc6_ = new Point(param1[0].x,param1[0].y);
+            endPos = new Point(param1[0].x,param1[0].y);
          }
          else
          {
-            _loc6_ = new Point(param1[_loc4_ + 1].x,param1[_loc4_ + 1].y);
+            endPos = new Point(param1[i + 1].x,param1[i + 1].y);
          }
-         _loc2_[_loc4_] = new Line(_loc5_,_loc6_);
-         _loc4_++;
+         result[i] = new Line(startPos,endPos);
+         i++;
       }
-      return _loc2_;
+      return result;
    }
+
+	public static inline function clamp(v: Int, min: Int, max: Int): Int {
+		return Std.int(Math.min(max, Math.max(min, v)));
+	}
+
+	public static inline function clampf(v: Float, min: Float, max: Float): Float {
+		return Math.min(max, Math.max(min, v));
+	}
 }

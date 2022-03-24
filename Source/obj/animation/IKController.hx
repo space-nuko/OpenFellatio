@@ -1,8 +1,9 @@
 package obj.animation;
 
-import flash.display.DisplayObject;
-import flash.geom.Matrix;
-import flash.geom.Point;
+import openfl.display.DisplayObject;
+import openfl.geom.Matrix;
+import openfl.geom.Point;
+import obj.Maths;
 
 class IKController {
 	public var dropping:Bool = false;
@@ -78,8 +79,8 @@ class IKController {
 		this.s2 = param3;
 		this.s3 = param4;
 		this.calculateLengths();
-		this.s1OffsetAng = MathHelpers.getRadAngle(this.s2.x, this.s2.y);
-		this.s2OffsetAng = MathHelpers.getRadAngle(this.s3.x, this.s3.y);
+		this.s1OffsetAng = Maths.getRadAngle(this.s2.x, this.s2.y);
+		this.s2OffsetAng = Maths.getRadAngle(this.s3.x, this.s3.y);
 		this.s1StartPoint = new Point(this.s1.x, this.s1.y);
 		this.s2StartPoint = new Point(this.s2.x, this.s2.y);
 		this.s3StartPoint = new Point(this.s3.x, this.s3.y);
@@ -96,8 +97,8 @@ class IKController {
 		this.s3 = param3;
 		if (param4) {
 			this.calculateLengths();
-			this.s1OffsetAng = MathHelpers.getRadAngle(this.s2.x, this.s2.y);
-			this.s2OffsetAng = MathHelpers.getRadAngle(this.s3.x, this.s3.y);
+			this.s1OffsetAng = Maths.getRadAngle(this.s2.x, this.s2.y);
+			this.s2OffsetAng = Maths.getRadAngle(this.s3.x, this.s3.y);
 			this.s1StartPoint = new Point(this.s1.x, this.s1.y);
 			this.s2StartPoint = new Point(this.s2.x, this.s2.y);
 			this.s3StartPoint = new Point(this.s3.x, this.s3.y);
@@ -233,7 +234,7 @@ class IKController {
 			this.s1StartPoint = target;
 		}
 		this.v = new Point(this.localTargetPoint.x - this.s1StartPoint.x, this.localTargetPoint.y - this.s1StartPoint.y);
-		this.offsetAng = MathHelpers.getRadAngle(this.v.x, this.v.y);
+		this.offsetAng = Maths.getRadAngle(this.v.x, this.v.y);
 		this.totalLSq = Math.max(this.minTotalLSq, this.v.x * this.v.x + this.v.y * this.v.y);
 		this.totalL = Math.max(1, Math.sqrt(this.totalLSq));
 		if (this.totalL > this.maxL) {

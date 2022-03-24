@@ -5,7 +5,8 @@ import openfl.events.Event;
 import openfl.events.MouseEvent;
 import obj.AlphaRGBObject;
 import obj.CharacterElementHelper;
-import obj.her.HerPenisContainer;
+import obj.Her.HerPenisContainer;
+import obj.him.Penis;
 
 class HerPenisControl {
 	public static var DEFAULT_PENIS_SIZE:Float = 0.85;
@@ -22,7 +23,7 @@ class HerPenisControl {
 	// public var characterMenu:MovieClip;
 	// public var penisMenu:MovieClip;
 	public var penisContainer:HerPenisContainer;
-	public var penis:MovieClip;
+	public var penis:Penis;
 	public var angSpeed:Float = 0;
 	public var torsoAngle:Float = 0;
 	public var lastTorsoAngle:Float = 0;
@@ -44,8 +45,8 @@ class HerPenisControl {
 		this.updateScaling();
 	}
 
-	public function setMenu_l(param1:MovieClip, param2:Array<ASAny>) {
-		this.characterMenu = param1;
+	public function setMenu(param1:MovieClip, param2:Array<ASAny>) {
+		// this.characterMenu = param1;
 		// this.penisMenu = this.characterMenu.penisMenu;
 		// this.penisControl.registerMenuList(param1.mlPenis);
 		// this.penisControl.registerRGBButton(param1.rgbPenis,param2,489,false);
@@ -57,14 +58,14 @@ class HerPenisControl {
 		// this.penisMenu.penisWidthSlider.addEventListener("handleReleased",this.penisWidthSliderReleased);
 		// this.penisMenu.penisWidthSlider.addEventListener("sliderChanged",this.penisWidthSliderChanged);
 		// this.penisMenu.mbDefaultPenisWidth.addEventListener(MouseEvent.CLICK,this.mbDefaultPenisWidthClicked);
-		// this.updatePenisWidthSlider();
-		// this.updatePenisLengthSlider();
+		this.updatePenisWidthSlider();
+		this.updatePenisLengthSlider();
 		// this.penisMenu.visible = false;
 		// this.penisMenu.scaleY = 0;
 		// this.penisControl.select(0);
 	}
 
-	public function getDataString_l():String {
+	public function getDataString():String {
 		var _loc1_:String = null;
 		if (this.currentPenisID == 0) {
 			return "";
@@ -73,18 +74,18 @@ class HerPenisControl {
 		return ";" + _loc1_;
 	}
 
-	public function loadDataPairs_l(param1:Array<ASAny>) {
-		var _loc3_:Array<ASAny> = null;
-		var _loc4_:Array<ASAny> = null;
+	public function loadDataPairs(param1:Array<Array<String>>) {
+		var _loc3_:Array<String> = null;
+		var _loc4_:Array<String> = null;
 		var _loc2_ = false;
 		for (_tmp_ in param1) {
 			_loc3_ = _tmp_;
 			switch (_loc3_[0]) {
 				case "herPenis":
 					_loc4_ = _loc3_[1].split(",");
-					this.penisControl.select(ASCompat.toInt(_loc4_[0]));
+					this.penisControl.select(Std.parseInt(_loc4_[0]));
 					if (_loc4_.length == 3) {
-						this.loadPenisScales(_loc4_[1], _loc4_[2]);
+						this.loadPenisScales(Std.parseFloat(_loc4_[1]), Std.parseFloat(_loc4_[2]));
 					}
 					_loc2_ = true;
 			}
@@ -94,25 +95,25 @@ class HerPenisControl {
 		}
 	}
 
-	public function clothingChanged_l(param1:String = "") {
+	public function clothingChanged(param1:String = "") {
 		this.wearingNone = G.characterControl.bottomsControl.selection == 0 && G.characterControl.pantiesControl.selection == 0;
 		this.wearingNone = this.wearingNone && G.characterControl.legwearControl.selectedName != "Pantyhose";
 		this.wearingNone = this.wearingNone && G.characterControl.legwearBControl.selectedName != "Pantyhose";
 		if (!this.wearingNone) {
-			this.penisContainer.rotation = this.MIN_PENIS_ANGLE;
+			this.penisContainer.rotation = HerPenisControl.MIN_PENIS_ANGLE;
 		}
 		this.updateCostumeVisibility();
 		this.updateScaling();
 	}
 
-	public function updateCostumeVisibility_l() {
+	public function updateCostumeVisibility() {
 		// G.her.torso.chestCostume.bottoms.penisCostumeContainer.visible = this.currentPenisID != 0;
 		// G.her.torso.rightThighStocking.stocking.hipLayer.chestStocking.penisCostumeContainer.visible = this.currentPenisID != 0;
 		// G.her.torso.rightThighStockingB.stocking.hipLayer.chestStocking.penisCostumeContainer.visible = this.currentPenisID != 0;
 		// G.her.torso.chestUnderCostume.panties.penisCostumeContainer.visible = this.currentPenisID != 0;
 	}
 
-	public function update_l() {
+	public function update() {
 		if (this.currentPenisID != 0) {
 			if (this.wearingNone) {
 				this.torsoAngle = G.her.rotation + G.her.torso.rotation;
@@ -120,13 +121,13 @@ class HerPenisControl {
 				this.angSpeed -= this.penisContainer.rotation * 0.1;
 				this.angSpeed *= 0.8 + 0.1;
 				this.penisContainer.rotation += this.angSpeed;
-				if (this.penisContainer.rotation < this.MIN_PENIS_ANGLE) {
-					this.penisContainer.rotation = this.MIN_PENIS_ANGLE;
+				if (this.penisContainer.rotation < HerPenisControl.MIN_PENIS_ANGLE) {
+					this.penisContainer.rotation = HerPenisControl.MIN_PENIS_ANGLE;
 					this.angSpeed *= -0.7;
 				}
 				this.lastTorsoAngle = this.torsoAngle;
 			} else {
-				this.penisContainer.rotation = this.MIN_PENIS_ANGLE - 1 * G.her.breathingAnimationAmount;
+				this.penisContainer.rotation = HerPenisControl.MIN_PENIS_ANGLE - 1 * G.her.breathingAnimationAmount;
 				// this.updatePenisCostumeRotation(G.her.torso.chestCostume.bottoms.penisCostumeContainer);
 				// this.updatePenisCostumeRotation(G.her.torso.rightThighStocking.stocking.hipLayer.chestStocking.penisCostumeContainer);
 				// this.updatePenisCostumeRotation(G.her.torso.rightThighStockingB.stocking.hipLayer.chestStocking.penisCostumeContainer);
@@ -135,7 +136,7 @@ class HerPenisControl {
 		}
 	}
 
-	public function updatePenisCostumeRotation_l(param1:MovieClip) {
+	public function updatePenisCostumeRotation(param1:MovieClip) {
 		var _loc2_:UInt = param1.numChildren;
 		var _loc3_:UInt = 0;
 		while (_loc3_ < _loc2_) {
@@ -161,13 +162,13 @@ class HerPenisControl {
 	@:flash.property public var penisLengthSlider(get, never):Float;
 
 	function get_penisLengthSlider():Float {
-		return (this.currentPenisLengthScale - this.MIN_PENIS_SIZE) / (this.MAX_PENIS_SIZE - this.MIN_PENIS_SIZE);
+		return (this.currentPenisLengthScale - HerPenisControl.MIN_PENIS_SIZE) / (HerPenisControl.MAX_PENIS_SIZE - HerPenisControl.MIN_PENIS_SIZE);
 	}
 
 	@:flash.property public var penisWidthSlider(get, never):Float;
 
 	function get_penisWidthSlider():Float {
-		return (this.currentPenisWidthScale - this.MIN_PENIS_SIZE) / (this.MAX_PENIS_SIZE - this.MIN_PENIS_SIZE);
+		return (this.currentPenisWidthScale - HerPenisControl.MIN_PENIS_SIZE) / (HerPenisControl.MAX_PENIS_SIZE - HerPenisControl.MIN_PENIS_SIZE);
 	}
 
 	@:flash.property public var hslShiftPenis(get, never):Bool;
@@ -179,7 +180,7 @@ class HerPenisControl {
 		return true;
 	}
 
-	public function setPenis_l(param1:UInt) {
+	public function setPenis(param1:UInt) {
 		this.updatePenis();
 		if (this.currentPenisID == (this.penisNameList.indexOf("Strapon") : UInt)) {
 			// this.characterMenu.rgbPenis.visible = true;
@@ -190,7 +191,7 @@ class HerPenisControl {
 		G.characterControl.updateSkinHSL();
 	}
 
-	public function updatePenis_l() {
+	public function updatePenis() {
 		if (this.currentPenisID == 0) {
 			this.penis.visible = false;
 			// if (this.penisMenu.visible) {
@@ -198,7 +199,7 @@ class HerPenisControl {
 			// 	this.penisMenu.scaleY = 0;
 			// 	G.inGameMenu.updateCostumeMenuContent();
 			// }
-			G.strandControl.checkElementAnchors(this.penisContainer);
+			// G.strandControl.checkElementAnchors(this.penisContainer);
 		} else {
 			// if (!this.penisMenu.visible) {
 			// 	this.penisMenu.visible = true;
@@ -218,41 +219,41 @@ class HerPenisControl {
 		this.updateCostumeVisibility();
 	}
 
-	public function capitalise_l(param1:String):String {
+	public function capitalise(param1:String):String {
 		return param1.charAt(0).toUpperCase() + param1.substring(1);
 	}
 
-	public function loadPenisScales_l(param1:Float, param2:Float) {
-		this.currentPenisLengthScale = Math.max(this.MIN_PENIS_SIZE, Math.min(this.MAX_PENIS_SIZE, param1));
-		this.currentPenisWidthScale = Math.max(this.MIN_PENIS_SIZE, Math.min(this.MAX_PENIS_SIZE, param2));
+	public function loadPenisScales(param1:Float, param2:Float) {
+		this.currentPenisLengthScale = Math.max(HerPenisControl.MIN_PENIS_SIZE, Math.min(HerPenisControl.MAX_PENIS_SIZE, param1));
+		this.currentPenisWidthScale = Math.max(HerPenisControl.MIN_PENIS_SIZE, Math.min(HerPenisControl.MAX_PENIS_SIZE, param2));
 		this.updatePenisWidthSlider();
 		this.updatePenisLengthSlider();
 		this.updateScaling();
 	}
 
-	public function setPenisLength_l(param1:Float) {
+	public function setPenisLength(param1:Float) {
 		var _loc2_ = this.currentPenisWidthScale / this.currentPenisLengthScale;
-		this.currentPenisLengthScale = this.MIN_PENIS_SIZE + (this.MAX_PENIS_SIZE - this.MIN_PENIS_SIZE) * param1;
-		this.currentPenisWidthScale = Math.max(this.MIN_PENIS_SIZE, Math.min(this.MAX_PENIS_SIZE, _loc2_ * this.currentPenisLengthScale));
+		this.currentPenisLengthScale = HerPenisControl.MIN_PENIS_SIZE + (HerPenisControl.MAX_PENIS_SIZE - HerPenisControl.MIN_PENIS_SIZE) * param1;
+		this.currentPenisWidthScale = Math.max(HerPenisControl.MIN_PENIS_SIZE, Math.min(HerPenisControl.MAX_PENIS_SIZE, _loc2_ * this.currentPenisLengthScale));
 		this.updateScaling();
 	}
 
-	public function setPenisWidth_l(param1:Float) {
-		this.currentPenisWidthScale = this.MIN_PENIS_SIZE + (this.MAX_PENIS_SIZE - this.MIN_PENIS_SIZE) * param1;
+	public function setPenisWidth(param1:Float) {
+		this.currentPenisWidthScale = HerPenisControl.MIN_PENIS_SIZE + (HerPenisControl.MAX_PENIS_SIZE - HerPenisControl.MIN_PENIS_SIZE) * param1;
 		this.updateScaling();
 	}
 
-	public function updateScaling_l() {
+	public function updateScaling() {
 		this.penisContainer.scaleX = this.currentPenisLengthScale;
 		this.penisContainer.scaleY = this.currentPenisWidthScale;
-		this.weightScaling = (this.currentPenisLengthScale - this.MIN_PENIS_SIZE) / this.SCALING_RANGE * ((this.currentPenisWidthScale - this.MIN_PENIS_SIZE) / this.SCALING_RANGE);
+		this.weightScaling = (this.currentPenisLengthScale - HerPenisControl.MIN_PENIS_SIZE) / HerPenisControl.SCALING_RANGE * ((this.currentPenisWidthScale - HerPenisControl.MIN_PENIS_SIZE) / HerPenisControl.SCALING_RANGE);
 		this.updatePenisCostumeScaling(G.her.torso.chestCostume.bottoms.penisCostumeContainer);
 		this.updatePenisCostumeScaling(G.her.torso.rightThighStocking.stocking.hipLayer.chestStocking.penisCostumeContainer);
 		this.updatePenisCostumeScaling(G.her.torso.rightThighStockingB.stocking.hipLayer.chestStocking.penisCostumeContainer);
 		this.updatePenisCostumeScaling(G.her.torso.chestUnderCostume.panties.penisCostumeContainer);
 	}
 
-	public function updatePenisCostumeScaling_l(param1:MovieClip) {
+	public function updatePenisCostumeScaling(param1:MovieClip) {
 		var _loc2_:UInt = param1.numChildren;
 		var _loc3_:UInt = 0;
 		while (_loc3_ < _loc2_) {
@@ -264,37 +265,37 @@ class HerPenisControl {
 		}
 	}
 
-	public function penisLengthSliderReleased_l(param1:Event) {
+	public function penisLengthSliderReleased(param1:Event) {
 		G.saveData.saveCharData();
 	}
 
-	public function penisLengthSliderChanged_l(param1:Event) {
+	public function penisLengthSliderChanged(param1:Event) {
 		// this.setPenisLength(this.penisMenu.penisLengthSlider.currentValue(100) * 0.01);
 		this.updatePenisWidthSlider();
 	}
 
-	public function updatePenisLengthSlider_l() {
+	public function updatePenisLengthSlider() {
 		// this.penisMenu.penisLengthSlider.setPos(this.penisLengthSlider);
 	}
 
-	public function mbDefaultPenisLengthClicked_l(param1:MouseEvent) {
+	public function mbDefaultPenisLengthClicked(param1:MouseEvent) {
 		this.loadPenisScales(DEFAULT_PENIS_SIZE, this.penisWidthScale);
 		G.saveData.saveCharData();
 	}
 
-	public function penisWidthSliderReleased_l(param1:Event) {
+	public function penisWidthSliderReleased(param1:Event) {
 		G.saveData.saveCharData();
 	}
 
-	public function penisWidthSliderChanged_l(param1:Event) {
+	public function penisWidthSliderChanged(param1:Event) {
 		// this.setPenisWidth(this.penisMenu.penisWidthSlider.currentValue(100) * 0.01);
 	}
 
-	public function updatePenisWidthSlider_l() {
+	public function updatePenisWidthSlider() {
 		// this.penisMenu.penisWidthSlider.setPos(this.penisWidthSlider);
 	}
 
-	public function mbDefaultPenisWidthClicked_l(param1:MouseEvent) {
+	public function mbDefaultPenisWidthClicked(param1:MouseEvent) {
 		this.loadPenisScales(this.penisLengthScale, this.penisLengthScale);
 		this.updatePenisWidthSlider();
 		G.saveData.saveCharData();

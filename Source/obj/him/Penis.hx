@@ -183,13 +183,5 @@ class Penis extends MovieClip {
 			+ (90 + Maths.getAngle(pos, Math.max(0, bottomOffset) * Math.abs(pos / this._fullLength)));
 		angOffset = Maths.normaliseAngle(angOffset);
 		return new PenisWidth(width, startY, topOffset, bottomOffset, pos, angOffset);
-		return {
-			"width": width,
-			"startY": startY,
-			"topOffset": topOffset,
-			"bottomOffset": bottomOffset,
-			"pos": pos,
-			"angOffset": angOffset
-		};
 	}
 }

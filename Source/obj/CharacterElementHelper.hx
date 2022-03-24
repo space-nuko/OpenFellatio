@@ -22,8 +22,8 @@ class CharacterElementHelper {
 	public var haveRGBFill2:Bool = false;
 	public var rgbButton:MovieClip;
 	public var rgbButton2:MovieClip;
-	public var rgb1:ASObject;
-	public var rgb2:ASObject;
+	public var rgb1:AlphaRGBObject;
+	public var rgb2:AlphaRGBObject;
 	public var rgb1Fills:Array<ASAny>;
 	public var rgb2Fills:Array<ASAny>;
 	public var selectedFill:Int = 0;
@@ -94,7 +94,7 @@ class CharacterElementHelper {
 		if (G.shiftDown) {
 			this.findName("None");
 			if (ASCompat.stringAsBool(this.associatedModType)) {
-				G.customElementLoader.clearModTypes([this.associatedModType]);
+				// G.customElementLoader.clearModTypes([this.associatedModType]);
 			}
 			this.updateMenuList();
 			G.saveData.saveCharData();
@@ -105,7 +105,7 @@ class CharacterElementHelper {
 		if (param2) {
 			this.findName("None");
 			if (ASCompat.stringAsBool(this.associatedModType)) {
-				G.customElementLoader.clearModTypes([this.associatedModType]);
+				// G.customElementLoader.clearModTypes([this.associatedModType]);
 			}
 		}
 		this.updateMenuList(param1);
@@ -182,29 +182,29 @@ class CharacterElementHelper {
 	public function getDataString():String {
 		return G.dataName(this.elementNameList[this.selection])
 			+ (!!this.haveRGBFill ? ","
-				+ this.rgb1["r"]
+				+ this.rgb1.r
 				+ ","
-				+ this.rgb1["g"]
+				+ this.rgb1.g
 				+ ","
-				+ this.rgb1["b"]
+				+ this.rgb1.b
 				+ ","
-				+ G.sigRound(3, this.rgb1["a"]) : "")
+				+ Maths.sigRound(3, this.rgb1.a) : "")
 			+ (!!this.haveRGBFill2 ? ","
-				+ this.rgb2["r"]
+				+ this.rgb2.r
 				+ ","
-				+ this.rgb2["g"]
+				+ this.rgb2.g
 				+ ","
-				+ this.rgb2["b"]
+				+ this.rgb2.b
 				+ ","
-				+ G.sigRound(3, this.rgb2["a"]) : "");
+				+ Maths.sigRound(3, this.rgb2.a) : "");
 	}
 
 	public function loadDataString(param1:String) {
-		var _loc2_:Array<ASAny> = (cast param1.split(","));
-		this.findFunction(ASCompat.toString(_loc2_[0]));
+		var _loc2_:Array<String> = (cast param1.split(","));
+		this.findFunction(_loc2_[0]);
 		if (_loc2_.length == 5) {
 			this.readRGB(_loc2_.slice(1, 5), "rgbFill");
-			if (this.haveRGBFill2 && this.getDefaultRGB2()) {
+			if (this.haveRGBFill2 && this.getDefaultRGB2() != null) {
 				this.setFill(this.getDefaultRGB2(), "rgbFill2");
 			}
 		} else if (_loc2_.length == 9) {
@@ -213,26 +213,22 @@ class CharacterElementHelper {
 		}
 	}
 
-	public function getDefaultRGB():AlphaRGBObject {
+	public function getDefaultRGB():Null<AlphaRGBObject> {
 		return this.defaultRGB[G.dataName(this.elementNameList[this.selection])];
 	}
 
-	public function getDefaultRGB2():AlphaRGBObject {
+	public function getDefaultRGB2():Null<AlphaRGBObject> {
 		return this.defaultRGB2[G.dataName(this.elementNameList[this.selection])];
 	}
 
-	public function readRGB(param1:Array<ASAny>, param2:String) {
-		param1[0] = Math.fround(Math.max(0, Math.min(255, ASCompat.toNumber(param1[0]))));
-		param1[1] = Math.fround(Math.max(0, Math.min(255, ASCompat.toNumber(param1[1]))));
-		param1[2] = Math.fround(Math.max(0, Math.min(255, ASCompat.toNumber(param1[2]))));
-		param1[3] = Math.max(0, Math.min(1, ASCompat.toNumber(param1[3])));
-		if (!Math.isNaN(param1[0]) && !Math.isNaN(param1[1]) && !Math.isNaN(param1[2]) && !Math.isNaN(param1[3])) {
-			this.setFill({
-				"r": param1[0],
-				"g": param1[1],
-				"b": param1[2],
-				"a": param1[3]
-			}, param2);
+	public function readRGB(strNums:Array<String>, param2:String) {
+        var floats = new Array<Float>();
+		var r:UInt = Maths.clamp(Std.parseInt(strNums[0]), 0, 255);
+		var g:UInt = Maths.clamp(Std.parseInt(strNums[1]), 0, 255);
+		var b:UInt = Maths.clamp(Std.parseInt(strNums[2]), 0, 255);
+		var a:Float = Maths.clampf(Std.parseFloat(strNums[3]), 0, 1);
+		if (!Math.isNaN(a)) {
+			this.setFill(new AlphaRGBObject(a, r, g, b), param2);
 		}
 	}
 
@@ -271,14 +267,14 @@ class CharacterElementHelper {
 		this.selection = param1;
 		this.selectFunction(this.selection);
 		if (this.haveRGBFill) {
-			if (this.getDefaultRGB()) {
+			if (this.getDefaultRGB() != null) {
 				this.setFill(this.getDefaultRGB(), "rgbFill");
 			} else {
 				this.setFill(this.rgb1, "rgbFill");
 			}
 		}
 		if (this.haveRGBFill2) {
-			if (this.getDefaultRGB2()) {
+			if (this.getDefaultRGB2() != null) {
 				this.setFill(this.getDefaultRGB2(), "rgbFill2");
 			} else {
 				this.setFill(this.rgb2, "rgbFill2");
@@ -293,8 +289,8 @@ class CharacterElementHelper {
 		}
 	}
 
-	public function setFill(param1:ASObject, param2:String) {
-		if (param1) {
+	public function setFill(param1:Null<AlphaRGBObject>, param2:String) {
+		if (param1 != null) {
 			if (this.fillFunction != null) {
 				this.fillFunction(param1, param2);
 			}

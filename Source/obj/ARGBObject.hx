@@ -13,7 +13,7 @@ class ARGBObject {
 		this.b = b;
 	}
 
-	public function setARGB(rest:Array<ASAny> = null):ASAny {
+	public function setARGB(rest:Array<UInt> = null) {
 		if (rest == null)
 			rest = [];
 		if (rest.length == 1) {
@@ -39,11 +39,11 @@ class ARGBObject {
 		if (param1 < 16777215) {
 			this.a = 255;
 		} else {
-			this.a = (param1 & 4278190080) >>> 24;
+			this.a = param1 >>> 24;
 		}
-		this.r = (param1 & 16711680) >>> 16;
-		this.g = (param1 & 65280) >>> 8;
-		this.b = param1 & 255;
+		this.r = (param1 & 0x00FF0000) >>> 16;
+		this.g = (param1 & 0x0000FF00) >>> 8;
+		this.b = param1 & 0x000000FF;
 	}
 
 	public function fillARGB(param1:Array<UInt>) {

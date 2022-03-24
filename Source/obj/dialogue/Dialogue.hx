@@ -203,7 +203,7 @@ class Dialogue extends MovieClip
 			_loc2_.clearPrevPhrases();
 		}
 		if (param1) {
-			// G.saveData.clearCustomDialogue();
+			G.saveData.clearCustomDialogue();
 		}
 		this.setDefaultFont();
 	}
@@ -223,7 +223,7 @@ class Dialogue extends MovieClip
 	public function loadFromDialogueEditor(param1:Vector<DialogueEditorLine>, param2:Bool = true) {
 		this.library.loadFromDialogueEditor(param1);
 		if (param2) {
-			// G.saveData.saveCustomDialogue(this.library.exportLibrary());
+			G.saveData.saveCustomDialogue(this.library.exportLibrary());
 		}
 	}
 
@@ -245,7 +245,7 @@ class Dialogue extends MovieClip
 			}
 		}
 		if (param2) {
-			// G.saveData.saveCustomDialogue(this.library.exportLibrary());
+			G.saveData.saveCustomDialogue(this.library.exportLibrary());
 		}
 	}
 

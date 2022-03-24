@@ -17,6 +17,7 @@ import obj.SoundControl;
 import obj.ui.InGameMenu;
 import obj.Her;
 import obj.Him;
+import obj.SaveData;
 
 class G {
 	public static var ver:String = "v1.21.1b";
@@ -47,7 +48,7 @@ class G {
 	public static var soundControl:SoundControl;
 	// public static var automaticControl:AutomaticControl;
 	public static var characterControl:CharacterControl;
-	// public static var saveData:SaveData;
+	public static var saveData:SaveData;
 	// public static var customElementLoader:CustomElementLoader;
 	public static var dialogueControl:Dialogue;
 	// public static var dialogueEditor:DialogueEditor;
@@ -164,6 +165,7 @@ class G {
 		soundControl = new SoundControl();
         animationControl = new AnimationControl();
         inGameMenu = new InGameMenu();
+        saveData = new SaveData();
     }
 
       public static function showError(param1:String)
@@ -228,6 +230,7 @@ static function  get_breathLevel() : Float
 
       public static function dataName(param1:String) : String
       {
+          return "";
       }
 
       public static function getEraseItems(param1:DisplayObjectContainer)

@@ -19,7 +19,7 @@ class HimFemaleBody extends HimMaleBody {
 	// public var leftBreastController:BreastController;
 	// public var rightBreastController:BreastController;
 	// public var footwearControl:CharacterElementHelper;
-	public var herSwatch:Array<Color>;
+	public var herSwatch:Array<AlphaRGBObject>;
 
 	public function new(param1:Him) {
 		super(param1);
@@ -74,16 +74,16 @@ class HimFemaleBody extends HimMaleBody {
 
 	override public function initMenu() {
 		_bodyMenu = new HimFemaleBodyMenu();
-		this.herSwatch = new Array<Color>();
-		this.herSwatch[0] = new Color(22, 8, 0, 1);
-		this.herSwatch[1] = new Color(82, 0, 6, 1);
-		this.herSwatch[2] = new Color(255, 126, 167, 1);
-		this.herSwatch[3] = new Color(0, 26, 114, 1);
-		this.herSwatch[4] = new Color(63, 118, 162, 1);
-		this.herSwatch[5] = new Color(238, 242, 245, 1);
-		this.herSwatch[6] = new Color(27, 29, 29, 1);
-		this.herSwatch[7] = new Color(0, 0, 0, 1);
-		this.herSwatch[8] = new Color(255, 255, 255, 1);
+		this.herSwatch = new Array<AlphaRGBObject>();
+		this.herSwatch[0] = new AlphaRGBObject(1.0, 22, 8, 0);
+		this.herSwatch[1] = new AlphaRGBObject(1.0, 82, 0, 6);
+		this.herSwatch[2] = new AlphaRGBObject(1.0, 255, 126, 167);
+		this.herSwatch[3] = new AlphaRGBObject(1.0, 0, 26, 114);
+		this.herSwatch[4] = new AlphaRGBObject(1.0, 63, 118, 162);
+		this.herSwatch[5] = new AlphaRGBObject(1.0, 238, 242, 245);
+		this.herSwatch[6] = new AlphaRGBObject(1.0, 27, 29, 29);
+		this.herSwatch[7] = new AlphaRGBObject(1.0, 0, 0, 0);
+		this.herSwatch[8] = new AlphaRGBObject(1.0, 255, 255, 255);
 		// _bodyMenu.breastSlider.setRangeEnd(100);
 		// _bodyMenu.breastSlider.addEventListener("handleReleased",this.breastSliderReleased);
 		// _bodyMenu.breastSlider.addEventListener("sliderChanged",this.breastSliderChanged);

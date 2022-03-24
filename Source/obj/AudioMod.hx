@@ -1,6 +1,7 @@
 package obj;
 
 import openfl.media.Sound;
+import obj.Maths;
 
 class AudioMod
 {
@@ -11,6 +12,6 @@ class AudioMod
    {
       // super();
       this.audio = _audio;
-      this.volume = MathHelpers.clamp(_volume, 0, 1);
+      this.volume = Maths.clampf(_volume, 0, 1);
    }
 }

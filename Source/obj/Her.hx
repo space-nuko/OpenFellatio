@@ -13,17 +13,29 @@ import obj.animation.IKController;
 import obj.her.Tongue;
 import obj.Maths;
 import swf.exporters.animate.AnimateSpriteSymbol;
+import obj.her.HerPenisControl;
+import obj.her.Tan;
+import obj.her.Neck;
+import obj.her.ITannable;
+import obj.him.Penis;
 
 @:rtti
-class CollarContainer extends #if flash flash.display.MovieClip.MovieClip2 #else openfl.display.MovieClip #end
+class BasicTannable extends MovieClip implements ITannable
+{
+	@:keep public var tan(default, null):MovieClip;
+}
+
+@:rtti
+class CollarContainer extends MovieClip
 {
 	@:keep @:noCompletion @:dox(hide) public var collar(default, null):openfl.display.MovieClip;
 }
 
 @:rtti
-class RightCalfContainer extends openfl.display.MovieClip
+class RightCalfContainer extends MovieClip
 {
     @:keep public var bottoms(default, null): MovieClip;
+    @:keep public var calf(default, null): BasicTannable;
     @:keep public var cuffs(default, null): MovieClip;
     @:keep public var calfStocking(default, null): MovieClip;
     @:keep public var calfStockingB(default, null): MovieClip;
@@ -31,38 +43,50 @@ class RightCalfContainer extends openfl.display.MovieClip
 }
 
 @:rtti
-class ThighCostume extends openfl.display.MovieClip
+class ThighCostume extends MovieClip
 {
     @:keep public var panties(default, null): MovieClip;
 }
 
 @:rtti
-class BackUnderCostume extends openfl.display.MovieClip
+class BackUnderCostume extends MovieClip
 {
     @:keep public var panties(default, null): MovieClip;
 }
 
 @:rtti
-class ChestCostume extends openfl.display.MovieClip
+class HerChestCostumeBottoms extends MovieClip
+{
+    @:keep public var penisCostumeContainer(default, null): MovieClip;
+}
+
+@:rtti
+class ChestCostume extends MovieClip
 {
     @:keep public var bellyPiercing(default, null): MovieClip;
+    @:keep public var bottoms(default, null): HerChestCostumeBottoms;
+}
+
+@:rtti
+class HerPanties extends MovieClip
+{
+    @:keep public var penisCostumeContainer(default, null): MovieClip;
+}
+
+@:rtti
+class ChestUnderCostume extends MovieClip
+{
+    @:keep public var panties(default, null): HerPanties;
+}
+
+@:rtti
+class BackCostume extends MovieClip
+{
     @:keep public var bottoms(default, null): MovieClip;
 }
 
 @:rtti
-class ChestUnderCostume extends openfl.display.MovieClip
-{
-    @:keep public var panties(default, null): MovieClip;
-}
-
-@:rtti
-class BackCostume extends openfl.display.MovieClip
-{
-    @:keep public var bottoms(default, null): MovieClip;
-}
-
-@:rtti
-class TopContainer extends openfl.display.MovieClip
+class TopContainer extends MovieClip
 {
     @:keep public var backTop(default, null): MovieClip;
     @:keep public var breastTop(default, null): MovieClip;
@@ -71,14 +95,96 @@ class TopContainer extends openfl.display.MovieClip
 }
 
 @:rtti
-class UpperChestCostume extends openfl.display.MovieClip
+class UpperChestCostume extends MovieClip
 {
     @:keep public var bra(default, null): MovieClip;
 }
+
 @:rtti
-class Torso extends openfl.display.MovieClip {
+class HerRightNipple extends BasicTannable
+{
+    @:keep public var rightNipple(default, null): MovieClip;//?
+}
+
+@:rtti
+class HerRightBreast extends MovieClip
+{
+    @:keep public var nipple(default, null): HerRightNipple;
+}
+
+@:rtti
+class HerMidLayer extends MovieClip
+{
+    @:keep public var chest(default, null): BasicTannable;
+    @:keep public var rightBreast(default, null): HerRightBreast;
+    @:keep public var leftArm(default, null): BasicTannable;
+}
+
+@:rtti
+class HerRightLeg extends MovieClip
+{
+    @:keep public var thigh(default, null): BasicTannable;
+}
+
+@:rtti
+class HerRightChestStocking extends MovieClip
+{
+    @:keep public var penisCostumeContainer(default, null): MovieClip;
+}
+
+@:rtti
+class HerRightHipLayer extends MovieClip
+{
+    @:keep public var backStocking(default, null): MovieClip;
+    @:keep public var chestStocking(default, null): HerRightChestStocking;
+}
+
+@:rtti
+class HerRightHipOverLayer extends MovieClip
+{
+    @:keep public var backStocking(default, null): MovieClip;
+    @:keep public var chestStocking(default, null): MovieClip;
+}
+
+@:rtti
+class HerRightStocking extends MovieClip
+{
+    @:keep public var hipLayer(default, null): HerRightHipLayer;
+    @:keep public var hipOverLayer(default, null): HerRightHipOverLayer;
+}
+
+@:rtti
+class HerRightHipLayer2 extends MovieClip
+{
+    @:keep public var backStocking(default, null): MovieClip;
+    @:keep public var chestStocking(default, null): MovieClip;
+}
+
+@:rtti
+class HerRightStocking2 extends MovieClip
+{
+    @:keep public var hipLayer(default, null): HerRightHipLayer2;
+}
+
+@:rtti
+class HerRightThighStocking extends MovieClip
+{
+    @:keep public var stocking(default, null): HerRightStocking;
+    @:keep public var stocking2(default, null): HerRightStocking;
+}
+
+@:rtti
+class HerPenisContainer extends MovieClip
+{
+    @:keep public var penis(default, null): Penis;
+}
+
+@:rtti
+class Torso extends MovieClip {
+	@:keep public var back(default, null):BasicTannable;
 	@:keep public var backCostume(default, null):BackCostume;
 	@:keep public var backUnderCostume(default, null):BackUnderCostume;
+	@:keep public var backside(default, null):BasicTannable;
 	@:keep public var braStrap(default, null):MovieClip;
 	@:keep public var breastCostume(default, null):BreastCostume;
 	@:keep public var chestCostume(default, null):ChestCostume;
@@ -92,29 +198,42 @@ class Torso extends openfl.display.MovieClip {
 	@:keep public var rightThighBottoms(default, null):MovieClip;
 	@:keep public var rightThighBottomsOver(default, null):MovieClip;
 	@:keep public var rightThighCostume(default, null):ThighCostume;
-	@:keep public var rightThighStocking(default, null):MovieClip;
-	@:keep public var rightThighStockingB(default, null):MovieClip;
+	@:keep public var rightThighStocking(default, null):HerRightThighStocking;
+	@:keep public var rightThighStockingB(default, null):HerRightThighStocking;
 	@:keep public var shoulderStrap(default, null):MovieClip;
 	@:keep public var topContainer(default, null):TopContainer;
 	@:keep public var upperChestCostume(default, null):UpperChestCostume;
+	@:keep public var midLayer(default, null):HerMidLayer;
+	@:keep public var behindBackRightArm(default, null):BasicTannable;
+	@:keep public var leg(default, null):HerRightLeg;
+	@:keep public var nailPolish(default, null):MovieClip;
+	@:keep public var penisContainer(default, null):HerPenisContainer;
 }
 
 @:rtti
-class Hand extends openfl.display.MovieClip {
+class LeftHandOverHand extends MovieClip {
+	@:keep public var grip(default, null):BasicTannable;
+	@:keep public var glove(default, null):MovieClip;
+	@:keep public var nailPolish(default, null):MovieClip;
+}
+
+@:rtti
+class HandCostumeHand extends MovieClip {
 	@:keep public var glove(default, null):MovieClip;
 }
 
 @:rtti
-class HandCostume extends openfl.display.MovieClip {
+class HandCostume extends MovieClip {
 	@:keep public var glove(default, null):MovieClip;
-	@:keep public var hand(default, null):Hand;
+	@:keep public var hand(default, null):HandCostumeHand;
+	@:keep public var nailPolish(default, null):MovieClip;
 }
 
 @:access(swf.exporters.animate)
 @:rtti
-class LeftHandOver extends openfl.display.MovieClip {
+class LeftHandOver extends MovieClip {
 	@:keep public var glove(default, null):MovieClip;
-	@:keep public var hand(default, null):Hand;
+	@:keep public var hand(default, null):LeftHandOverHand;
 
 	public function new() {
 		super();
@@ -126,7 +245,22 @@ class LeftHandOver extends openfl.display.MovieClip {
 }
 
 @:rtti
-class LeftForeArmCostume extends openfl.display.MovieClip {
+class HerLeftHand extends BasicTannable {
+	@:keep public var grip(default, null):MovieClip;//?
+}
+
+@:rtti
+class HerLeftForeArm extends BasicTannable {
+	@:keep public var hand(default, null):HerLeftHand;
+}
+
+@:rtti
+class HerLeftUpperArm extends BasicTannable {
+	@:keep public var foreArm(default, null):HerLeftForeArm;
+}
+
+@:rtti
+class LeftForeArmCostume extends MovieClip {
 	@:keep public var cuff(default, null):MovieClip;
 	@:keep public var glove(default, null):MovieClip;
 	@:keep public var top(default, null):MovieClip;
@@ -134,7 +268,7 @@ class LeftForeArmCostume extends openfl.display.MovieClip {
 }
 
 @:rtti
-class RightForeArmCostume extends openfl.display.MovieClip {
+class RightForeArmCostume extends MovieClip {
 	@:keep public var cuff(default, null):MovieClip;
 	@:keep public var glove(default, null):MovieClip;
 	@:keep public var top(default, null):MovieClip;
@@ -142,27 +276,27 @@ class RightForeArmCostume extends openfl.display.MovieClip {
 }
 
 @:rtti
-class LeftUpperArmCostume extends openfl.display.MovieClip {
+class LeftUpperArmCostume extends MovieClip {
 	@:keep public var glove(default, null):MovieClip;
 	@:keep public var foreArmCostume(default, null):LeftForeArmCostume;
 	@:keep public var top(default, null):MovieClip;
 }
 
 @:rtti
-class RightUpperForeArmCostume extends openfl.display.MovieClip {
+class RightUpperForeArmCostume extends MovieClip {
 	@:keep public var foreArmCostume(default, null):RightForeArmCostume;
 }
 
 @:rtti
-class RightUpperArmCostume extends openfl.display.MovieClip {
+class RightUpperArmCostume extends MovieClip {
 	@:keep public var glove(default, null):MovieClip;
 	@:keep public var top(default, null):MovieClip;
 }
 
 @:access(swf.exporters.animate)
 @:rtti
-class HerLeftArmContainer extends openfl.display.MovieClip {
-	@:keep public var upperArm(default, null):MovieClip;
+class HerLeftArmContainer extends MovieClip {
+	@:keep public var upperArm(default, null):HerLeftUpperArm;
 	@:keep public var upperArmCostume(default, null):LeftUpperArmCostume;
 
 	public function new() {
@@ -174,10 +308,20 @@ class HerLeftArmContainer extends openfl.display.MovieClip {
 	}
 }
 
+@:rtti
+class HerRightHand extends BasicTannable {
+	@:keep public var grip(default, null):MovieClip;//?
+}
+
+@:rtti
+class HerRightForeArm extends BasicTannable {
+	@:keep public var hand(default, null):HerRightHand;
+}
+
 @:access(swf.exporters.animate)
 @:rtti
-class RightUpperForeArm extends openfl.display.MovieClip {
-	@:keep public var foreArm(default, null):MovieClip;
+class RightUpperForeArm extends MovieClip {
+	@:keep public var foreArm(default, null):HerRightForeArm;
 
 	public function new() {
 		super();
@@ -190,7 +334,7 @@ class RightUpperForeArm extends openfl.display.MovieClip {
 
 @:access(swf.exporters.animate)
 @:rtti
-class HerRightForeArmContainer extends openfl.display.MovieClip {
+class HerRightForeArmContainer extends MovieClip {
 	@:keep public var upperArmCostume(default, null):RightUpperForeArmCostume;
 	@:keep public var upperArm(default, null):RightUpperForeArm;
 
@@ -205,9 +349,9 @@ class HerRightForeArmContainer extends openfl.display.MovieClip {
 
 @:access(swf.exporters.animate)
 @:rtti
-class HerRightArmContainer extends openfl.display.MovieClip {
+class HerRightArmContainer extends MovieClip {
 	@:keep public var upperArmCostume(default, null):RightUpperArmCostume;
-	@:keep public var upperArm(default, null):MovieClip;
+	@:keep public var upperArm(default, null):BasicTannable;
 	@:keep public var upperArmMask(default, null):MovieClip;
 
 	public function new() {
@@ -221,7 +365,7 @@ class HerRightArmContainer extends openfl.display.MovieClip {
 
 @:access(swf.exporters.animate)
 @:rtti
-class HerRightArmEraseContainer extends openfl.display.MovieClip {
+class HerRightArmEraseContainer extends MovieClip {
 	@:keep public var upperArmCostume(default, null):RightUpperArmCostume;
 	@:keep public var upperArm(default, null):MovieClip;
 
@@ -235,7 +379,7 @@ class HerRightArmEraseContainer extends openfl.display.MovieClip {
 }
 
 @:rtti
-class Leg extends openfl.display.MovieClip {
+class Leg extends MovieClip {
 	@:keep public var cuffs(default, null):MovieClip;
 	@:keep public var footwear(default, null):MovieClip;
 	@:keep public var leftThighCostume(default, null):ThighCostume;
@@ -245,15 +389,17 @@ class Leg extends openfl.display.MovieClip {
 	@:keep public var stockingB(default, null):MovieClip;
 	@:keep public var calfStocking(default, null):MovieClip;
 	@:keep public var calfStockingB(default, null):MovieClip;
+	@:keep public var calf(default, null):BasicTannable;
+	@:keep public var thigh(default, null):BasicTannable;
 }
 
 @:rtti
-class LegContainer extends openfl.display.MovieClip {
+class LegContainer extends MovieClip {
 	@:keep public var leg(default, null):Leg;
 }
 
 @:rtti
-class BacksideCostume extends openfl.display.MovieClip {
+class BacksideCostume extends MovieClip {
 	@:keep public var bottoms(default, null):MovieClip;
 	@:keep public var panties(default, null):MovieClip;
 	@:keep public var stocking(default, null):MovieClip;
@@ -261,36 +407,54 @@ class BacksideCostume extends openfl.display.MovieClip {
 }
 
 @:rtti
-class TorsoBackCostume extends openfl.display.MovieClip {
+class HerLeftNipple extends BasicTannable {
+	@:keep public var leftNipple(default, null):MovieClip;//?
+}
+
+@:rtti
+class HerLeftBreast extends BasicTannable {
+	@:keep public var nipple(default, null):HerLeftNipple;
+}
+
+@:rtti
+class TorsoBack extends BasicTannable {
+	@:keep public var leftShoulder(default, null):MovieClip;
+	@:keep public var chestBack(default, null):MovieClip;
+	@:keep public var leftBreast(default, null):HerLeftBreast;
+	@:keep public var backside(default, null):BasicTannable;
+}
+
+@:rtti
+class TorsoBackCostume extends MovieClip {
 	@:keep public var backsideCostume(default, null):BacksideCostume;
 	@:keep public var breastCostume(default, null):BreastCostume;
 }
 
 @:rtti
-class BreastCostume extends openfl.display.MovieClip {
+class BreastCostume extends MovieClip {
 	@:keep public var top(default, null):MovieClip;
 	@:keep public var bra(default, null):MovieClip;
 }
 
 @:rtti
-class TorsoUnderCostume extends openfl.display.MovieClip {
+class TorsoUnderCostume extends MovieClip {
 	@:keep public var top(default, null):MovieClip;
 }
 
 @:rtti
-class TongueContainer extends openfl.display.MovieClip {
+class TongueContainer extends MovieClip {
 	@:keep public var tongue(default, null):obj.her.Tongue;
 }
 
 @:rtti
-class HerHairMidContainer extends openfl.display.MovieClip {
+class HerHairMidContainer extends MovieClip {
 	@:keep public var hairUnder(default, null):MovieClip;
 	@:keep public var hairBottom(default, null):MovieClip;
 }
 
 @:rtti
 @:access(swf.exporters.animate)
-class HairBackContainer extends openfl.display.MovieClip {
+class HairBackContainer extends MovieClip {
 	@:keep public var hairBackLayer(default, null):MovieClip;
 	@:keep public var hairBack(default, null):MovieClip;
 
@@ -304,9 +468,28 @@ class HairBackContainer extends openfl.display.MovieClip {
 }
 
 @:rtti
-class HerPenisContainer extends MovieClip
+class HerEye extends MovieClip
 {
-	@:keep public var penis(default, null):MovieClip;
+	@:keep public var eyebrowUnderMask(default, null):BasicTannable;
+}
+
+@:rtti
+class HerFace extends MovieClip
+{
+	@:keep public var lipFill(default, null):MovieClip;
+	@:keep public var lipShading(default, null):MovieClip;
+	@:keep public var skull(default, null):MovieClip;
+	@:keep public var nose(default, null):MovieClip;
+}
+
+@:rtti
+class HerHead extends MovieClip
+{
+	@:keep public var neck(default, null):Neck;
+	@:keep public var face(default, null):HerFace;
+	@:keep public var headTan(default, null):MovieClip;
+	@:keep public var cheekSuck(default, null):MovieClip;
+	@:keep public var cheekBulge(default, null):MovieClip;
 }
 
 class MouthShape {
@@ -437,9 +620,9 @@ class Her extends MovieClip {
 	@:keep public var blush(default, null):MovieClip;
 	@:keep public var bottomLipstick(default, null):MovieClip;
 	@:keep public var collarContainer(default, null):CollarContainer;
-	@:keep public var ear(default, null):MovieClip;
+	@:keep public var ear(default, null):BasicTannable;
 	@:keep public var earrings(default, null):Earrings;
-	@:keep public var eye(default, null):MovieClip;
+	@:keep public var eye(default, null):HerEye;
 	@:keep public var eyewear(default, null):MovieClip;
 	@:keep public var freckles(default, null):obj.her.Freckles;
 	@:keep public var gagBack(default, null):MovieClip;
@@ -449,7 +632,7 @@ class Her extends MovieClip {
 	@:keep public var hairBackContainer(default, null):HairBackContainer;
 	@:keep public var hairMidContainer(default, null):HerHairMidContainer;
 	@:keep public var hairTop(default, null):MovieClip;
-	@:keep public var head(default, null):MovieClip;
+	@:keep public var head(default, null):HerHead;
 	@:keep public var leftArmContainer(default, null):HerLeftArmContainer;
 	@:keep public var leftEyebrow(default, null):MovieClip;
 	@:keep public var leftHandOverContainer(default, null):MovieClip;
@@ -464,11 +647,10 @@ class Her extends MovieClip {
 	@:keep public var topLipTongue(default, null):sDT_1_21_1b_fla.TopLipTongue_218;
 	@:keep public var topLipstickContainer(default, null):MovieClip;
 	@:keep public var torso(default, null):Torso;
-	@:keep public var torsoBack(default, null):MovieClip;
+	@:keep public var torsoBack(default, null):TorsoBack;
 	@:keep public var torsoBackCostume(default, null):TorsoBackCostume;
 	@:keep public var torsoUnderCostume(default, null):TorsoUnderCostume;
 	@:keep public var leftLegContainer(default, null):LegContainer;
-	@:keep public var penisContainer(default, null):HerPenisContainer;
 
     public var backModContainer:Sprite = new Sprite();
 
@@ -476,8 +658,8 @@ class Her extends MovieClip {
 
     public var userHasClicked:UInt = 0;
 	public var heldTimer:UInt = 0;
-	public var _tan:Tan;
-	public var _penisControl:HerPenisControl;
+	public var tan(default, null):Tan;
+	public var penisControl(default, null):HerPenisControl;
 	public var mood(default, null):String = NORMAL_MOOD;
 	public var deepthroatDistance:Float = 150;
 	public var deepthroatStartDistance:Float = 75;
@@ -692,11 +874,11 @@ this.previousResistance = this.resistance.upper;
 	}
 
 	public function getDataString():String {
-		return this._penisControl.getDataString();
+		return this.penisControl.getDataString();
 	}
 
 	public function loadDataPairs(param1:Array<ASAny>) {
-		this._penisControl.loadDataPairs(param1);
+		this.penisControl.loadDataPairs(param1);
 	}
 
 	public function updatePenisTipPos() {
@@ -708,12 +890,12 @@ this.previousResistance = this.resistance.upper;
 	}
 
 	public function setupTan() {
-		this._tan = new Tan();
+		this.tan = new Tan();
 	}
 
 	public function setMenu(param1:MovieClip, param2:Array<ASAny>) {
-		this._penisControl = new HerPenisControl();
-		this._penisControl.setMenu(param1, param2);
+		this.penisControl = new HerPenisControl();
+		this.penisControl.setMenu(param1, param2);
 	}
 
 	public function initialise() {
@@ -952,8 +1134,8 @@ this.previousResistance = this.resistance.upper;
 			this.updateTorso();
 			this.updateArms();
 		}
-		if (this._tan != null) {
-			this._tan.updateSkin();
+		if (this.tan != null) {
+			this.tan.updateSkin();
 		}
 		// G.characterControl.setNailPolish(G.characterControl.nailPolishRGB);
 	}
@@ -998,8 +1180,8 @@ this.previousResistance = this.resistance.upper;
 			this.updateTorso();
 			this.updateArms();
 		}
-		if (this._tan != null) {
-			this._tan.updateSkin();
+		if (this.tan != null) {
+			this.tan.updateSkin();
 		}
 		G.characterControl.setNailPolish(G.characterControl.nailPolishRGB);
 	}
@@ -1465,7 +1647,7 @@ this.previousResistance = this.resistance.upper;
 		this.animateBreathing();
 		this.updateElements();
 		this.tongue.update(this.pos, this.movement, this.absMovement, this.vigour);
-		this._penisControl.update();
+		this.penisControl.update();
 		if (this.droolingCum) {
 			this.tickCumDrool();
 		}
@@ -3121,18 +3303,6 @@ this.previousResistance = this.resistance.upper;
 	function get_breathingAnimationAmount():Float {
 		return this.breathingFactor;
 	}
-
-	// @:flash.property public var tan(get, never):Tan;
-
-	// function get_tan():Tan {
-	// 	return this._tan;
-	// }
-
-	// @:flash.property public var penisControl(get, never):HerPenisControl;
-
-	// function get_penisControl():HerPenisControl {
-	// 	return this._penisControl;
-	// }
 
 	@:flash.property public var penisOn(get, never):Bool;
 

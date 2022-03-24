@@ -28,18 +28,8 @@ class SkinPalette {
 	}
 
 	public function split(param1:UInt): ARGBObject {
-		var _loc2_:UInt = 0;
-		var _loc3_:UInt = 0;
-		var _loc4_:UInt = 0;
-		var _loc5_:UInt = 0;
-		if (param1 < 16777215) {
-			_loc2_ = 255;
-		} else {
-			_loc2_ = (param1 & 4278190080) >>> 24;
-		}
-		_loc3_ = (param1 & 16711680) >>> 16;
-		_loc4_ = (param1 & 65280) >>> 8;
-		_loc5_ = param1 & 255;
-		return new ARGBObject(_loc2_, _loc3_, _loc4_, _loc5_);
+        var argb = new ARGBObject(0, 0, 0, 0);
+        argb.split(param1);
+        return argb;
 	}
 }
