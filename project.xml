@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project>
+	
+	<meta title="HelloWorld" package="com.sample.helloworld" version="1.0.0" company="Company Name" />
+	<app main="Main" path="Export" file="HelloWorld" />
+    <window width="800" height="600" fps="180" vsync="true"/>
+	
+	<source path="Source" />
+	
+    <haxelib name="openfl" />
+	<haxelib name="actuate" />
+	<haxelib name="swf" />
+	
+	<assets path="Assets" rename="assets" exclude="*.swf" />
+	<library path="Assets/SDT.swf" id="sdt2" generate="true"/>
+
+    <haxedef name="HXCPP_CHECK_POINTER" />
+    <haxedef name="HXCPP_STACK_LINE"  />
+    <haxedef name="HXCPP_STACK_TRACE"  />
+    <haxedef name="HXCPP_DEBUG_LINK"  />
+    <haxedef name="HXCPP_CATCH_SEGV"  />
+
+</project>
