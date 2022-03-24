@@ -4,7 +4,8 @@
 	<meta title="HelloWorld" package="com.sample.helloworld" version="1.0.0" company="Company Name" />
 	<app main="Main" path="Export" file="HelloWorld" />
     <window width="800" height="600" fps="180" vsync="true"/>
-	
+
+	<source path="Lib/compat" />
 	<source path="Source" />
 	
     <haxelib name="openfl" />

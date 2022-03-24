@@ -17,9 +17,11 @@
   <!-- Other classes to be compiled into your SWF -->
   <classpaths>
     <class path="Source" />
+    <class path="Lib/compat" />
   </classpaths>
   <!-- Build options -->
   <build>
+    <option additional="--macro nullSafety('obj.animation')" />
   </build>
   <!-- haxelib libraries -->
   <haxelib>

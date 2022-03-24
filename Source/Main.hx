@@ -26,7 +26,8 @@ class Main extends Sprite {
 
         Assets.loadLibrary("sdt2").onComplete(function(_) {
             trace("SWF library loaded");
-            var lib = cast(Assets.getMovieClip("sdt2:obj.Her"), obj.Her);
+            initGame();
+            var lib = G.her;
 
             var herLeftArm = new obj.Her.HerLeftArmContainer();
             var herRightArm = new obj.Her.HerRightArmContainer();
@@ -203,4 +204,8 @@ class Main extends Sprite {
             container.y -= 5;
         }
     }
+
+	public function initGame() {
+		G.initGlobals();
+	}
 }
