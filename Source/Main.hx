@@ -40,8 +40,6 @@ import obj.animation.AnimationControl;
 import obj.dialogue.Dialogue;
 import obj.dialogue.DialogueEditor;
 // import obj.ui.IMouseWheelScrollable;
-import motion.easing.Elastic;
-import motion.Actuate;
 import com.kircode.debug.FPS_Mem;
 
 class Main extends Sprite {

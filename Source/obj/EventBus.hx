@@ -4,7 +4,7 @@ class EventBus {
 	public static var events:ASDictionary<String, Array<ASFunction>> = new ASDictionary();
 
 	public static function addListener(param1:String, param2:ASFunction) {
-		if (events.exists(param1)) {
+		if (!events.exists(param1)) {
 			events[param1] = new Array<ASFunction>();
 		}
 		events[param1].push(param2);

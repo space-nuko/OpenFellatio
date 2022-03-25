@@ -9,7 +9,6 @@
 	<source path="Source" />
 	
     <haxelib name="openfl" />
-	<haxelib name="actuate" />
 	<haxelib name="swf" />
 	
 	<assets path="Assets" rename="assets" exclude="*.swf"/>

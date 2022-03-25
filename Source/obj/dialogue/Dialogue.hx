@@ -47,11 +47,11 @@ class Dialogue extends MovieClip
 	public static var STATE_THRESHOLD:UInt = 20;
 	public static var DIALOGUE_NAME_KEY:String = "dialogue_name";
 
-	public var tfContainer:MovieClip;
+	// public var tfContainer:MovieClip;
 	public var library:DialogueLibrary;
 	// public var advancedController:AdvancedDialogueController;
-	public var originalTextFormat:TextFormat;
-	public var originalFont:String;
+	// public var originalTextFormat:TextFormat;
+	// public var originalFont:String;
 	public var GENERAL_PHRASE_FREQ:Float = 0.8;
 	public var SPEAK_DELAY:UInt = 20;
 	public var DEFAULT_TYPING_SPEED:UInt = 55;
@@ -86,7 +86,7 @@ class Dialogue extends MovieClip
 	public var cumulativeMovement:Float = 0;
 	public var postEjaculation:Bool = false;
 	public var firstThroatSpoken:Bool = false;
-	public var states:ASDictionary<ASAny, ASAny>;
+	public var states:ASDictionary<String, DialogueState>;
 	public var debugMode:Bool = false;
 	public var debugBars:ASDictionary<ASAny, ASAny>;
 
@@ -100,14 +100,14 @@ class Dialogue extends MovieClip
 		this.x = 0;
 		this.y = G.screenSize.y;
 		// this.originalTextFormat = this.tfContainer.dialogueField.defaultTextFormat;
-		this.originalFont = this.originalTextFormat.font;
+		// this.originalFont = this.originalTextFormat.font;
 		gotoAndStop("speaking");
 		mouseEnabled = false;
 		mouseChildren = false;
 		this.library = new DialogueLibrary();
 		// this.advancedController = new AdvancedDialogueController();
 		// DialogueLine.advancedController = this.advancedController;
-		this.states = new ASDictionary<ASAny, ASAny>();
+		this.states = new ASDictionary<String, DialogueState>();
 		this.states[ZERO_STATE] = new DialogueState(0, 0);
 		this.states[HEAD_GRABBED] = new DialogueState(MAX_BUILD, 1);
 		this.states[PULLED_UP] = new DialogueState(MAX_BUILD, 0);
@@ -160,7 +160,7 @@ class Dialogue extends MovieClip
 	}
 
 	public function setDefaultFont() {
-		this.originalTextFormat.font = this.originalFont;
+		// this.originalTextFormat.font = this.originalFont;
 		// this.tfContainer.dialogueField.embedFonts = true;
 		// this.tfContainer.dialogueField.defaultTextFormat = this.originalTextFormat;
 		// this.tfContainer.dialogueField.setTextFormat(this.originalTextFormat);
@@ -189,7 +189,7 @@ class Dialogue extends MovieClip
 	}
 
 	public function applyCustomFont(param1:String) {
-		this.originalTextFormat.font = param1;
+		// this.originalTextFormat.font = param1;
 		// this.tfContainer.dialogueField.embedFonts = false;
 		// this.tfContainer.dialogueField.defaultTextFormat = this.originalTextFormat;
 		// this.tfContainer.dialogueField.setTextFormat(this.originalTextFormat);
@@ -316,7 +316,7 @@ class Dialogue extends MovieClip
 	}
 
 	public function buildState(param1:String, param2:UInt) {
-		if (this.states[param1]) {
+		if (this.states.exists(param1)) {
 			if (param1 == FIRST_THROAT && this.firstThroatSpoken) {
 				return;
 			}
@@ -333,7 +333,7 @@ class Dialogue extends MovieClip
 	}
 
 	public function maxState(param1:String) {
-		if (this.states[param1]) {
+		if (this.states.exists(param1)) {
 			this.states[param1].maxBuild();
 		}
 	}
@@ -506,7 +506,7 @@ class Dialogue extends MovieClip
 			}
 		}
 		if (G.dialogue && _loc4_.length > 0) {
-			if (!this.states[param1]) {
+			if (!this.states.exists(param1)) {
 				this.states[param1] = new DialogueState(0, 0);
 			}
 			this.states[param1].clearBuild();

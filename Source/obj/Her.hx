@@ -2882,7 +2882,7 @@ class Her extends MovieClip {
 		var _loc3_:UInt = param2.numChildren;
 		var _loc5_:UInt = 0;
 		while (_loc5_ < _loc3_) {
-			if (Std.is(param2.getChildAt(_loc5_), DisplayObjectContainer)) {
+			if (Std.isOfType(param2.getChildAt(_loc5_), DisplayObjectContainer)) {
 				if ((_loc4_ = this.findChild(param1, Std.downcast(param2.getChildAt(_loc5_), DisplayObjectContainer))) != null) {
 					return _loc4_;
 				}

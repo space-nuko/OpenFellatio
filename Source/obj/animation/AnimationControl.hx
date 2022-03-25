@@ -10,17 +10,66 @@ class AnimationControl {
 
 	public var currentAnimation:String = "default";
 
-	public var animations:ASDictionary<String, MainAnimation>;
+	public var animations:ASDictionary<String, MainAnimation> = new ASDictionary();
 	public var linearPenisOutTransition:Float = 0;
 	public var smoothedPenisOutTransition:Float = 0;
 
 	public function new() {
-		/*
-		 * Decompilation error
-		 * Code may be obfuscated
-		 * Tip: You can try enabling "Automatic deobfuscation" in Settings
-		 * Error type: NullPointerException (null)
-		 */
+        var defaultAnimation = new MainAnimation();
+
+        var defaultHer = new LinearTween();
+        defaultHer.offsetStart(-40, 270, -15);
+        defaultHer.offsetEnd(250, 367.3, -20);
+
+        var defaultHim = new LinearTween();
+        defaultHim.offsetStart(420, 135, -3);
+        defaultHim.offsetEnd(340, 135);
+
+        defaultAnimation.herTween = defaultHer;
+        defaultAnimation.herKneeTarget = new Point(160, 1240);
+        defaultAnimation.altVector = new Point(0, 1);
+        defaultAnimation.altRange = 80;
+
+        defaultAnimation.hisTween = defaultHim;
+        defaultAnimation.hisLeftFootTarget = new Point(625, 1315);
+        defaultAnimation.hisRightFootTarget = new Point(620, 1168);
+
+        defaultAnimation.torsoMinAng = 4.3;
+        defaultAnimation.torsoStartAng = 3.43;
+        defaultAnimation.torsoAngMultiplier = 0.61;
+        defaultAnimation.torsoMinDist = 180;
+        defaultAnimation.torsoStartDist = 130;
+        defaultAnimation.torsoDistMultiplier = 35;
+
+        animations[DEFAULT] = defaultAnimation;
+
+        var faceFuckAnimation: MainAnimation = new MainAnimation();
+
+        var ffHer = new LinearTween();
+        ffHer.offsetStart(35, 300, -15);
+        ffHer.offsetEnd(145, 382.3, -20);
+
+        var ffHim = new LinearTween();
+        ffHim.offsetStart(470, 160, -3);
+        ffHim.offsetEnd(235, 150);
+
+        faceFuckAnimation.herTween = ffHer;
+        faceFuckAnimation.herKneeTarget = new Point(20, 1240);
+        faceFuckAnimation.altVector = new Point(0, 1);
+        faceFuckAnimation.altRange = 80;
+
+        faceFuckAnimation.hisTween = ffHim;
+        faceFuckAnimation.hisLeftFootTarget = new Point(520, 1300);
+        faceFuckAnimation.hisRightFootTarget = new Point(550, 1133);
+
+        faceFuckAnimation.torsoMinAng = 4.3;
+        faceFuckAnimation.torsoStartAng = 3.9;
+        faceFuckAnimation.torsoAngMultiplier = 0.3;
+        faceFuckAnimation.torsoMinDist = 180;
+        faceFuckAnimation.torsoStartDist = 145;
+        faceFuckAnimation.torsoDistMultiplier = 5;
+
+        animations[FACE_FUCK] = faceFuckAnimation;
 	}
 
 	public function stepAnimation() {

@@ -1,20 +1,22 @@
 package obj;
 
+import openfl.display.DisplayObject;
 import openfl.display.DisplayObjectContainer;
 import openfl.display.FrameLabel;
 import openfl.display.MovieClip;
 import openfl.events.MouseEvent;
 import openfl.geom.ColorTransform;
+import obj.AlphaRGBObject;
 
 class CharacterElementHelper {
 	public var elementNameList:Array<String>;
-	public var findFunction:ASFunction;
-	public var selectFunction:ASFunction;
-	public var fillFunction:ASFunction;
+	public var findFunction:Null<ASFunction>;
+	public var selectFunction:Null<ASFunction>;
+	public var fillFunction:Null<ASFunction>;
 	public var selection:UInt = 0;
-	public var nameDictionary:ASDictionary<ASAny, ASAny>;
-	public var defaultRGB:ASDictionary<ASAny, ASAny>;
-	public var defaultRGB2:ASDictionary<ASAny, ASAny>;
+	public var nameDictionary:ASDictionary<String, Bool> = new ASDictionary();
+	public var defaultRGB:ASDictionary<String, AlphaRGBObject> = new ASDictionary();
+	public var defaultRGB2:ASDictionary<String, AlphaRGBObject> = new ASDictionary();
 	public var haveMenuList:Bool = false;
 	public var menuList:MovieClip;
 	public var updateMenuList:ASFunction;
@@ -22,57 +24,61 @@ class CharacterElementHelper {
 	public var haveRGBFill2:Bool = false;
 	public var rgbButton:MovieClip;
 	public var rgbButton2:MovieClip;
-	public var rgb1:AlphaRGBObject;
-	public var rgb2:AlphaRGBObject;
-	public var rgb1Fills:Array<ASAny>;
-	public var rgb2Fills:Array<ASAny>;
+	public var rgb1:AlphaRGBObject = new AlphaRGBObject(1, 0, 0, 0);
+	public var rgb2:AlphaRGBObject = new AlphaRGBObject(1, 0, 0, 0);
 	public var selectedFill:Int = 0;
-	public var components:Array<ASAny>;
+	public var components:Array<MovieClip> = [];
 	public var associatedModType:String;
-	public var listeners:Array<ASAny>;
+	public var listeners:Array<ASFunction> = [];
 
-	public function new(param1:Array<String>, param2:ASFunction = null, param3:ASFunction = null, param4:ASFunction = null) {
-		/*
-		 * Decompilation error
-		 * Code may be obfuscated
-		 * Tip: You can try enabling "Automatic deobfuscation" in Settings
-		 * Error type: NullPointerException (null)
-		 */
-		throw new flash.errors.IllegalOperationError("Not decompiled due to error");
+	public function new(nameListArray:Array<String>, selecter:ASFunction = null, filler:ASFunction = null, finder:ASFunction = null)
+    {
+        var elementName: String;
+
+        selectFunction = selecter;
+        fillFunction = filler;
+        findFunction = finder;
+        elementNameList = nameListArray;
+
+        for (name in nameListArray) {
+            nameDictionary[name] = true;
+        }
 	}
 
-	public function registerComponents(param1:Array<ASAny>, param2:String = "", param3:Bool = true) {
-		/*
-		 * Decompilation error
-		 * Code may be obfuscated
-		 * Tip: You can try enabling "Automatic deobfuscation" in Settings
-		 * Error type: NullPointerException (null)
-		 */
-		throw new flash.errors.IllegalOperationError("Not decompiled due to error");
-	}
+	public function registerComponents(newComponents:Array<MovieClip>, modType:String = "", addClickListener:Bool = true) {
+        components = newComponents.copy();
+        associatedModType = modType;
+        if (addClickListener) {
+            for (comp in components) {
+                comp.addEventListener(MouseEvent.CLICK, this.componentClicked);
+            }
+        }
+
+        if (selectFunction == null) {
+            selectFunction = function() { return; }
+        }
+        if (fillFunction == null) {
+            fillFunction = defaultFillFunction;
+        }
+
+    }
 
 	public function hideAll() {
-		var _loc1_:MovieClip = null;
-		for (_tmp_ in this.components) {
-			_loc1_ = _tmp_;
-			_loc1_.visible = false;
+		for (comp in this.components) {
+			comp.visible = false;
 		}
 	}
 
 	public function showAll() {
-		var _loc1_:MovieClip = null;
-		for (_tmp_ in this.components) {
-			_loc1_ = _tmp_;
-			_loc1_.visible = true;
+		for (comp in this.components) {
+			comp.visible = true;
 		}
 	}
 
 	public function defaultFillFunction(param1:ASObject, param2:String = "rgbFill") {
-		var _loc4_:MovieClip = null;
-		var _loc3_ = new ColorTransform(1, 1, 1, param1.a, param1.r, param1.g, param1.b);
-		for (_tmp_ in this.components) {
-			_loc4_ = _tmp_;
-			this.tryToSetFill(_loc4_, param2, _loc3_);
+		var color = new ColorTransform(1, 1, 1, param1.a, param1.r, param1.g, param1.b);
+		for (comp in this.components) {
+			this.tryToSetFill(comp, param2, color);
 		}
 	}
 
@@ -140,7 +146,7 @@ class CharacterElementHelper {
 			if (param1.getChildAt(_loc5_).name == param2) {
 				param1.getChildAt(_loc5_).transform.colorTransform = param3;
 			}
-			if (Std.is(param1.getChildAt(_loc5_), DisplayObjectContainer)) {
+			if (Std.isOfType(param1.getChildAt(_loc5_), DisplayObjectContainer)) {
 				this.tryToSetFillChildren(Std.downcast(param1.getChildAt(_loc5_), MovieClip), param2, param3);
 			}
 			_loc5_++;
@@ -156,7 +162,7 @@ class CharacterElementHelper {
 	}
 
 	public function setDefaultRGB(param1:String, param2:AlphaRGBObject = null, param3:AlphaRGBObject = null) {
-		if (this.nameDictionary[param1]) {
+		if (this.nameDictionary.exists(param1)) {
 			this.defaultRGB[G.dataName(param1)] = param2;
 			this.defaultRGB2[G.dataName(param1)] = param3;
 		}
@@ -239,7 +245,7 @@ class CharacterElementHelper {
 		 * Tip: You can try enabling "Automatic deobfuscation" in Settings
 		 * Error type: NullPointerException (null)
 		 */
-		throw new flash.errors.IllegalOperationError("Not decompiled due to error");
+		// throw new flash.errors.IllegalOperationError("Not decompiled due to error");
 	}
 
 	public function registerRGBButton(param1:MovieClip, param2:Array<ASAny>, param3:Float, param4:Bool = true) {
@@ -249,7 +255,7 @@ class CharacterElementHelper {
 		 * Tip: You can try enabling "Automatic deobfuscation" in Settings
 		 * Error type: NullPointerException (null)
 		 */
-		throw new flash.errors.IllegalOperationError("Not decompiled due to error");
+		// throw new flash.errors.IllegalOperationError("Not decompiled due to error");
 	}
 
 	public function registerSecondaryRGBButton(param1:MovieClip, param2:Array<ASAny>, param3:Float, param4:Bool = true) {
@@ -259,7 +265,7 @@ class CharacterElementHelper {
 		 * Tip: You can try enabling "Automatic deobfuscation" in Settings
 		 * Error type: NullPointerException (null)
 		 */
-		throw new flash.errors.IllegalOperationError("Not decompiled due to error");
+		// throw new flash.errors.IllegalOperationError("Not decompiled due to error");
 	}
 
 	public function select(param1:UInt) {

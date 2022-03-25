@@ -87,7 +87,7 @@ package obj;
             _loc14_ = 0;
             while(_loc14_ < this.ropeLength)
             {
-               if(Std.is((_loc18_ = this.ropeGraphic.getChildAt(_loc14_)) , DisplayObjectContainer))
+               if(Std.isOfType((_loc18_ = this.ropeGraphic.getChildAt(_loc14_)), DisplayObjectContainer))
                {
                   this.segments.push(_loc18_);
                }

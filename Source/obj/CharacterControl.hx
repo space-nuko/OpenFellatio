@@ -266,7 +266,7 @@ class CharacterControl {
 		while (_loc5_ < _loc4_) {
 			if (param1.getChildAt(_loc5_).name == param2) {
 				param1.getChildAt(_loc5_).transform.colorTransform = param3;
-			} else if (Std.is(param1.getChildAt(_loc5_), DisplayObjectContainer)) {
+			} else if (Std.isOfType(param1.getChildAt(_loc5_), DisplayObjectContainer)) {
 				tryToSetFillChildren(Std.downcast(param1.getChildAt(_loc5_), MovieClip), param2, param3);
 			}
 			_loc5_++;
@@ -890,14 +890,22 @@ class CharacterControl {
 		this.setChildrenFrame(G.her.torsoBackCostume.breastCostume.top, 2 + this.breastSize);
 	}
 
-	public function setChildrenFrame(param1:DisplayObjectContainer, param2:UInt) {
-		/*
-		 * Decompilation error
-		 * Code may be obfuscated
-		 * Tip: You can try enabling "Automatic deobfuscation" in Settings
-		 * Error type: NullPointerException (null)
-		 */
-		throw new flash.errors.IllegalOperationError("Not decompiled due to error");
+	public function setChildrenFrame(target:DisplayObjectContainer, frameNumber:UInt) {
+		var numChildren:UInt = target.numChildren;
+		var i:UInt = 0;
+		while (i < numChildren) {
+            var child = target.getChildAt(i);
+			if (Std.isOfType(child, MovieClip)) {
+				var childContainer = Std.downcast(child, MovieClip);
+
+				try {
+					childContainer.gotoAndStop(frameNumber);
+				} catch (e) {}
+
+				this.setChildrenFrame(childContainer, frameNumber);
+			}
+			i++;
+		}
 	}
 
 	public function setIrisFill(param1:AlphaRGBObject, param2:String = "rgbFill") {
