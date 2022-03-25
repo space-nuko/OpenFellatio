@@ -385,64 +385,64 @@ class CharacterControl {
 	public function initChar(param1:Bool = true) {
 		var _loc3_:UInt = 0;
 		var _loc4_:UInt = 0;
-		var _loc2_:Character = this.characters[this.currentChar];
+		var chara:Character = this.characters[this.currentChar];
 		// G.customElementLoader.clearInstancedMods();
 		if (!G.inGameMenu.onlyLoadingCostume) {
-			this.breastSize = _loc2_.breastSize;
-			this.currentName = _loc2_.charShortName;
-			if (ASCompat.stringAsBool(_loc2_.dialogue)) {
-				G.dialogueControl.loadCustomDialogue(Dialogue.DIALOGUE_NAME_KEY + ":\"" + _loc2_.charShortName + "\"\n" + _loc2_.dialogue, param1);
+			this.breastSize = chara.breastSize;
+			this.currentName = chara.charShortName;
+			if (ASCompat.stringAsBool(chara.dialogue)) {
+				G.dialogueControl.loadCustomDialogue(Dialogue.DIALOGUE_NAME_KEY + ":\"" + chara.charShortName + "\"\n" + chara.dialogue, param1);
 			} else {
 				G.dialogueControl.resetCustomDialogue(param1);
 			}
-			G.her.setBodyScale(_loc2_.bodyScale);
-			G.her.setMood(_loc2_.mood);
+			G.her.setBodyScale(chara.bodyScale);
+			G.her.setMood(chara.mood);
 			G.inGameMenu.updateBodySlider();
 			G.inGameMenu.updateArmsList();
-			this.setSkin(_loc2_.skinType);
-			this.setNose(_loc2_.noseType);
-			this.setEyebrows(_loc2_.eyebrowType);
-			this.findEar(_loc2_.earType);
-			this.findIris(_loc2_.iris);
-			this.setIrisFill(_loc2_.irisFill);
+			this.setSkin(chara.skinType);
+			this.setNose(chara.noseType);
+			this.setEyebrows(chara.eyebrowType);
+			this.findEar(chara.earType);
+			this.findIris(chara.iris);
+			this.setIrisFill(chara.irisFill);
 			this.setHair(this.currentChar);
 		}
-		this.setLipstick(_loc2_.lipstickFill);
-		this.setEyeShadow(_loc2_.eyeShadow);
-		this.setSclera(_loc2_.sclera);
-		this.setBlush(_loc2_.blush);
-		this.setFreckles(_loc2_.freckles);
-		this.setFreckleAmount(_loc2_.freckleAmount);
-		this.setMascara(_loc2_.mascara);
-		this.gagControl.findName(_loc2_.gag);
-		this.collarControl.select(_loc2_.collar);
-		this.collarControl.setFill(_loc2_.collarFill, "rgbFill");
-		if (_loc2_.collarFill2) {
-			this.collarControl.setFill(_loc2_.collarFill2, "rgbFill2");
+		this.setLipstick(chara.lipstickFill);
+		this.setEyeShadow(chara.eyeShadow);
+		this.setSclera(chara.sclera);
+		this.setBlush(chara.blush);
+		this.setFreckles(chara.freckles);
+		this.setFreckleAmount(chara.freckleAmount);
+		this.setMascara(chara.mascara);
+		this.gagControl.findName(chara.gag);
+		this.collarControl.select(chara.collar);
+		this.collarControl.setFill(chara.collarFill, "rgbFill");
+		if (chara.collarFill2 != null) {
+			this.collarControl.setFill(chara.collarFill2, "rgbFill2");
 		}
-		this.cuffsControl.select(_loc2_.cuffs);
-		this.cuffsControl.setFill(_loc2_.cuffsFill, "rgbFill");
+		this.cuffsControl.select(chara.cuffs);
+		this.cuffsControl.setFill(chara.cuffsFill, "rgbFill");
 		this.ankleCuffsControl.findName("None");
-		this.armwearControl.findName(_loc2_.armwear);
-		this.armwearControl.setFill(_loc2_.armwearFill, "rgbFill");
+		this.armwearControl.findName(chara.armwear);
+		this.armwearControl.setFill(chara.armwearFill, "rgbFill");
 		this.bottomsControl.findName("None");
-		this.legwearControl.findName(_loc2_.legwear);
-		this.legwearControl.setFill(_loc2_.legwearFill, "rgbFill");
+		this.legwearControl.findName(chara.legwear);
+		this.legwearControl.setFill(chara.legwearFill, "rgbFill");
 		this.legwearBControl.findName("None");
-		this.eyewearControl.findName(_loc2_.eyewear);
-		this.eyewearControl.setFill(_loc2_.eyewearFill, "rgbFill");
-		this.footwearControl.findName(_loc2_.footwear);
-		this.footwearControl.setFill(_loc2_.footwearFill, "rgbFill");
-		this.pantiesControl.findName(_loc2_.panties);
-		this.pantiesControl.setFill(_loc2_.pantiesFill, "rgbFill");
-		this.braControl.findName(_loc2_.bra);
-		this.braControl.setFill(_loc2_.braFill, "rgbFill");
+		this.eyewearControl.findName(chara.eyewear);
+		this.eyewearControl.setFill(chara.eyewearFill, "rgbFill");
+		this.footwearControl.findName(chara.footwear);
+		this.footwearControl.setFill(chara.footwearFill, "rgbFill");
+		this.pantiesControl.findName(chara.panties);
+		this.pantiesControl.setFill(chara.pantiesFill, "rgbFill");
+		this.braControl.findName(chara.bra);
+		this.braControl.setFill(chara.braFill, "rgbFill");
 		this.topControl.findName("None");
-		this.headwearControl.findName(_loc2_.headwear);
-		this.headwearControl.setFill(_loc2_.headwearFill, "rgbFill");
-		this.headwearControl.setFill(_loc2_.headwearFill2, "rgbFill2");
-		this.earringControl.findName(_loc2_.earring);
-		this.earringControl.setFill(_loc2_.earringFill, "rgbFill");
+		this.headwearControl.findName(chara.headwear);
+		this.headwearControl.setFill(chara.headwearFill, "rgbFill");
+		this.headwearControl.setFill(chara.headwearFill2, "rgbFill2");
+		this.earringControl.findName(chara.earring);
+		this.earringControl.setFill(chara.earringFill, "rgbFill");
 		this.setNailPolish(new AlphaRGBObject(0, 0, 0, 0));
 		this.tonguePiercingControl.findName("None");
 		this.nipplePiercingControl.findName("None");
@@ -457,20 +457,20 @@ class CharacterControl {
 			this.removeHairHSL();
 			this.removeSkinHSL();
 			this.removeHisSkinHSL();
-			this.setBackground(_loc2_.bg);
+			this.setBackground(chara.bg);
 			_loc3_ = this.irisTypeList.length;
 			_loc4_ = 0;
 			while (_loc4_ < _loc3_) {
-				if (G.dataName(this.irisTypeList[_loc4_]) == G.dataName(_loc2_.iris)) {
+				if (G.dataName(this.irisTypeList[_loc4_]) == G.dataName(chara.iris)) {
 					this.currentIris = _loc4_;
 					break;
 				}
 				_loc4_++;
 			}
-			if (this.customBGLoaded) {
-				G.customElementLoader.clearCustomBackground();
-				this.customBGLoaded = false;
-			}
+			// if (this.customBGLoaded) {
+			// 	G.customElementLoader.clearCustomBackground();
+			// 	this.customBGLoaded = false;
+			// }
 			if (G.resetIntroOnNewChar) {
 				G.resetIntro();
 			}
@@ -494,14 +494,14 @@ class CharacterControl {
 
 	public function loadStoredChar(param1:UInt) {
 		this.currentChar = param1 + G.baseCharNum;
-		G.inGameMenu.loadData(G.storedChars[param1].charData, true, true, G.storedChars[param1]);
+		// G.inGameMenu.loadData(G.storedChars[param1].charData, true, true, G.storedChars[param1]);
 		this.currentName = G.storedChars[param1].charName;
 		G.dialogueControl.loadCustomDialogue(G.storedChars[param1].dialogue);
 		G.inGameMenu.updateCharMenu(param1, false, true);
 	}
 
 	public function setBackground(param1:UInt) {
-		G.customElementLoader.clearModTypes([ModTypes.BACKGROUND]);
+		// G.customElementLoader.clearModTypes([ModTypes.BACKGROUND]);
 		G.bg.gotoAndStop(param1);
 		G.bgID = param1;
 	}
@@ -518,7 +518,7 @@ class CharacterControl {
 			elem.kill();
 		}
 		this.currentElements = [];
-		// G.strandControl.checkCostumeAnchors();
+		G.strandControl.checkCostumeAnchors();
 		G.costumeHitElements = new Array<CostumeElement>();
 	}
 
@@ -541,7 +541,7 @@ class CharacterControl {
 		G.her.torso.backHighlight.visible = false;
 		G.her.torso.backside.visible = false;
 		G.her.rightArmContainer.upperArmMask.visible = false;
-		if (G.her.rightForeArmContainer.upperArm.foreArm.hand.grip) {
+		if (G.her.rightForeArmContainer.upperArm.foreArm.hand.grip != null) {
 			G.her.rightForeArmContainer.upperArm.foreArm.hand.grip.visible = false;
 		}
 		G.her.tan.hideForMods();
@@ -589,7 +589,7 @@ class CharacterControl {
 		G.her.updateJawBulge();
 		G.her.tan.updateSkin(this.skinNameList[param1]);
 		G.her.penisControl.updatePenis();
-		// G.strandControl.checkElementAnchors(G.her.torso.midLayer.rightBreast);
+		G.strandControl.checkElementAnchors(G.her.torso.midLayer.rightBreast);
 	}
 
 	public function setLipFills() {
@@ -992,7 +992,7 @@ class CharacterControl {
 	public function setEyewear(param1:UInt) {
 		// G.customElementLoader.clearModTypes([ModTypes.EYEWEAR]);
 		G.her.eyewear.gotoAndStop(this.eyewearNameList[this.eyewearControl.selection]);
-		// G.strandControl.checkElementAnchors(G.her.eyewear);
+		G.strandControl.checkElementAnchors(G.her.eyewear);
 	}
 
 	public function setEyewearFill(param1:ASObject, param2:String = "rgbFill") {
@@ -1279,7 +1279,7 @@ class CharacterControl {
 	}
 
 	public function applyHairHSL(param1:ASObject) {
-		var _loc2_ = new ColorMatrixFilter(G.getCMFMatrix(param1.h, param1.s, param1.l, param1.c));
+		var _loc2_ = new ColorMatrixFilter(Maths.getCMFMatrix(param1.h, param1.s, param1.l, param1.c));
 		G.her.hairMidContainer.filters = [_loc2_];
 		G.her.hairBackContainer.filters = [_loc2_];
 		G.hairOverContainer.filters = [_loc2_];
@@ -1399,11 +1399,11 @@ class CharacterControl {
 	}
 
 	public function nextCharacter() {
-		G.inGameMenu.characterMenu.selectNextCharacter();
+		// G.inGameMenu.characterMenu.selectNextCharacter();
 	}
 
 	public function prevCharacter() {
-		G.inGameMenu.characterMenu.selectPrevCharacter();
+		// G.inGameMenu.characterMenu.selectPrevCharacter();
 	}
 
 	public function toggleBackground() {

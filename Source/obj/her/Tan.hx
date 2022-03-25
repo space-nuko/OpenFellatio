@@ -63,7 +63,7 @@ class Tan
       return "herTan:" + G.dataName(this._tanNameList[this._currentTanID]) + "," + this._currentTanAlpha;
    }
 
-   public function loadDataPairs(csvPairs:Array<String>)
+   public function loadDataPairs(csvPairs:Array<Array<String>>)
    {
       var _loc3_:Array<String> = null;
       var _loc4_:Array<String> = null;
@@ -71,7 +71,7 @@ class Tan
       var _loc2_= false;
       for (_tmp_ in csvPairs)
       {
-          c3_  = _tmp_;
+         _loc3_  = _tmp_;
          switch(_loc3_[0])
          {
             case "herTan":
@@ -79,7 +79,7 @@ class Tan
                {
                   CharacterControl.findName(_loc4_[0],this._tanNameList,this.setTan);
                   this.updateMenuList();
-                  _loc5_ = ASCompat.toNumber(_loc4_[1]);
+                  _loc5_ = Std.parseFloat(_loc4_[1]);
                   if(!Math.isNaN(_loc5_))
                   {
                      this.setTanAlpha(Math.max(0,Math.min(1,_loc5_)));

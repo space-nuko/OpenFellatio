@@ -28,10 +28,12 @@ class InGameMenu extends MovieClip {
 
 	@:flash.property public var onlyLoadingCostume(get, set):Bool;
 
-	public function set_onlyLoadingCostume(param1:Bool):Bool {}
+	public function set_onlyLoadingCostume(param1:Bool):Bool {
+        return false;
+    }
 
 	public function get_onlyLoadingCostume():Bool {
-		return return false;
+		return false;
 	}
 
 	public function showError(param1:String) {}
@@ -342,7 +344,9 @@ class InGameMenu extends MovieClip {
 
 	public function generateSaveData() {}
 
-	public function getSaveDataString(param1:Bool = true):String {}
+	public function getSaveDataString(param1:Bool = true):String {
+        return "";
+    }
 
 	public function loadClicked(param1:MouseEvent) {}
 
@@ -352,7 +356,9 @@ class InGameMenu extends MovieClip {
 
 	public function checkAndLoadRGB(param1:String, param2:ASFunction) {}
 
-	public function populateRGBSwatch(param1:Array<ASAny>):ASAny {}
+	public function populateRGBSwatch(param1:Array<ASAny>):ASAny {
+        return null;
+    }
 
 	public function copyRGBSwatchClicked(param1:MouseEvent) {}
 

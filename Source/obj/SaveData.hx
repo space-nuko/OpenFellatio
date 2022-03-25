@@ -23,6 +23,7 @@ class SaveData {
 	}
 
 	public function saveExists():Bool {
+        return false;
 	}
 
 	public function clearSave() {

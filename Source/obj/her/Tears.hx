@@ -147,13 +147,13 @@ class Tears extends openfl.display.MovieClip {
 			this.addTearSpot();
 			_loc1_++;
 		}
-		g.her.blink();
+		G.her.blink();
 	}
 
 	public function addTearSpot() {
 		var _loc1_ = Math.NaN;
 		var _loc2_:TearSpot = null;
-		if (g.tears && (this.tearSpotList.length + this.tearList.length:UInt) < this.maxTears) {
+		if (G.tears && (this.tearSpotList.length + this.tearList.length:UInt) < this.maxTears) {
 			_loc1_ = Math.random();
 			_loc2_ = new TearSpot();
 			if (Math.random() > 0.2) {
@@ -250,8 +250,8 @@ class Tears extends openfl.display.MovieClip {
 					_loc6_.translate(this.tearList[_loc10_].x, this.tearList[_loc10_].y);
 					this.tearsData.draw(this.tearGraphic, _loc6_, _loc7_);
 					_loc8_ = this.tearList[_loc10_].getAge();
-					if (g.mascara && this.tearList[_loc10_].hasMascara) {
-						if (Math.random() > Math.max(0.7 - g.mascaraAmount * 0.01, _loc8_)) {
+					if (G.mascara && this.tearList[_loc10_].hasMascara) {
+						if (Math.random() > Math.max(0.7 - G.mascaraAmount * 0.01, _loc8_)) {
 							_loc6_.translate(Math.random() * 2 - 1, Math.random() * 2);
 							_loc7_ = new ColorTransform(1, 1, 1, Math.max(0, 1 - _loc8_) * this.mascaraRGB.a, this.mascaraRGB.r, this.mascaraRGB.g,
 								this.mascaraRGB.b);

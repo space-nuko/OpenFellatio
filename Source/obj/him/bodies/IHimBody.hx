@@ -17,7 +17,7 @@ interface IHimBody {
 
 	function redoLastMove():Void;
 
-	function loadDataPairs(param1:Array<ASAny>):Void;
+	function loadDataPairs(param1:Array<Array<String>>):Void;
 
 	function getDataString():String;
 

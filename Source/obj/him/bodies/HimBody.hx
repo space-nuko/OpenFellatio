@@ -19,7 +19,7 @@ class HimBody implements IHimBody {
 
 	public var lastYPos:Float = 0;
 
-	public var _bodyMenu:MovieClip;
+	// public var _bodyMenu:MovieClip;
 
 	public function new(param1:Him) {
 		// super();
@@ -50,7 +50,8 @@ class HimBody implements IHimBody {
 		this._him.y = param1.y;
 	}
 
-	public function loadDataPairs(param1:Array<ASAny>) {}
+	public function loadDataPairs(param1:Array<Array<String>>) {
+    }
 
 	public function getDataString():String {
 		return "";
@@ -69,36 +70,36 @@ class HimBody implements IHimBody {
 	public function setup() {
 		this.setupElements();
 		this.setupAnimation();
-		if (this._bodyMenu != null) {
-			_bodyMenuContainer.addChild(this._bodyMenu);
-			this._bodyMenu.addEventListener(Event.ENTER_FRAME, this.fadeInMenu);
-			this._bodyMenu.alpha = 0;
-		}
+		// if (this._bodyMenu != null) {
+		// 	_bodyMenuContainer.addChild(this._bodyMenu);
+		// 	this._bodyMenu.addEventListener(Event.ENTER_FRAME, this.fadeInMenu);
+		// 	this._bodyMenu.alpha = 0;
+		// }
 		this.setupMenu();
 		this.updateSharedMenuItems();
 	}
 
 	public function fadeInMenu(param1:Event) {
-		if (this._bodyMenu != null) {
-			this._bodyMenu.alpha = Math.min(1, this._bodyMenu.alpha + 0.1);
-			if (this._bodyMenu.alpha == 1) {
-				this._bodyMenu.removeEventListener(Event.ENTER_FRAME, this.fadeInMenu);
-			}
-		}
+		// if (this._bodyMenu != null) {
+		// 	this._bodyMenu.alpha = Math.min(1, this._bodyMenu.alpha + 0.1);
+		// 	if (this._bodyMenu.alpha == 1) {
+		// 		this._bodyMenu.removeEventListener(Event.ENTER_FRAME, this.fadeInMenu);
+		// 	}
+		// }
 	}
 
 	public function breakdown() {
-		if (this._bodyMenu != null) {
-			_bodyMenuContainer.removeChild(this._bodyMenu);
-			this._bodyMenu.removeEventListener(Event.ENTER_FRAME, this.fadeInMenu);
-		}
+		// if (this._bodyMenu != null) {
+		// 	_bodyMenuContainer.removeChild(this._bodyMenu);
+		// 	this._bodyMenu.removeEventListener(Event.ENTER_FRAME, this.fadeInMenu);
+		// }
 		this.breakdownBody();
 	}
 
 	public function breakdownBody() {}
 
 	public function updateSharedMenuItems() {
-		g.inGameMenu.updateHisBodyList();
+		G.inGameMenu.updateHisBodyList();
 	}
 
 	public function setupElements() {}

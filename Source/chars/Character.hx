@@ -22,7 +22,7 @@ abstract class Character {
 	public var costume:String = "SDChan";
 	public var collar:UInt = 1;
 	public var collarFill:AlphaRGBObject;
-	public var collarFill2:AlphaRGBObject;
+	public var collarFill2:Null<AlphaRGBObject>;
 	public var cuffs:UInt = 1;
 	public var cuffsFill:AlphaRGBObject;
 	public var headwear:String = "None";

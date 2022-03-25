@@ -345,7 +345,7 @@ class Dialogue extends MovieClip
 		if (this.sayingSpeakingStyle) {
 			G.her.setSpeaking(false);
 			if (this.speaking) {
-				_loc1_ = !!this.words[this.sayingWord] ? ASCompat.toInt(this.words[this.sayingWord].length - 1 - this.sayingChar) : 0;
+				_loc1_ = this.words[this.sayingWord] ? Std.int(this.words[this.sayingWord].length - 1 - this.sayingChar) : 0;
 				if (_loc1_ < 3) {
 					if (this.sayingSpace) {
 						this.sayingSpace = false;
@@ -497,7 +497,7 @@ class Dialogue extends MovieClip
 		var _loc5_:DialogueLine = null;
 		var _loc6_:UInt = 0;
 		var _loc7_:DialogueLine = null;
-		var _loc3_:Array<ASAny> = this.library.getPhrases(param1).slice();
+		var _loc3_:Array<ASAny> = this.library.getPhrases(param1).copy();
 		var _loc4_ = new Array<ASAny>();
 		for (_tmp_ in _loc3_) {
 			_loc5_ = _tmp_;
@@ -796,12 +796,12 @@ class Dialogue extends MovieClip
 	}
 
 	public function partnerName():String {
-		return !!ASCompat.stringAsBool(G.customName) ? g.customName : "";
+		return !!ASCompat.stringAsBool(G.customName) ? G.customName : "";
 	}
 
 	public function partnerPosessive():String {
 		if (ASCompat.stringAsBool(G.customName)) {
-			if (G.customName.charAt(g.customName.length - 1) == "s") {
+			if (G.customName.charAt(G.customName.length - 1) == "s") {
 				return G.customName + "\'";
 			}
 			return G.customName + "\'s";
@@ -810,12 +810,12 @@ class Dialogue extends MovieClip
 	}
 
 	public function herName():String {
-		return !!ASCompat.stringAsBool(G.characterControl.currentName) ? g.characterControl.currentName : "";
+		return !!ASCompat.stringAsBool(G.characterControl.currentName) ? G.characterControl.currentName : "";
 	}
 
 	public function herPosessive():String {
 		if (ASCompat.stringAsBool(G.characterControl.currentName)) {
-			if (G.characterControl.currentName.charAt(g.characterControl.currentName.length - 1) == "s") {
+			if (G.characterControl.currentName.charAt(G.characterControl.currentName.length - 1) == "s") {
 				return G.characterControl.currentName + "\'";
 			}
 			return G.characterControl.currentName + "\'s";
@@ -833,6 +833,6 @@ class Dialogue extends MovieClip
 	}
 
 	public function outputLog(param1:String) {
-		G.dialogueEditor.appendLog(param1);
+		// G.dialogueEditor.appendLog(param1);
 	}
 }

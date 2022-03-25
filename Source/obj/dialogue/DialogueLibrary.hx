@@ -111,27 +111,31 @@ class DialogueLibrary {
 
 	public function getPhrases(param1:String):Array<DialogueLine> {
 		if (if (this.customClears[param1]) this.customClears[param1] else this.allCleared || !this.getMoodLibrary()[param1]) {
-			return if (this.customLibrary[param1]) this.customLibrary[param1] else [];
+			return if (this.customLibrary.exists(param1)) this.customLibrary[param1] else [];
 		}
-		return ASCompat.thisOrDefault(this.getMoodLibrary()[param1], []).concat(if (this.customLibrary[param1]) this.customLibrary[param1] else []);
+		return ASCompat.thisOrDefault(this.getMoodLibrary()[param1], []).concat(if (this.customLibrary.exists(param1)) this.customLibrary[param1] else []);
 	}
 
 	public function getFinishes(finishes:UInt):Array<DialogueLine> {
         var id = Std.string(finishes);
 		if (this.finishesCleared) {
-			if (this.customFinishes[id]) {
+			if (this.customFinishes.exists(id)) {
 				return this.customFinishes[id];
 			}
-			return !!this.customFinishes[this.OTHER_FINISH] ? this.customFinishes[this.OTHER_FINISH] : [];
+			return this.customFinishes.exists(this.OTHER_FINISH) ? this.customFinishes[this.OTHER_FINISH] : [];
 		}
-		if (this.customFinishes[id]) {
+		if (this.customFinishes.exists(id)) {
 			return this.customFinishes[id];
 		}
-		if (if (this.finishes[id]) this.finishes[id] else this.customFinishes[id]) {
-			return (if (this.finishes[id]) this.finishes[id] else []).concat(if (this.customFinishes[id]) this.customFinishes[id] else []);
+		if (this.finishes.exists(id) || this.customFinishes.exists(id)) {
+            var finishes = if (this.finishes.exists(id)) this.finishes[id] else [];
+            var customFinishes = if (this.customFinishes.exists(id)) this.customFinishes[id] else [];
+			return finishes.concat(customFinishes);
 		}
-		return (if (this.finishes[this.OTHER_FINISH]) this.finishes[this.OTHER_FINISH] else []).concat(if (this.customFinishes[this.OTHER_FINISH])
-			this.customFinishes[this.OTHER_FINISH] else []);
+
+        var finishes = if (this.finishes.exists(this.OTHER_FINISH)) this.finishes[this.OTHER_FINISH] else [];
+        var customFinishes = if (this.customFinishes.exists(this.OTHER_FINISH)) this.customFinishes[this.OTHER_FINISH] else [];
+		return finishes.concat(customFinishes);
 	}
 
 	public function playAudio(id:String):AudioMod {
@@ -281,7 +285,7 @@ class DialogueLibrary {
 	}
 
 	public function outputLog(param1:String) {
-		G.dialogueEditor.appendLog(param1);
+		// G.dialogueEditor.appendLog(param1);
 	}
 
 	public function prepareLibraries() {

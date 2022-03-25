@@ -1,5 +1,6 @@
 package obj;
 import openfl.geom.Point;
+import openfl.geom.Matrix;
 
 class Maths
 {
@@ -204,6 +205,18 @@ class Maths
       }
       return result;
    }
+
+    public static function rotateMatrix(param1:Matrix, param2:Float)
+    {
+       var _loc3_ = Math.asin(param1.b);
+       param2 += _loc3_;
+       var _loc4_ = Math.sin(param2);
+       var _loc5_ = Math.cos(param2);
+       param1.a = _loc5_;
+       param1.b = _loc4_;
+       param1.c = -_loc4_;
+       param1.d = _loc5_;
+    }
 
 	public static inline function clamp(v: Int, min: Int, max: Int): Int {
 		return Std.int(Math.min(max, Math.max(min, v)));

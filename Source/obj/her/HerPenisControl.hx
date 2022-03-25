@@ -199,7 +199,7 @@ class HerPenisControl {
 			// 	this.penisMenu.scaleY = 0;
 			// 	G.inGameMenu.updateCostumeMenuContent();
 			// }
-			// G.strandControl.checkElementAnchors(this.penisContainer);
+			G.strandControl.checkElementAnchors(this.penisContainer);
 		} else {
 			// if (!this.penisMenu.visible) {
 			// 	this.penisMenu.visible = true;

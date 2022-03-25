@@ -24,9 +24,9 @@ class AnimationControl {
 	}
 
 	public function stepAnimation() {
-		var _loc1_:Float = G.her.move(g.currentPos.x, g.currentPos.y);
+		var _loc1_:Float = G.her.move(G.currentPos.x, G.currentPos.y);
 		G.herCurrentPos = _loc1_;
-		G.him.move(_loc1_, g.currentPos.x, g.currentPos.y);
+		G.him.move(_loc1_, G.currentPos.x, G.currentPos.y);
 		G.her.updateArms();
 	}
 
@@ -37,7 +37,7 @@ class AnimationControl {
 	}
 
 	public function loadStyle(param1:String) {
-		if (this.animations[param1]) {
+		if (this.animations.exists(param1)) {
 			this.currentAnimation = param1;
 			this.dispatchUpdates();
 		}

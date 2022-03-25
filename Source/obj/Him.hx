@@ -15,25 +15,127 @@ import obj.him.bodies.HimFemaleBody;
 import obj.him.bodies.HimMaleBody;
 import obj.him.bodies.IHimBody;
 
-@:access(swf.exporters.animate)
+@:rtti
+class HimLeftCalfCostume extends MovieClip
+{
+	@:keep public var foot(default, null):MovieClip;
+}
 
-class Him extends openfl.display.MovieClip
+@:rtti
+class HimLeftLegCostume extends MovieClip
+{
+	@:keep public var calf(default, null):HimLeftCalfCostume;
+}
+
+@:rtti
+class HimRightCalfCostume extends MovieClip
+{
+	@:keep public var foot(default, null):MovieClip;
+}
+
+@:rtti
+class HimRightLegCostume extends MovieClip
+{
+	@:keep public var calf(default, null):HimRightCalfCostume;
+}
+
+@:rtti
+class HimLeftCalf extends MovieClip
+{
+	@:keep public var foot(default, null):MovieClip;
+}
+
+@:rtti
+class HimLeftLeg extends MovieClip
+{
+	@:keep public var calf(default, null):HimLeftCalf;
+}
+
+@:rtti
+class HimRightCalf extends MovieClip
+{
+	@:keep public var foot(default, null):MovieClip;
+}
+
+@:rtti
+class HimRightLeg extends MovieClip
+{
+	@:keep public var calf(default, null):HimRightCalf;
+}
+
+@:rtti
+class HimLeftNipple extends MovieClip
+{
+	@:keep public var leftNipple(default, null):Null<MovieClip>;
+	@:keep public var tan(default, null):MovieClip;
+}
+
+@:rtti
+class HimRightNipple extends MovieClip
+{
+	@:keep public var rightNipple(default, null):Null<MovieClip>;
+	@:keep public var tan(default, null):MovieClip;
+}
+
+@:rtti
+class HimLeftBreast extends MovieClip
+{
+	@:keep public var nipple(default, null):HimLeftNipple;
+	@:keep public var tan(default, null):MovieClip;
+}
+
+@:rtti
+class HimRightBreast extends MovieClip
+{
+	@:keep public var nipple(default, null):HimRightNipple;
+	@:keep public var tan(default, null):MovieClip;
+}
+
+@:rtti
+class HimLeftBreastContainer extends MovieClip
+{
+	@:keep public var leftBreast(default, null):HimLeftBreast;
+}
+
+@:rtti
+class HimRightBreastContainer extends MovieClip
+{
+	@:keep public var rightBreast(default, null):HimRightBreast;
+}
+
+@:rtti
+class HimTorsoLayer extends MovieClip
+{
+	@:keep public var torso(default, null):MovieClip;
+	@:keep public var leftBreastContainer(default, null):HimLeftBreastContainer;
+	@:keep public var rightBreastContainer(default, null):HimRightBreastContainer;
+}
+
+@:rtti
+class HimMidLayer extends MovieClip
+{
+	@:keep public var hips(default, null):MovieClip;
+}
+
+@:rtti
+@:access(swf.exporters.animate)
+class Him extends MovieClip
 {
     public static var armPositions:Array<String> = ["Holding","Free"];
     public static var leftArmPositions:Array<String> = ["Hidden","Loose"];
     public static var DEFAULT_PENIS_SIZE:Float = 1;
     public static var DEFAULT_BALL_SIZE:Float = 1;
 
-	@:keep @:noCompletion @:dox(hide) public var topBack(default, null):openfl.display.MovieClip;
-	@:keep @:noCompletion @:dox(hide) public var rightLeg(default, null):openfl.display.MovieClip;
-	@:keep @:noCompletion @:dox(hide) public var rightLegCostume(default, null):openfl.display.MovieClip;
-	@:keep @:noCompletion @:dox(hide) public var penis(default, null):Penis;
-	@:keep @:noCompletion @:dox(hide) public var balls(default, null):obj.him.Balls;
-	@:keep @:noCompletion @:dox(hide) public var torsoLayer(default, null):openfl.display.MovieClip;
-	@:keep @:noCompletion @:dox(hide) public var leftLeg(default, null):openfl.display.MovieClip;
-	@:keep @:noCompletion @:dox(hide) public var straponStraps(default, null):openfl.display.MovieClip;
-	@:keep @:noCompletion @:dox(hide) public var leftLegCostume(default, null):openfl.display.MovieClip;
-	@:keep @:noCompletion @:dox(hide) public var midLayer(default, null):openfl.display.MovieClip;
+	@:keep public var topBack(default, null):MovieClip;
+	@:keep public var rightLeg(default, null):HimRightLeg;
+	@:keep public var rightLegCostume(default, null):HimRightLegCostume;
+	@:keep public var penis(default, null):Penis;
+	@:keep public var balls(default, null):obj.him.Balls;
+	@:keep public var torsoLayer(default, null):HimTorsoLayer;
+	@:keep public var leftLeg(default, null):HimLeftLeg;
+	@:keep public var straponStraps(default, null):MovieClip;
+	@:keep public var leftLegCostume(default, null):HimLeftLegCostume;
+	@:keep public var midLayer(default, null):HimMidLayer;
 
     public var bodies:Array<IHimBody>;
     public var characterMenu:MovieClip;
@@ -83,7 +185,7 @@ class Him extends openfl.display.MovieClip
     public var playingCumSound:Bool = false;
     public var spurting:Bool = false;
     public var startedSpurt:Bool = false;
-    // public var currentSpurt:Strand;
+    public var currentSpurt:Strand;
     public var spurtTimer:UInt = 0;
     public var spurtTimerStart:UInt = 0;
     public var spurt:UInt = 0;
@@ -159,7 +261,7 @@ class Him extends openfl.display.MovieClip
     }
 
 	public function initBodies() {
-		this.bodies = new Array<ASAny>();
+		this.bodies = new Array<IHimBody>();
 		this.bodies.push(new HimMaleBody(this));
 		this.bodies.push(new HimFemaleBody(this));
 	}
@@ -175,12 +277,12 @@ class Him extends openfl.display.MovieClip
 		return _loc1_ + ";" + _loc2_ + ";" + _loc3_ + (this.currentBody != null ? ";" + this.currentBody.getDataString() : "");
 	}
 
-	public function loadDataPairs(param1:Array<ASAny>) {
-		var _loc3_:Array<ASAny> = null;
+	public function loadDataPairs(param1:Array<Array<String>>) {
+		var _loc3_:Array<String> = null;
 		var _loc4_:UInt = 0;
-		var _loc5_:Array<ASAny> = null;
+		var _loc5_:Array<String> = null;
 		var _loc6_:UInt = 0;
-		var _loc7_:Array<ASAny> = null;
+		var _loc7_:Array<String> = null;
 		var _loc8_:UInt = 0;
 		var _loc2_:ASAny = false;
 		for (_tmp_ in param1) {
@@ -200,17 +302,17 @@ class Him extends openfl.display.MovieClip
 
 				case "hisPenis":
 					_loc5_ = _loc3_[1].split(",");
-					this.penisControl.select(ASCompat.toInt(_loc5_[0]));
+					this.penisControl.select(Std.parseInt(_loc5_[0]));
 					if (_loc5_.length == 3) {
-						this.loadPenisScales(_loc5_[1], _loc5_[2]);
+						this.loadPenisScales(Std.parseFloat(_loc5_[1]), Std.parseFloat(_loc5_[2]));
 					}
 
 				case "balls":
-					_loc6_ = ASCompat.toInt(_loc3_[1]);
+					_loc6_ = Std.parseInt(_loc3_[1]);
 					_loc7_ = _loc3_[1].split(",");
-					this.setBalls(_loc7_[0]);
+					this.setBalls(Std.parseInt(_loc7_[0]));
 					if (_loc7_.length == 2) {
-						this.setBallScale(_loc7_[1]);
+						this.setBallScale(Std.parseFloat(_loc7_[1]));
 					}
 					G.inGameMenu.updateBallSizeSlider();
 					G.inGameMenu.updateBallsList();
@@ -222,25 +324,25 @@ class Him extends openfl.display.MovieClip
 		this.currentBody.loadDataPairs(param1);
 	}
 
-	public function loadLegacyData(param1:Array<ASAny>) {
-		var _loc2_ = ASCompat.toInt(param1[0]);
-		_loc2_ = Std.int(Math.min(3, Math.max(0, _loc2_)));
-		this.setBody(this.bodyNameList.indexOf("Male"));
-		if (_loc2_ == 0 || _loc2_ == 2) {
-			this.penisControl.select(0);
-		} else {
-			this.penisControl.select(1);
-		}
-		if (_loc2_ == 0 || _loc2_ == 1) {
-			this.currentBody.loadDataPairs([["hisSkin", 0]]);
-		} else {
-			this.currentBody.loadDataPairs([["hisSkin", 1]]);
-		}
-		if (param1.length == 3) {
-			this.loadPenisScales(param1[1], param1[2]);
-		}
-		this.updateArm();
-	}
+	// public function loadLegacyData(param1:Array<ASAny>) {
+	// 	var _loc2_ = Std.parseInt(param1[0]);
+	// 	_loc2_ = Std.int(Math.min(3, Math.max(0, _loc2_)));
+	// 	this.setBody(this.bodyNameList.indexOf("Male"));
+	// 	if (_loc2_ == 0 || _loc2_ == 2) {
+	// 		this.penisControl.select(0);
+	// 	} else {
+	// 		this.penisControl.select(1);
+	// 	}
+	// 	if (_loc2_ == 0 || _loc2_ == 1) {
+	// 		this.currentBody.loadDataPairs([["hisSkin", 0]]);
+	// 	} else {
+	// 		this.currentBody.loadDataPairs([["hisSkin", 1]]);
+	// 	}
+	// 	if (param1.length == 3) {
+	// 		this.loadPenisScales(param1[1], param1[2]);
+	// 	}
+	// 	this.updateArm();
+	// }
 
 	public function setBody(param1:UInt) {
 		if (this.currentBody != null) {
@@ -647,11 +749,11 @@ class Him extends openfl.display.MovieClip
 			}
 		} else {
 			G.screenEffects.stopPulse();
-			if (G.automaticControl.reducePleasureLoss()) {
-				this.pleasure = Math.max(0, this.pleasure - 0.03);
-			} else {
-				this.pleasure = Math.max(0, this.pleasure - 0.05);
-			}
+			// if (G.automaticControl.reducePleasureLoss()) {
+			// 	this.pleasure = Math.max(0, this.pleasure - 0.03);
+			// } else {
+			// 	this.pleasure = Math.max(0, this.pleasure - 0.05);
+			// }
 			this.maxPleasureTimer = 0;
 		}
 		G.screenEffects.showWhiteout((this.pleasure - this.ejacPleasure + 20) * 5);
@@ -693,7 +795,7 @@ class Him extends openfl.display.MovieClip
 									this.startSpeed = new Point();
 									this.startSpeed.x = Math.cos(this.bmSpurtAngle) * (this.randomSpurtSpeed - Math.random() * 2 + Math.abs(param3));
 									this.startSpeed.y = Math.sin(this.bmSpurtAngle) * (this.randomSpurtSpeed - Math.random() * 2 + Math.abs(param3));
-									this.currentSpurt.insertLink(this.startSpeed, this.randomSpurtCollisionDelay + Math.ffloor(this.timerScale * 2),
+									this.currentSpurt.insertLink(this.startSpeed, Std.int(this.randomSpurtCollisionDelay + Math.ffloor(this.timerScale * 2)),
 										G.randomCumMass());
 									G.soundControl.adjustCumVolume(this.timerScale, 0.3);
 								}
@@ -750,7 +852,7 @@ class Him extends openfl.display.MovieClip
 								_loc4_ = this.randomSpurtAngle + Math.sin(this.timerScale * Math.PI) * this.randomSpurtAngleRange;
 								this.startSpeed.x = Math.cos(_loc4_) * (this.randomSpurtSpeed - Math.random());
 								this.startSpeed.y = Math.sin(_loc4_) * (this.randomSpurtSpeed - Math.random());
-								this.currentSpurt.insertLink(this.startSpeed, this.randomSpurtCollisionDelay + Math.ffloor(this.timerScale * 2),
+								this.currentSpurt.insertLink(this.startSpeed, Std.int(this.randomSpurtCollisionDelay + Math.ffloor(this.timerScale * 2)),
 									G.randomCumMass());
 								G.soundControl.adjustCumVolume(this.timerScale, 0.3);
 							}
@@ -794,7 +896,7 @@ class Him extends openfl.display.MovieClip
 				} else {
 					this.ejaculating = false;
 					G.dialogueControl.doneEjaculating();
-					G.automaticControl.doneEjaculating();
+					// G.automaticControl.doneEjaculating();
 				}
 			}
 		} else if (this.playingCumSound) {
@@ -833,7 +935,7 @@ class Him extends openfl.display.MovieClip
 			} while (_loc3_ < _loc4_);
 
 			this.nextSpurt();
-			G.automaticControl.ejaculate();
+			// G.automaticControl.ejaculate();
 			this.ejaculating = true;
 		}
 	}

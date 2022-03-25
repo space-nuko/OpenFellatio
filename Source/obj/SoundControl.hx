@@ -173,7 +173,7 @@ class SoundControl {
 	}
 
 	public function playStartBreath(param1:Bool = false) {
-		if (G.breathLevel > g.outOfBreathPoint && !g.her.passedOut) {
+		if (G.breathLevel > G.outOfBreathPoint && !G.her.passedOut) {
 			this.newSuddenBreath();
 		} else if (this.startOnInBreath || param1) {
 			this.newInBreath();
@@ -542,7 +542,7 @@ class SoundControl {
 			this.consecutiveCoughs = 0;
 			this.playingInBreath = false;
 			this.justStartedBreath = true;
-			if (G.breathLevel > g.outOfBreathPoint && !g.her.passedOut) {
+			if (G.breathLevel > G.outOfBreathPoint && !G.her.passedOut) {
 				do {
 					_loc1_ = Math.floor(Math.random() * this.fastBreath.length);
 				} while (_loc1_ == this.lastBreath);
@@ -575,7 +575,7 @@ class SoundControl {
 				this.currentBreathST.volume = this.currentBreathVolume;
 				this.currentBreathST.pan = this.leftPan;
 			} else {
-				this.currentBreathVolume = Math.min(1, G.breathLevel / g.outOfBreathPoint + 0.15) * Math.max(0.4, g.herMouthOpeness);
+				this.currentBreathVolume = Math.min(1, G.breathLevel / G.outOfBreathPoint + 0.15) * Math.max(0.4, G.herMouthOpeness);
 				this.currentBreathST.volume = this.currentBreathVolume;
 				this.currentBreathST.pan = this.leftPan;
 			}
@@ -792,7 +792,7 @@ class SoundControl {
 			this.dialogueChannel = this.dialogueSound.play(param1);
 			if (this.dialogueChannel != null) {
 				this.dialogueChannel.addEventListener(Event.SOUND_COMPLETE, this.dialogueFinished);
-				_loc2_ = new SoundTransform(this.dialogueVol, Math.clamp(G.currentPos.x * 2 - 1, this.leftPan, this.rightPan));
+				_loc2_ = new SoundTransform(this.dialogueVol, Maths.clampf(G.currentPos.x * 2 - 1, this.leftPan, this.rightPan));
 				this.dialogueChannel.soundTransform = _loc2_;
 				this.dialogueStartTime = flash.Lib.getTimer() - param1;
 				this.playingDialogue = true;

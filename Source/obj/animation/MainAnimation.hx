@@ -23,23 +23,20 @@ class MainAnimation {
 	public var penisLength:Float = -1;
 
 	public function new() {
-		getHerMatrix = getHerMatrix_l;
-		getHisMatrix = getHisMatrix_l;
-		noScaling = noScaling_l;
 		this.posScaling = this.noScaling;
 	}
 
-	public function getHerMatrix_l(param1:Float, param2:Float):Matrix {
+	public function getHerMatrix(param1:Float, param2:Float):Matrix {
 		param1 = this.posScaling(param1);
 		var _loc3_:Matrix = this.herTween.tween(param1);
-		var _loc4_:Point;
-		(_loc4_ = new Point()).x = this.altVector.x * this.altRange * param2;
+		var _loc4_:Point = new Point();
+		_loc4_.x = this.altVector.x * this.altRange * param2;
 		_loc4_.y = this.altVector.y * this.altRange * param2;
 		_loc3_.translate(_loc4_.x, _loc4_.y);
 		return _loc3_;
 	}
 
-	public function getHisMatrix_l(param1:Float):Matrix {
+	public function getHisMatrix(param1:Float):Matrix {
 		param1 = this.posScaling(param1);
 		return this.hisTween.tween(param1);
 	}
@@ -53,20 +50,20 @@ class MainAnimation {
 		var _loc4_:Point = null;
 		var _loc5_:Point = null;
 		var _loc6_ = Math.NaN;
-		if (this.penisLength != g.him.currentPenisLength) {
-			_loc6_ = g.him.currentPenisLength;
+		if (this.penisLength != G.him.currentPenisLength) {
+			_loc6_ = G.him.currentPenisLength;
 			_loc1_ = this.herTween.translationLength;
 			_loc2_ = this.hisTween.translationLength;
 			_loc3_ = _loc1_ + _loc2_;
-			_loc4_ = g.sceneLayer.globalToLocal(g.him.getPenisTipPoint());
-			_loc5_ = g.sceneLayer.globalToLocal(g.him.getPenisBasePoint());
+			_loc4_ = G.sceneLayer.globalToLocal(G.him.getPenisTipPoint());
+			_loc5_ = G.sceneLayer.globalToLocal(G.him.getPenisBasePoint());
 			_loc6_ = (_loc6_ = Maths.vectorLength(new Point(_loc4_.x - _loc5_.x, _loc4_.y - _loc5_.x))) - 65;
 			this.tipPosEstimate = (_loc3_ - _loc6_) / _loc3_;
 		}
 		return this.tipPosEstimate;
 	}
 
-	public function noScaling_l(param1:Float):Float {
+	public function noScaling(param1:Float):Float {
 		return param1;
 	}
 }

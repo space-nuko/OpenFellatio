@@ -19,6 +19,10 @@ import obj.her.Neck;
 import obj.her.Tan;
 import obj.her.Tongue;
 import obj.him.Penis;
+import obj.her.TearPoint;
+import obj.her.BreathMist;
+import obj.dialogue.Dialogue;
+import fl.motion.Color;
 
 @:rtti
 class BasicTannable extends MovieClip implements ITannable {
@@ -26,8 +30,13 @@ class BasicTannable extends MovieClip implements ITannable {
 }
 
 @:rtti
+class HerCollar extends MovieClip {
+	@:keep public var tie(default, null):Null<MovieClip>;
+}
+
+@:rtti
 class CollarContainer extends MovieClip {
-	@:keep @:noCompletion @:dox(hide) public var collar(default, null):openfl.display.MovieClip;
+	@:keep public var collar(default, null):HerCollar;
 }
 
 @:rtti
@@ -46,6 +55,11 @@ class ThighCostume extends MovieClip {
 }
 
 @:rtti
+class HerRightThighCostumeMask extends MovieClip {
+	@:keep public var legMask(default, null):MovieClip;
+}
+
+@:rtti
 class BackUnderCostume extends MovieClip {
 	@:keep public var panties(default, null):MovieClip;
 }
@@ -59,6 +73,7 @@ class HerChestCostumeBottoms extends MovieClip {
 class ChestCostume extends MovieClip {
 	@:keep public var bellyPiercing(default, null):MovieClip;
 	@:keep public var bottoms(default, null):HerChestCostumeBottoms;
+	@:keep public var legMask(default, null):MovieClip;
 }
 
 @:rtti
@@ -91,11 +106,13 @@ class UpperChestCostume extends MovieClip {
 
 @:rtti
 class HerRightNipple extends BasicTannable {
-	@:keep public var rightNipple(default, null):MovieClip; // ?
+	@:keep public var rightNipple(default, null):Null<MovieClip>; // ?
+	@:keep public var piercingPoint(default, null):MovieClip;
 }
 
 @:rtti
-class HerRightBreast extends MovieClip {
+class HerRightBreast extends BasicTannable {
+	@:keep public var rightBreast(default, null):Null<MovieClip>;//?
 	@:keep public var nipple(default, null):HerRightNipple;
 }
 
@@ -177,6 +194,7 @@ class Torso extends MovieClip {
 	@:keep public var rightThighBottoms(default, null):MovieClip;
 	@:keep public var rightThighBottomsOver(default, null):MovieClip;
 	@:keep public var rightThighCostume(default, null):ThighCostume;
+	@:keep public var rightThighCostumeMask(default, null):HerRightThighCostumeMask;
 	@:keep public var rightThighStocking(default, null):HerRightThighStocking;
 	@:keep public var rightThighStockingB(default, null):HerRightThighStocking;
 	@:keep public var shoulderStrap(default, null):MovieClip;
@@ -191,7 +209,7 @@ class Torso extends MovieClip {
 
 @:rtti
 class LeftHandOverHand extends MovieClip {
-	@:keep public var grip(default, null):BasicTannable;
+	@:keep public var grip(default, null):Null<BasicTannable>;
 	@:keep public var glove(default, null):MovieClip;
 	@:keep public var nailPolish(default, null):MovieClip;
 }
@@ -202,9 +220,14 @@ class HandCostumeHand extends MovieClip {
 }
 
 @:rtti
+class HandCostumeGlove extends MovieClip {
+	@:keep public var grip(default, null):Null<MovieClip>;
+}
+
+@:rtti
 class HandCostume extends MovieClip {
-	@:keep public var glove(default, null):MovieClip;
 	@:keep public var hand(default, null):HandCostumeHand;
+	@:keep public var glove(default, null):HandCostumeGlove;
 	@:keep public var nailPolish(default, null):MovieClip;
 }
 
@@ -225,7 +248,7 @@ class LeftHandOver extends MovieClip {
 
 @:rtti
 class HerLeftHand extends BasicTannable {
-	@:keep public var grip(default, null):MovieClip; // ?
+	@:keep public var grip(default, null):Null<MovieClip>; // ?
 }
 
 @:rtti
@@ -288,8 +311,14 @@ class HerLeftArmContainer extends MovieClip {
 }
 
 @:rtti
-class HerRightHand extends BasicTannable {
-	@:keep public var grip(default, null):MovieClip; // ?
+class HerRightHandTan extends MovieClip {
+	@:keep public var grip(default, null):Null<MovieClip>;
+}
+
+@:rtti
+class HerRightHand extends MovieClip implements ITannable {
+	@:keep public var grip(default, null):Null<MovieClip>; // ?
+	@:keep public var tan(default, null):HerRightHandTan;
 }
 
 @:rtti
@@ -387,11 +416,13 @@ class BacksideCostume extends MovieClip {
 
 @:rtti
 class HerLeftNipple extends BasicTannable {
-	@:keep public var leftNipple(default, null):MovieClip; // ?
+	@:keep public var leftNipple(default, null):Null<MovieClip>; // ?
+	@:keep public var piercingPoint(default, null):MovieClip;
 }
 
 @:rtti
 class HerLeftBreast extends BasicTannable {
+	@:keep public var leftBreast(default, null):Null<MovieClip>;//?
 	@:keep public var nipple(default, null):HerLeftNipple;
 }
 
@@ -428,6 +459,7 @@ class TongueContainer extends MovieClip {
 @:rtti
 class HerHairMidContainer extends MovieClip {
 	@:keep public var hairUnder(default, null):MovieClip;
+	@:keep public var hairUnderLayer(default, null):MovieClip;
 	@:keep public var hairBottom(default, null):MovieClip;
 }
 
@@ -503,31 +535,73 @@ class HerEye extends MovieClip {
 }
 
 @:rtti
+class HerNose extends MovieClip {
+	@:keep public var tip(default, null):MovieClip;
+}
+
+@:rtti
 class HerFace extends MovieClip {
 	@:keep public var lipFill(default, null):MovieClip;
 	@:keep public var lipShading(default, null):MovieClip;
+	@:keep public var lipHighlight(default, null):MovieClip;
+	@:keep public var lipOutline(default, null):MovieClip;
 	@:keep public var skull(default, null):MovieClip;
-	@:keep public var nose(default, null):MovieClip;
+	@:keep public var nose(default, null):HerNose;
 }
 
 @:rtti
 class HerHeadTanFace extends MovieClip {
 	@:keep public var nose(default, null):MovieClip;
+	@:keep public var lipFill(default, null):MovieClip;
+	@:keep public var lipOutline(default, null):MovieClip;
+	@:keep public var jawBulge(default, null):MovieClip;
+}
+
+@:rtti
+class HerHeadTanJaw extends MovieClip {
+	@:keep public var jawBulge(default, null):HerHeadTanJawBack;
+}
+
+@:rtti
+class HerHeadTanJawBack extends MovieClip {
+	@:keep public var jawBulgeOutline(default, null):HerHeadTanJawBack;
 }
 
 @:rtti
 class HerHeadTan extends MovieClip {
 	@:keep public var face(default, null):HerHeadTanFace;
+	@:keep public var jaw(default, null):HerHeadTanJaw;
+	@:keep public var jawBack(default, null):HerHeadTanJawBack;
+}
+
+@:rtti
+class HerJaw extends MovieClip {
+	@:keep public var jawBulge(default, null):MovieClip;
+	@:keep public var jawBulgeOutline(default, null):MovieClip;
+}
+
+@:rtti
+class HerJawBack extends MovieClip {
+	@:keep public var jawBulge(default, null):MovieClip;
+	@:keep public var jawBulgeOutline(default, null):MovieClip;
 }
 
 @:rtti
 class HerHead extends MovieClip {
 	@:keep public var neck(default, null):Neck;
 	@:keep public var face(default, null):HerFace;
+	@:keep public var jaw(default, null):HerJaw;
+	@:keep public var jawBack(default, null):HerJawBack;
 	@:keep public var scalpHair(default, null):MovieClip;
 	@:keep public var headTan(default, null):HerHeadTan;
 	@:keep public var cheekSuck(default, null):MovieClip;
 	@:keep public var cheekBulge(default, null):MovieClip;
+	@:keep public var cheekMask(default, null):MovieClip;
+}
+
+@:rtti
+class HerTopLipstickContainer extends MovieClip {
+	@:keep public var topLipstick(default, null):MovieClip;
 }
 
 class MouthShape {
@@ -577,6 +651,7 @@ class SwallowSequence {
 	public var swallow:Float;
 	public var relax:Float;
 	public var end:Float;
+	public var intensity:Float = 0;
 
 	public function new(_build:Float, _swallow:Float, _relax:Float, _end:Float) {
 		build = _build;
@@ -634,6 +709,10 @@ class Her extends MovieClip {
 	public static var ANGRY_MOOD:String = "Angry";
 	public static var AHEGAO_MOOD:String = "Ahegao";
 
+    public static var fullUp:Float = -40;
+    public static var fullDown:Float = 250;
+    public static var range:Float = fullDown - fullUp;
+
 	public static var armPositions:Array<String> = ["Back", "On Legs", "On His Legs", "Hand Job", "Loose"];
 	public static var randomArmPositions:Array<String> = ["Back", "On Legs", "On His Legs", "Loose"];
 
@@ -683,7 +762,7 @@ class Her extends MovieClip {
 	@:keep public var tears(default, null):obj.her.Tears;
 	@:keep public var tongueContainer(default, null):TongueContainer;
 	@:keep public var topLipTongue(default, null):sDT_1_21_1b_fla.TopLipTongue_218;
-	@:keep public var topLipstickContainer(default, null):MovieClip;
+	@:keep public var topLipstickContainer(default, null):HerTopLipstickContainer;
 	@:keep public var torso(default, null):Torso;
 	@:keep public var torsoBack(default, null):TorsoBack;
 	@:keep public var torsoBackCostume(default, null):TorsoBackCostume;
@@ -855,14 +934,14 @@ class Her extends MovieClip {
 	public var maxCumInMouth:UInt = 40;
 	public var droolingCum:Bool = false;
 	public var startedCumDrool:Bool = false;
-	// public var currentCumDrool:Strand;
+	public var currentCumDrool:Strand;
 	public var cumDroolTimer:UInt = 0;
 	public var cumDrool:UInt = 0;
 	public var cumDroolNum:UInt = 0;
 	public var cumDroolLinkFreq:UInt = 4;
 	public var droolingSpit:Bool = false;
 	public var startedSpitDrool:Bool = false;
-	// public var currentSpitDrool:Strand;
+	public var currentSpitDrool:Strand;
 	public var spitDroolTimer:UInt = 0;
 	public var spitDroolLinkFreq:UInt = 8;
 	public var gagDroolTimer:UInt = 0;
@@ -871,7 +950,7 @@ class Her extends MovieClip {
 	public var minNostrilSpray:UInt = 5;
 	public var nostrilSpraying:Bool = false;
 	public var nostrilSprayToggle:Bool = false;
-	// public var currentNostrilSpray:Strand;
+	public var currentNostrilSpray:Strand;
 	public var mouthFull:Bool = false;
 	public var held:Bool = false;
 	public var hilt:Bool = false;
@@ -916,7 +995,7 @@ class Her extends MovieClip {
 		return this.penisControl.getDataString();
 	}
 
-	public function loadDataPairs(param1:Array<ASAny>) {
+	public function loadDataPairs(param1:Array<Array<String>>) {
 		this.penisControl.loadDataPairs(param1);
 	}
 
@@ -1006,7 +1085,7 @@ class Her extends MovieClip {
 			if (param1) {
 				++this.userHasClicked;
 				if (this.userHasClicked >= 3) {
-					G.clickPrompt.fadeOut();
+					// G.clickPrompt.fadeOut();
 				}
 			}
 			G.dialogueControl.buildState(Dialogue.HELD, Dialogue.TICK_BUILD);
@@ -1048,7 +1127,7 @@ class Her extends MovieClip {
 
 	public function setSpeaking(param1:Bool) {
 		if (param1) {
-			G.automaticControl.dialogueStarting();
+			// G.automaticControl.dialogueStarting();
 			this.tongue.startFastIn();
 			this.clenchTeeth = false;
 			this.changeLookTarget(this.hisFace, 0, 1);
@@ -1116,10 +1195,10 @@ class Her extends MovieClip {
 
 	public function setRandomArmPosition() {
 		if (armPositions[this.currentLeftArmPosition] != "Hand Job") {
-			this.setLeftArmPosition(Math.ffloor(Math.random() * (randomArmPositions.length - 1)), true);
+			this.setLeftArmPosition(Std.int(Math.ffloor(Math.random() * (randomArmPositions.length - 1))), true);
 		}
 		if (armPositions[this.currentRightArmPosition] != "Hand Job") {
-			this.setRightArmPosition(Math.ffloor(Math.random() * (randomArmPositions.length - 1)), true);
+			this.setRightArmPosition(Std.int(Math.ffloor(Math.random() * (randomArmPositions.length - 1))), true);
 		}
 	}
 
@@ -1132,19 +1211,19 @@ class Her extends MovieClip {
 			case 1:
 				G.changeLayer(this.leftArmContainer, this, this.leftLegContainer);
 				this.leftArmIK.stopDropping();
-			// this.leftArmIK.newTarget(this.leftHandOnLegs,this.leftLegContainer.leg,true);
-			// this.leftArmIK.setEndRotationTarget(-50,[G.her.torso.leg,G.her.torso]);
+			    this.leftArmIK.newTarget(this.leftHandOnLegs,this.leftLegContainer.leg,true);
+			    this.leftArmIK.setEndRotationTarget(-50,[G.her.torso.leg,G.her.torso]);
 
 			case 2:
 				G.changeLayer(this.leftArmContainer, G.backLayer);
 				this.leftArmIK.stopDropping();
-			// this.leftArmIK.newTarget(this.leftHandOnHim,G.him.rightLeg,true);
-			// this.leftArmIK.setEndRotationTarget(-170,[G.him.rightLeg]);
+			    this.leftArmIK.newTarget(this.leftHandOnHim,G.him.rightLeg,true);
+			    this.leftArmIK.setEndRotationTarget(-170,[G.him.rightLeg]);
 
 			case 3:
 				G.changeLayer(this.leftArmContainer, G.backLayer);
 				if (G.penisOut) {
-					// G.frontLayer.addChildAt(this.leftHandOver, G.frontLayer.getChildIndex(G.himOverLayer));
+					G.frontLayer.addChildAt(this.leftHandOver, G.frontLayer.getChildIndex(G.himOverLayer));
 				} else {
 					G.changeLayer(this.leftHandOver, this.leftHandOverContainer);
 				}
@@ -1154,8 +1233,8 @@ class Her extends MovieClip {
 
 			case 4:
 				if (this.currentLeftArmPosition != 4) {
-					// this.leftArmIK.newTarget(this.leftHandOnLegs,this.leftLegContainer.leg,false);
-					// this.leftArmIK.setEndRotationTarget(-50,[G.her.torso.leg,G.her.torso]);
+					this.leftArmIK.newTarget(this.leftHandOnLegs,this.leftLegContainer.leg,false);
+					this.leftArmIK.setEndRotationTarget(-50,[G.her.torso.leg,G.her.torso]);
 				}
 				this.startArmsPassOut(true, false);
 		}
@@ -1176,7 +1255,7 @@ class Her extends MovieClip {
 		if (this.tan != null) {
 			this.tan.updateSkin();
 		}
-		// G.characterControl.setNailPolish(G.characterControl.nailPolishRGB);
+		G.characterControl.setNailPolish(G.characterControl.nailPolishRGB);
 	}
 
 	public function setRightArmPosition(param1:Int = -1, param2:Bool = true) {
@@ -1186,13 +1265,13 @@ class Her extends MovieClip {
 		switch (param1) {
 			case 1:
 				this.rightArmIK.stopDropping();
-			// this.rightArmIK.newTarget(this.rightHandOnLegs,this.torso.leg,true);
-			// this.rightArmIK.setEndRotationTarget(-50,[G.her.torso.leg,G.her.torso,G.her]);
+			    this.rightArmIK.newTarget(this.rightHandOnLegs,this.torso.leg,true);
+			    this.rightArmIK.setEndRotationTarget(-50,[G.her.torso.leg,G.her.torso,G.her]);
 
 			case 2:
 				this.rightArmIK.stopDropping();
-			// this.rightArmIK.newTarget(this.rightHandOnHim,G.him.leftLeg,true);
-			// this.rightArmIK.setEndRotationTarget(-170,[G.him.leftLeg]);
+			    this.rightArmIK.newTarget(this.rightHandOnHim,G.him.leftLeg,true);
+			    this.rightArmIK.setEndRotationTarget(-170,[G.him.leftLeg]);
 
 			case 3:
 				this.rightArmIK.stopDropping();
@@ -1200,8 +1279,8 @@ class Her extends MovieClip {
 
 			case 4:
 				if (this.currentRightArmPosition != 4) {
-					// this.rightArmIK.newTarget(this.rightHandOnLegs,this.torso.leg,false);
-					// this.rightArmIK.setEndRotationTarget(-50,[G.her.torso.leg,G.her.torso,G.her]);
+					this.rightArmIK.newTarget(this.rightHandOnLegs,this.torso.leg,false);
+					this.rightArmIK.setEndRotationTarget(-50,[G.her.torso.leg,G.her.torso,G.her]);
 				}
 				this.startArmsPassOut(false, true);
 		}
@@ -1229,12 +1308,12 @@ class Her extends MovieClip {
 		this.leftArmFree = param1;
 		this.leftArmContainer.upperArm.visible = this.leftArmFree;
 		this.leftArmContainer.upperArmCostume.visible = this.leftArmFree;
-		// this.torso.cuffs.visible = !this.leftArmFree;
-		// this.torso.nailPolish.visible = !this.leftArmFree;
-		// this.torso.leftGlove.visible = !this.leftArmFree;
-		// this.torso.midLayer.leftArm.visible = !this.leftArmFree;
-		// G.characterControl.setArmSkin();
-		// G.characterControl.armwearControl.resetElement();
+		this.torso.cuffs.visible = !this.leftArmFree;
+		this.torso.nailPolish.visible = !this.leftArmFree;
+		this.torso.leftGlove.visible = !this.leftArmFree;
+		this.torso.midLayer.leftArm.visible = !this.leftArmFree;
+		G.characterControl.setArmSkin();
+		G.characterControl.armwearControl.resetElement();
 	}
 
 	public function setRightArmFree(param1:Bool) {
@@ -1246,10 +1325,10 @@ class Her extends MovieClip {
 			this.rightArmContainer.upperArmCostume.rotation = 53;
 			this.rightArmContainer.upperArmMask.rotation = 53;
 		}
-		// this.rightForeArmContainer.upperArm.foreArm.visible = this.rightArmFree;
-		// this.rightForeArmContainer.upperArmCostume.foreArmCostume.visible = this.rightArmFree;
-		// this.torso.rightGlove.visible = !this.rightArmFree;
-		// this.torso.behindBackRightArm.visible = !this.rightArmFree;
+		this.rightForeArmContainer.upperArm.foreArm.visible = this.rightArmFree;
+		this.rightForeArmContainer.upperArmCostume.foreArmCostume.visible = this.rightArmFree;
+		this.torso.rightGlove.visible = !this.rightArmFree;
+		this.torso.behindBackRightArm.visible = !this.rightArmFree;
 		G.characterControl.setArmSkin();
 		G.characterControl.armwearControl.resetElement();
 	}
@@ -1281,8 +1360,8 @@ class Her extends MovieClip {
 
 	public function setMood(param1:String) {
 		this.mood = param1;
-		// this.head.face.gotoAndStop(param1);
-		// this.head.headTan.face.gotoAndStop(param1);
+		this.head.face.gotoAndStop(param1);
+		this.head.headTan.face.gotoAndStop(param1);
 		this.topLipstickContainer.gotoAndStop(param1);
 		this.updateLips();
 		this.updateEyes();
@@ -1300,8 +1379,8 @@ class Her extends MovieClip {
 	public function setGagged(param1:Bool) {
 		this.gagged = param1;
 		if (this.gagged) {
-			// this.head.jaw.rotation = this.head.jawBack.rotation = this.gaggedRotation;
-			// this.head.headTan.jaw.rotation = this.head.headTan.jawBack.rotation = this.gaggedRotation;
+			this.head.jaw.rotation = this.head.jawBack.rotation = this.gaggedRotation;
+			this.head.headTan.jaw.rotation = this.head.headTan.jawBack.rotation = this.gaggedRotation;
 			this.updateLips();
 			this.randomGagDroolTimer();
 		}
@@ -1320,7 +1399,7 @@ class Her extends MovieClip {
 	}
 
 	public function throatBulgeChanged() {
-		// this.head.neck.throatBulge = G.throatBulgeAmount;
+		this.head.neck.throatBulge = G.throatBulgeAmount;
 		this.updateNeck();
 	}
 
@@ -1340,10 +1419,10 @@ class Her extends MovieClip {
 			this.breastCostumeOn = true;
 		}
 		var _loc2_:ASAny = G.characterControl.braControl.selectedName != "None";
-		// this.torsoBack.leftBreast.nipple.visible = !_loc2_;
-		// this.torso.midLayer.rightBreast.nipple.visible = !_loc2_;
-		// this.torso.nipplePiercing.visible = !_loc2_;
-		// this.torso.leftNipplePiercing.visible = !_loc2_;
+		this.torsoBack.leftBreast.nipple.visible = !_loc2_;
+		this.torso.midLayer.rightBreast.nipple.visible = !_loc2_;
+		this.torso.nipplePiercing.visible = !_loc2_;
+		this.torso.leftNipplePiercing.visible = !_loc2_;
 		this.updateBreastFirmness();
 	}
 
@@ -1369,7 +1448,7 @@ class Her extends MovieClip {
 	}
 
 	public function setThroatResistance(param1:Float) {
-		this.resistance["boundary"] = Math.max(0, Math.min(100, param1)) * 0.002;
+		this.resistance.boundary = Math.max(0, Math.min(100, param1)) * 0.002;
 		G.throatResistance = param1;
 	}
 
@@ -1552,9 +1631,9 @@ class Her extends MovieClip {
 		Sweat.staticTick();
 		if (Math.random() < G.breathLevel / G.breathLevelMax && Math.random() > 0.9) {
 			if (Math.random() > 0.5) {
-				// new Sweat(this.head,new Point(21,-65),new Point(150,100),[this.rightArmContainer.upperArm,this.torso.back,this.torso.midLayer.chest,this.torso.midLayer.rightBreast.hitArea,this.torso.leg]);
+				new Sweat(this.head,new Point(21,-65),new Point(150,100),[this.rightArmContainer.upperArm,this.torso.back,this.torso.midLayer.chest,this.torso.midLayer.rightBreast.hitArea,this.torso.leg]);
 			} else {
-				// new Sweat(this.torso.back,new Point(110,-230),new Point(320,100),[this.torso.midLayer.chest,this.torso.midLayer.rightBreast.hitArea,this.torso.leg]);
+				new Sweat(this.torso.back,new Point(110,-230),new Point(320,100),[this.torso.midLayer.chest,this.torso.midLayer.rightBreast.hitArea,this.torso.leg]);
 			}
 		}
 		if (this.mouseHeld) {
@@ -1769,9 +1848,9 @@ class Her extends MovieClip {
 			} else if (armPositions[this.currentLeftArmPosition] == "On His Legs") {
 				this.leftArmIK.startDropping(15);
 			} else {
-				// this.leftArmIK.newTarget(this.leftHandOnLegs,this.leftLegContainer.leg,false);
-				// this.leftArmIK.setEndRotationTarget(-50,[G.her.torso.leg,G.her.torso]);
-				// this.leftArmIK.startDropping(15);
+				this.leftArmIK.newTarget(this.leftHandOnLegs,this.leftLegContainer.leg,false);
+				this.leftArmIK.setEndRotationTarget(-50,[G.her.torso.leg,G.her.torso]);
+				this.leftArmIK.startDropping(15);
 			}
 			G.changeLayer(this.leftArmContainer, G.backLayer);
 			G.changeLayer(this.leftHandOver, G.backLayer);
@@ -1782,8 +1861,8 @@ class Her extends MovieClip {
 			} else if (armPositions[this.currentRightArmPosition] == "On His Legs") {
 				this.rightArmIK.startDropping(15);
 			} else {
-				// this.rightArmIK.newTarget(this.rightHandOnLegs,this.torso.leg,false);
-				// this.rightArmIK.setEndRotationTarget(-50,[G.her.torso.leg,G.her.torso,G.her]);
+				this.rightArmIK.newTarget(this.rightHandOnLegs,this.torso.leg,false);
+				this.rightArmIK.setEndRotationTarget(-50,[G.her.torso.leg,G.her.torso,G.her]);
 				this.rightArmIK.startDropping(15);
 			}
 		}
@@ -1803,14 +1882,14 @@ class Her extends MovieClip {
 		this.setLeftArmPosition(this.currentLeftArmPosition, false);
 		this.setRightArmPosition(this.currentRightArmPosition, false);
 		if (armPositions[this.currentLeftArmPosition] != "Loose") {
-			// _loc1_ = this.leftArmContainer.upperArm.foreArm.hand.localToGlobal(new Point());
-			// this.leftArmIK.jumpTo(_loc1_);
-			// this.leftArmIK.startTrackingTarget(true);
+			_loc1_ = this.leftArmContainer.upperArm.foreArm.hand.localToGlobal(new Point());
+			this.leftArmIK.jumpTo(_loc1_);
+			this.leftArmIK.startTrackingTarget(true);
 		}
 		if (armPositions[this.currentRightArmPosition] != "Loose") {
-			// _loc1_ = this.rightForeArmContainer.upperArm.foreArm.hand.localToGlobal(new Point());
-			// this.rightArmIK.jumpTo(_loc1_);
-			// this.rightArmIK.startTrackingTarget(true);
+			_loc1_ = this.rightForeArmContainer.upperArm.foreArm.hand.localToGlobal(new Point());
+			this.rightArmIK.jumpTo(_loc1_);
+			this.rightArmIK.startTrackingTarget(true);
 		}
 	}
 
@@ -1899,11 +1978,11 @@ class Her extends MovieClip {
 			this.nextCoughTime = Std.int(Math.ffloor(Math.random() * 210) + 30);
 			this.coughing = true;
 			this.coughFactor = Math.random() * 1.5 + 0.5;
-			// this.head.cheekBulge.alpha = 1;
+			this.head.cheekBulge.alpha = 1;
 			this.tears.addTearSpot();
 			this.generateSplat(5, 10);
-			this.leftBreastController.accelerate(0.1);
-			this.rightBreastController.accelerate(0.1);
+			// this.leftBreastController.accelerate(0.1);
+			// this.rightBreastController.accelerate(0.1);
 			this.wince();
 			G.soundControl.playCough();
 			this.justCoughed = true;
@@ -1915,12 +1994,12 @@ class Her extends MovieClip {
 		if (G.coughing) {
 			this.coughing = true;
 			this.coughFactor = Math.random() + 0.25;
-			// this.head.cheekBulge.alpha = Math.min(1,this.head.cheekBulge.alpha + 0.3);
+			this.head.cheekBulge.alpha = Math.min(1,this.head.cheekBulge.alpha + 0.3);
 			this.tears.addTearSpot();
 			_loc1_ = this.cumInMouth > 0 ? true : false;
 			this.generateSplat(15, 5, 1, _loc1_);
-			this.leftBreastController.accelerate(0.1);
-			this.rightBreastController.accelerate(0.1);
+			// this.leftBreastController.accelerate(0.1);
+			// this.rightBreastController.accelerate(0.1);
 			this.wince();
 			this.justCoughed = true;
 		}
@@ -1954,160 +2033,160 @@ class Her extends MovieClip {
 	}
 
 	public function checkMovementSounds() {
-		// var _loc12_:uint = 0;
-		// var _loc13_:uint = 0;
-		// var _loc1_:Point = this.globalToLocal(this.head.jaw.localToGlobal(this.bottomLipA));
-		// var _loc2_:Point = new Point(_loc1_.x - this.topLipA.x,_loc1_.y - this.topLipA.y);
-		// var _loc3_:Point = this.globalToLocal(G.him.getPenisTipPoint());
-		// var _loc4_:Point = new Point(_loc3_.x - this.topLipA.x,_loc3_.y - this.topLipA.y);
-		// var _loc5_:Number;
-		// var _loc6_:* = (_loc5_ = Maths.cross(_loc2_,_loc4_)) > 0;
-		// var _loc7_:Boolean = false;
-		// var _loc8_:Number = Maths.pointDot(this.topLipA,_loc1_,_loc3_);
-		// var _loc9_:Number = _loc2_.x * _loc2_.x + _loc2_.y * _loc2_.y;
-		// this.penisTipMouthOffset = _loc8_ / Math.sqrt(_loc9_);
-		// var _loc10_:Number = _loc8_ / _loc9_;
-		// var _loc11_:Point = new Point(this.topLipA.x + _loc2_.x * _loc10_,this.topLipA.y + _loc2_.y * _loc10_);
-		// this.mouthLength = Maths.vectorLength(_loc2_);
-		// if(this.lastPenisDirection < 0 && _loc5_ > 0)
-		// {
-		//    this.lastPenisDirection = 1;
-		//    if(this.penisTipMouthOffset > -5 && this.penisTipMouthOffset < this.mouthLength + 5)
-		//    {
-		//       _loc7_ = true;
-		//    }
-		// }
-		// this.penisInMouthDist = this.lastPenisDirection * Maths.vectorLength(new Point(_loc3_.x - _loc11_.x,_loc3_.y - _loc11_.y));
-		// if(_loc6_)
-		// {
-		//    if(!this.mouthFull && !G.penisOut)
-		//    {
-		//       if(this.swallowing && !this.gagged || !_loc7_ || this.clenchTeeth)
-		//       {
-		//          G.setPenisOut(true);
-		//       }
-		//       else
-		//       {
-		//          this.tongue.setMouthFull();
-		//          this.changeLookTarget(this.eyesDown);
-		//          this.mouthFull = true;
-		//          G.dialogueControl.interrupt();
-		//          this.breathing = G.soundControl.stopBreathing();
-		//          G.soundControl.playTouch();
-		//          if(this.droolingCum)
-		//          {
-		//             this.stopDroolingCum();
-		//          }
-		//       }
-		//    }
-		//    if(!G.penisOut)
-		//    {
-		//       _loc12_ = 0;
-		//       while(_loc12_ < 4)
-		//       {
-		//          this.updateNoseSquash();
-		//          _loc12_++;
-		//       }
-		//       if(this.movement > 0)
-		//       {
-		//          this.downTravel += this.movement;
-		//          this.upTravel = 0;
-		//          this.upPlayed = false;
-		//          if(this.downTravel > 50 && !this.downPlayed)
-		//          {
-		//             if(!this.passedOut && this.absMovement > 30 && this.penisInMouthDist > this.deepthroatStartDistance && !this.intro)
-		//             {
-		//                if(G.gagging)
-		//                {
-		//                   G.soundControl.playGag(this.pos);
-		//                }
-		//                this.wince();
-		//                this.downPlayed = true;
-		//             }
-		//             else if(this.absMovement > 10)
-		//             {
-		//                G.soundControl.playDown(this.pos,this.movement);
-		//                this.downPlayed = true;
-		//             }
-		//          }
-		//       }
-		//       else
-		//       {
-		//          this.upTravel -= this.movement;
-		//          this.downTravel = 0;
-		//          this.downPlayed = false;
-		//          if(this.absMovement > 10 && this.upTravel > 50 && !this.upPlayed)
-		//          {
-		//             G.soundControl.playUp(this.pos,this.movement);
-		//             this.generateRandomStrand("random");
-		//             this.upPlayed = true;
-		//          }
-		//       }
-		//    }
-		// }
-		// else
-		// {
-		//    if(this.lastPenisDirection > 0 && _loc5_ < 0)
-		//    {
-		//       this.lastPenisDirection = -1;
-		//    }
-		//    if(G.penisOut && (!this.mouseHeld || G.handJobMode))
-		//    {
-		//       G.setPenisOut(false);
-		//    }
-		//    if(this.mouthFull)
-		//    {
-		//       this.changeLookTarget(this.hisFace);
-		//       this.tongue.setMouthFull(false);
-		//       this.mouthFull = false;
-		//       _loc13_ = Math.floor(Math.random() * 3);
-		//       while(_loc13_ < 3)
-		//       {
-		//          this.generateRandomStrand("back",false);
-		//          _loc13_++;
-		//       }
-		//       if(this.headTilt > 0)
-		//       {
-		//          this.startDroolingCum();
-		//       }
-		//       this.breatheDelay = 0;
-		//       this.offActionTime = Math.floor(Math.random() * 300) + 60;
-		//       this.offActionTimer = 0;
-		//       if(this.mood == ANGRY_MOOD && this.vigour > this.VIGOUR_WINCE_LEVEL && Math.random() > 0.5)
-		//       {
-		//          this.startClenchingTeeth();
-		//       }
-		//       G.dialogueControl.readyToSpeak();
-		//    }
-		//    ++this.offActionTimer;
-		//    if(this.offActionTimer >= this.offActionTime)
-		//    {
-		//       if(this.mood == HAPPY_MOOD)
-		//       {
-		//          this.waggleEyebrows();
-		//       }
-		//       else if(this.mood == ANGRY_MOOD)
-		//       {
-		//          this.startClenchingTeeth();
-		//       }
-		//       this.offActionTime = Math.floor(Math.random() * 300) + 150;
-		//       this.offActionTimer = 0;
-		//    }
-		// }
+		var _loc12_:UInt = 0;
+		var _loc13_:UInt = 0;
+		var _loc1_:Point = this.globalToLocal(this.head.jaw.localToGlobal(this.bottomLipA));
+		var _loc2_:Point = new Point(_loc1_.x - this.topLipA.x,_loc1_.y - this.topLipA.y);
+		var _loc3_:Point = this.globalToLocal(G.him.getPenisTipPoint());
+		var _loc4_:Point = new Point(_loc3_.x - this.topLipA.x,_loc3_.y - this.topLipA.y);
+		var _loc5_:Float;
+		var _loc6_:Bool = (_loc5_ = Maths.cross(_loc2_,_loc4_)) > 0;
+		var _loc7_:Bool = false;
+		var _loc8_:Float = Maths.pointDot(this.topLipA,_loc1_,_loc3_);
+		var _loc9_:Float = _loc2_.x * _loc2_.x + _loc2_.y * _loc2_.y;
+		this.penisTipMouthOffset = _loc8_ / Math.sqrt(_loc9_);
+		var _loc10_:Float = _loc8_ / _loc9_;
+		var _loc11_:Point = new Point(this.topLipA.x + _loc2_.x * _loc10_,this.topLipA.y + _loc2_.y * _loc10_);
+		this.mouthLength = Maths.vectorLength(_loc2_);
+		if(this.lastPenisDirection < 0 && _loc5_ > 0)
+		{
+		   this.lastPenisDirection = 1;
+		   if(this.penisTipMouthOffset > -5 && this.penisTipMouthOffset < this.mouthLength + 5)
+		   {
+		      _loc7_ = true;
+		   }
+		}
+		this.penisInMouthDist = this.lastPenisDirection * Maths.vectorLength(new Point(_loc3_.x - _loc11_.x,_loc3_.y - _loc11_.y));
+		if(_loc6_)
+		{
+		   if(!this.mouthFull && !G.penisOut)
+		   {
+		      if(this.swallowing && !this.gagged || !_loc7_ || this.clenchTeeth)
+		      {
+		         G.setPenisOut(true);
+		      }
+		      else
+		      {
+		         this.tongue.setMouthFull();
+		         this.changeLookTarget(this.eyesDown);
+		         this.mouthFull = true;
+		         G.dialogueControl.interrupt();
+		         this.breathing = G.soundControl.stopBreathing();
+		         G.soundControl.playTouch();
+		         if(this.droolingCum)
+		         {
+		            this.stopDroolingCum();
+		         }
+		      }
+		   }
+		   if(!G.penisOut)
+		   {
+		      _loc12_ = 0;
+		      while(_loc12_ < 4)
+		      {
+		         this.updateNoseSquash();
+		         _loc12_++;
+		      }
+		      if(this.movement > 0)
+		      {
+		         this.downTravel += this.movement;
+		         this.upTravel = 0;
+		         this.upPlayed = false;
+		         if(this.downTravel > 50 && !this.downPlayed)
+		         {
+		            if(!this.passedOut && this.absMovement > 30 && this.penisInMouthDist > this.deepthroatStartDistance && !this.intro)
+		            {
+		               if(G.gagging)
+		               {
+		                  G.soundControl.playGag(this.pos);
+		               }
+		               this.wince();
+		               this.downPlayed = true;
+		            }
+		            else if(this.absMovement > 10)
+		            {
+		               G.soundControl.playDown(this.pos,this.movement);
+		               this.downPlayed = true;
+		            }
+		         }
+		      }
+		      else
+		      {
+		         this.upTravel -= this.movement;
+		         this.downTravel = 0;
+		         this.downPlayed = false;
+		         if(this.absMovement > 10 && this.upTravel > 50 && !this.upPlayed)
+		         {
+		            G.soundControl.playUp(this.pos,this.movement);
+		            this.generateRandomStrand("random");
+		            this.upPlayed = true;
+		         }
+		      }
+		   }
+		}
+		else
+		{
+		   if(this.lastPenisDirection > 0 && _loc5_ < 0)
+		   {
+		      this.lastPenisDirection = -1;
+		   }
+		   if(G.penisOut && (!this.mouseHeld || G.handJobMode))
+		   {
+		      G.setPenisOut(false);
+		   }
+		   if(this.mouthFull)
+		   {
+		      this.changeLookTarget(this.hisFace);
+		      this.tongue.setMouthFull(false);
+		      this.mouthFull = false;
+		      _loc13_ = Math.floor(Math.random() * 3);
+		      while(_loc13_ < 3)
+		      {
+		         this.generateRandomStrand("back",false);
+		         _loc13_++;
+		      }
+		      if(this.headTilt > 0)
+		      {
+		         this.startDroolingCum();
+		      }
+		      this.breatheDelay = 0;
+		      this.offActionTime = Math.floor(Math.random() * 300) + 60;
+		      this.offActionTimer = 0;
+		      if(this.mood == ANGRY_MOOD && this.vigour > this.VIGOUR_WINCE_LEVEL && Math.random() > 0.5)
+		      {
+		         this.startClenchingTeeth();
+		      }
+		      G.dialogueControl.readyToSpeak();
+		   }
+		   ++this.offActionTimer;
+		   if(this.offActionTimer >= this.offActionTime)
+		   {
+		      if(this.mood == HAPPY_MOOD)
+		      {
+		         this.waggleEyebrows();
+		      }
+		      else if(this.mood == ANGRY_MOOD)
+		      {
+		         this.startClenchingTeeth();
+		      }
+		      this.offActionTime = Math.floor(Math.random() * 300) + 150;
+		      this.offActionTimer = 0;
+		   }
+		}
 	}
 
 	public function updateNoseSquash() {
-		// var _loc1_:Point = this.head.face.nose.localToGlobal(new Point(this.head.face.nose.tip.x,this.head.face.nose.tip.y));
-		// var _loc2_:Boolean = G.him.overLayer.hitTestPoint(_loc1_.x,_loc1_.y,true) || G.him.hitTestPoint(_loc1_.x,_loc1_.y,true);
-		// if(_loc2_)
-		// {
-		//    this.noseSquashAmount = Math.min(1,this.noseSquashAmount + 0.1);
-		// }
-		// else if(this.noseSquashAmount > 0)
-		// {
-		//    this.noseSquashAmount = Math.max(0,this.noseSquashAmount - 0.1);
-		// }
-		// this.currentNoseSquash.tween(this.noseSquashAmount);
+		var _loc1_:Point = this.head.face.nose.localToGlobal(new Point(this.head.face.nose.tip.x,this.head.face.nose.tip.y));
+		var _loc2_:Bool = G.him.overLayer.hitTestPoint(_loc1_.x,_loc1_.y,true) || G.him.hitTestPoint(_loc1_.x,_loc1_.y,true);
+		if(_loc2_)
+		{
+		   this.noseSquashAmount = Math.min(1,this.noseSquashAmount + 0.1);
+		}
+		else if(this.noseSquashAmount > 0)
+		{
+		   this.noseSquashAmount = Math.max(0,this.noseSquashAmount - 0.1);
+		}
+		this.currentNoseSquash.tween(this.noseSquashAmount);
 	}
 
 	public function checkBreathing(param1:Bool = false) {
@@ -2147,9 +2226,9 @@ class Her extends MovieClip {
 					G.soundControl.startHolding();
 					this.nextCoughTime = Std.int(Math.ffloor(Math.random() * 210) + 30);
 					this.tears.addTearSpot();
-					if (!G.autoModeOn && this.userHasClicked < 3 && this.heldTimer > 150) {
-						G.clickPrompt.fadeIn();
-					}
+					// if (!G.autoModeOn && this.userHasClicked < 3 && this.heldTimer > 150) {
+					// 	G.clickPrompt.fadeIn();
+					// }
 					this.coughBuild += Math.random() * 2;
 					if (this.intro) {
 						G.dialogueControl.buildState(Dialogue.FIRST_THROAT, Dialogue.ONE_OFF_BUILD * 2);
@@ -2184,7 +2263,7 @@ class Her extends MovieClip {
 						this.pullingOff = true;
 						G.him.openHand();
 					}
-					G.clickPrompt.fadeOut();
+					// G.clickPrompt.fadeOut();
 					this.held = false;
 				}
 			}
@@ -2235,40 +2314,40 @@ class Her extends MovieClip {
 	}
 
 	public function animateBreathing() {
-		// var _loc1_ = Math.NaN;
-		// var _loc2_:BreathMist = null;
-		// var _loc3_:Point = null;
-		// if (this.breathing) {
-		// 	_loc1_ = !!this.passedOut ? 0.5 : Math.max(0.5, Math.min(2, G.breathLevel / g.outOfBreathPoint * 2));
-		// 	this.breathingFactor = Math.sin(G.soundControl.breathPosition() * Math.PI * 2) * _loc1_;
-		// 	this.pos += this.breathingFactor * 0.00625;
-		// 	if (G.soundControl.justBreathedOut() && g.herMouthOpeness > 0.4) {
-		// 		_loc2_ = new BreathMist();
-		// 		_loc3_ = G.sceneLayer.globalToLocal(this.localToGlobal(this.midMouth));
-		// 		_loc2_.x = _loc3_.x;
-		// 		_loc2_.y = _loc3_.y;
-		// 		G.backLayer.addChild(_loc2_);
-		// 	}
-		// 	if (this.passOutFactor > 0) {
-		// 		this.passOutFactor = Math.max(0, this.passOutFactor - 0.5);
-		// 	} else if (this.passedOut) {
-		// 		this.wakeUp();
-		// 	}
-		// } else {
-		// 	if (G.breathLevel == g.breathLevelMax && this.passOutFactor < this.passOutMax) {
-		// 		this.passOutFactor += 0.05;
-		// 		if (!this.blankEyed && this.currentLookTarget != this.eyesDown && this.passOutFactor > 5) {
-		// 			this.currentLookTarget = this.eyesDown;
-		// 			this.lookChangeTimer = -1;
-		// 		}
-		// 		if (!this.passedOut && this.passOutFactor >= this.passOutMax) {
-		// 			this.passOut();
-		// 		}
-		// 	}
-		// 	this.breathingFactor *= 0.8;
-		// 	this.pos += this.getRandomMotion();
-		// }
-		// this.breathingFactor += this.coughFactor * 0.8;
+		var _loc1_ = Math.NaN;
+		var _loc2_:BreathMist = null;
+		var _loc3_:Point = null;
+		if (this.breathing) {
+			_loc1_ = !!this.passedOut ? 0.5 : Math.max(0.5, Math.min(2, G.breathLevel / G.outOfBreathPoint * 2));
+			this.breathingFactor = Math.sin(G.soundControl.breathPosition() * Math.PI * 2) * _loc1_;
+			this.pos += this.breathingFactor * 0.00625;
+			if (G.soundControl.justBreathedOut() && G.herMouthOpeness > 0.4) {
+				_loc2_ = new BreathMist();
+				_loc3_ = G.sceneLayer.globalToLocal(this.localToGlobal(this.midMouth));
+				_loc2_.x = _loc3_.x;
+				_loc2_.y = _loc3_.y;
+				G.backLayer.addChild(_loc2_);
+			}
+			if (this.passOutFactor > 0) {
+				this.passOutFactor = Math.max(0, this.passOutFactor - 0.5);
+			} else if (this.passedOut) {
+				this.wakeUp();
+			}
+		} else {
+			if (G.breathLevel == G.breathLevelMax && this.passOutFactor < this.passOutMax) {
+				this.passOutFactor += 0.05;
+				if (!this.blankEyed && this.currentLookTarget != this.eyesDown && this.passOutFactor > 5) {
+					this.currentLookTarget = this.eyesDown;
+					this.lookChangeTimer = -1;
+				}
+				if (!this.passedOut && this.passOutFactor >= this.passOutMax) {
+					this.passOut();
+				}
+			}
+			this.breathingFactor *= 0.8;
+			this.pos += this.getRandomMotion();
+		}
+		this.breathingFactor += this.coughFactor * 0.8;
 	}
 
 	public function tickCoughBuild() {
@@ -2283,7 +2362,7 @@ class Her extends MovieClip {
 		this.headTiltAngle = this.headTilt * 10 + (this.coughFactor * 2.5 + this.tongue.getHeadTilt()) * this.headTiltScaling;
 		this.mHer = G.animationControl.getHerMatrix(this.pos, this.headTilt);
 		this.mHer.translate(this.coughFactor * 3 * this.headTiltScaling, this.coughFactor * this.headTiltScaling);
-		G.rotateMatrix(this.mHer, Maths.degToRad(this.headTiltAngle));
+		Maths.rotateMatrix(this.mHer, Maths.degToRad(this.headTiltAngle));
 		this.mHer.tx -= Math.max(-5, 20 * this.headTilt);
 		if (Math.isNaN(this.lastYPos)) {
 			this.lastYPos = this.mHer.ty;
@@ -2299,10 +2378,10 @@ class Her extends MovieClip {
 		this.updateTorso();
 		this.updateNeck();
 		if (G.characterControl.collarControl.selection == 2) {
-			// if(this.collarContainer.collar.tie)
-			// {
-			//    this.collarContainer.collar.tie.rotation = 6 - 6 * this.pos;
-			// }
+			if(this.collarContainer.collar.tie != null)
+			{
+			   this.collarContainer.collar.tie.rotation = 6 - 6 * this.pos;
+			}
 		}
 		this.hairBackContainer.hairBack.transform.matrix = this.mHer;
 		G.hairCostumeBack.transform.matrix = this.mHer;
@@ -2313,246 +2392,246 @@ class Her extends MovieClip {
 		this.mZero = new Matrix();
 		this.mZero.rotate(-this.rotation / 180 * Math.PI);
 		this.mZero.translate(_loc1_.x, _loc1_.y);
-		// this.hairMidContainer.hairUnderLayer.transform.matrix = this.mZero;
+		this.hairMidContainer.hairUnderLayer.transform.matrix = this.mZero;
 		this.hairBetweenLayer.transform.matrix = this.mZero;
-		// var _loc2_:Number = G.him.getPenisWidth(localToGlobal(this.topLipA),this.head.jaw.localToGlobal(this.bottomLipA),this.mouthFull);
-		// var _loc3_:Number = (_loc2_ - 20) / 2 / 165;
-		// var _loc4_:Number = Math.asin(_loc3_) / 1.2 / 0.5;
-		// var _loc5_:Number = Maths.radToDeg(_loc4_) - 11;
-		// if(this.speaking || this.speakStopDelay > 0)
-		// {
-		//    this.jawAngleTarget = this.targetPhoneme.jaw;
-		//    this.head.jaw.rotation += (this.jawAngleTarget - this.head.jaw.rotation) / (this.phonemeDelay + 1);
-		// }
-		// else if(this.swallowing)
-		// {
-		//    if(this.swallowTimer < this.swallowSequence.relax)
-		//    {
-		//       if(this.penisInMouthDist > 0 && this.mouthFull)
-		//       {
-		//          this.jawAngleTarget = _loc5_;
-		//       }
-		//       else
-		//       {
-		//          this.jawAngleTarget = this.closedJawAngle;
-		//       }
-		//       if(this.swallowTimer == this.swallowSequence.swallow)
-		//       {
-		//          this.wince();
-		//          G.soundControl.playSwallow(this.pos);
-		//          this.head.neck.swallow();
-		//          this.swallowFromMouth();
-		//       }
-		//    }
-		//    else if(this.swallowTimer >= this.swallowSequence.end)
-		//    {
-		//       this.swallowing = false;
-		//       this.swallowTimer = 0;
-		//       if(this.cumInMouth > 10 && this.aboveSwallowTilt && this.penisInMouthDist < 0 && Math.random() > 0.4)
-		//       {
-		//          this.swallow();
-		//       }
-		//       else if(!this.mouthFull)
-		//       {
-		//          if(G.breathing)
-		//          {
-		//             if(G.coughing && this.coughBuild > 5)
-		//             {
-		//                this.breathing = G.soundControl.startBreathingWithCough();
-		//             }
-		//             else
-		//             {
-		//                this.breathing = G.soundControl.startBreathing();
-		//             }
-		//          }
-		//       }
-		//       if(this.cumInMouth == 0 && Math.random() > 0.2)
-		//       {
-		//          this.changeLookTarget(this.hisFace);
-		//       }
-		//    }
-		//    else if(this.penisInMouthDist > 0 && !G.penisOut)
-		//    {
-		//       this.jawAngleTarget = _loc5_;
-		//    }
-		//    else
-		//    {
-		//       this.jawAngleTarget = this.getJawAngle(0.8);
-		//    }
-		//    this.head.jaw.rotation += (this.jawAngleTarget - this.head.jaw.rotation) * 0.5;
-		// }
-		// else
-		// {
-		//    if(this.penisInMouthDist > 0 && !G.penisOut)
-		//    {
-		//       this.jawAngleTarget = _loc5_;
-		//    }
-		//    else
-		//    {
-		//       this.jawAngleTarget = Math.max(-6,-2.5 - 2 * this.pos * 10);
-		//    }
-		//    if(this.penisInMouthDist < 0)
-		//    {
-		//       _loc7_ = Math.min(0.8,Math.min(100,-this.penisInMouthDist) / 50);
-		//       if(this.cumInMouth > 0)
-		//       {
-		//          this.jawAngleTarget = Math.min(this.jawAngleTarget,this.getJawAngle(Math.max(0,-this.headTilt),_loc7_));
-		//       }
-		//       else
-		//       {
-		//          this.jawAngleTarget = Math.min(this.jawAngleTarget,this.getJawAngle(Math.max(0,-this.headTilt),Math.min(0.5,_loc7_)));
-		//       }
-		//       this.head.jaw.rotation += (this.jawAngleTarget - this.head.jaw.rotation) * 0.25;
-		//       if(this.cumInMouth > 0 && this.aboveSwallowTilt && !this.passedOut)
-		//       {
-		//          ++this.startSwallowTimer;
-		//          if(this.startSwallowTimer >= this.startSwallowTime)
-		//          {
-		//             this.swallow();
-		//          }
-		//       }
-		//       else
-		//       {
-		//          this.startSwallowTimer = 0;
-		//       }
-		//    }
-		//    else
-		//    {
-		//       if(this.cumInMouth > 0 && this.aboveSwallowTilt && !this.passedOut)
-		//       {
-		//          this.startSwallowTimer += 1;
-		//          if(this.startSwallowTimer >= this.startSwallowTime)
-		//          {
-		//             this.swallow();
-		//          }
-		//       }
-		//       else
-		//       {
-		//          this.startSwallowTimer = 0;
-		//       }
-		//       this.head.jaw.rotation += (this.jawAngleTarget - this.head.jaw.rotation) * 0.8;
-		//    }
-		// }
-		// if(this.mood == ANGRY_MOOD || this.clenchTeethRatio > 0)
-		// {
-		//    this.head.jaw.rotation += (-6.5 - this.head.jaw.rotation) * this.clenchTeethRatio;
-		// }
-		// if(this.gagged)
-		// {
-		//    this.head.jaw.rotation = this.gaggedRotation;
-		// }
-		// this.head.jawBack.rotation = this.head.jaw.rotation;
-		// this.head.headTan.jaw.rotation = this.head.headTan.jawBack.rotation = this.head.jaw.rotation;
-		// G.herMouthOpeness = Math.max(0,Math.min(1,1 - this.head.jaw.rotation / this.closedJawAngle));
-		// this.updateLips();
-		// if(G.herMouthOpeness < 0.2)
-		// {
-		//    if(this.droolingCum)
-		//    {
-		//       this.stopDroolingCum();
-		//    }
-		// }
-		// else if(!this.droolingCum && !this.mouthFull && this.headTilt > 0)
-		// {
-		//    this.startDroolingCum();
-		// }
-		// this.head.cheekMask.gotoAndStop(Math.floor(Math.min(144,Math.max(1,(this.head.jaw.rotation + 12) * 8))));
+		var _loc2_:Float = G.him.getPenisWidth(localToGlobal(this.topLipA),this.head.jaw.localToGlobal(this.bottomLipA),this.mouthFull);
+		var _loc3_:Float = (_loc2_ - 20) / 2 / 165;
+		var _loc4_:Float = Math.asin(_loc3_) / 1.2 / 0.5;
+		var _loc5_:Float = Maths.radToDeg(_loc4_) - 11;
+		if(this.speaking || this.speakStopDelay > 0)
+		{
+		   this.jawAngleTarget = this.targetPhoneme.jaw;
+		   this.head.jaw.rotation += (this.jawAngleTarget - this.head.jaw.rotation) / (this.phonemeDelay + 1);
+		}
+		else if(this.swallowing)
+		{
+		   if(this.swallowTimer < this.swallowSequence.relax)
+		   {
+		      if(this.penisInMouthDist > 0 && this.mouthFull)
+		      {
+		         this.jawAngleTarget = _loc5_;
+		      }
+		      else
+		      {
+		         this.jawAngleTarget = this.closedJawAngle;
+		      }
+		      if(this.swallowTimer == this.swallowSequence.swallow)
+		      {
+		         this.wince();
+		         G.soundControl.playSwallow(this.pos);
+		         this.head.neck.swallow();
+		         this.swallowFromMouth();
+		      }
+		   }
+		   else if(this.swallowTimer >= this.swallowSequence.end)
+		   {
+		      this.swallowing = false;
+		      this.swallowTimer = 0;
+		      if(this.cumInMouth > 10 && this.aboveSwallowTilt && this.penisInMouthDist < 0 && Math.random() > 0.4)
+		      {
+		         this.swallow();
+		      }
+		      else if(!this.mouthFull)
+		      {
+		         if(G.breathing)
+		         {
+		            if(G.coughing && this.coughBuild > 5)
+		            {
+		               this.breathing = G.soundControl.startBreathingWithCough();
+		            }
+		            else
+		            {
+		               this.breathing = G.soundControl.startBreathing();
+		            }
+		         }
+		      }
+		      if(this.cumInMouth == 0 && Math.random() > 0.2)
+		      {
+		         this.changeLookTarget(this.hisFace);
+		      }
+		   }
+		   else if(this.penisInMouthDist > 0 && !G.penisOut)
+		   {
+		      this.jawAngleTarget = _loc5_;
+		   }
+		   else
+		   {
+		      this.jawAngleTarget = this.getJawAngle(0.8);
+		   }
+		   this.head.jaw.rotation += (this.jawAngleTarget - this.head.jaw.rotation) * 0.5;
+		}
+		else
+		{
+		   if(this.penisInMouthDist > 0 && !G.penisOut)
+		   {
+		      this.jawAngleTarget = _loc5_;
+		   }
+		   else
+		   {
+		      this.jawAngleTarget = Math.max(-6,-2.5 - 2 * this.pos * 10);
+		   }
+		   if(this.penisInMouthDist < 0)
+		   {
+		      _loc7_ = Math.min(0.8,Math.min(100,-this.penisInMouthDist) / 50);
+		      if(this.cumInMouth > 0)
+		      {
+		         this.jawAngleTarget = Math.min(this.jawAngleTarget,this.getJawAngle(Math.max(0,-this.headTilt),_loc7_));
+		      }
+		      else
+		      {
+		         this.jawAngleTarget = Math.min(this.jawAngleTarget,this.getJawAngle(Math.max(0,-this.headTilt),Math.min(0.5,_loc7_)));
+		      }
+		      this.head.jaw.rotation += (this.jawAngleTarget - this.head.jaw.rotation) * 0.25;
+		      if(this.cumInMouth > 0 && this.aboveSwallowTilt && !this.passedOut)
+		      {
+		         ++this.startSwallowTimer;
+		         if(this.startSwallowTimer >= this.startSwallowTime)
+		         {
+		            this.swallow();
+		         }
+		      }
+		      else
+		      {
+		         this.startSwallowTimer = 0;
+		      }
+		   }
+		   else
+		   {
+		      if(this.cumInMouth > 0 && this.aboveSwallowTilt && !this.passedOut)
+		      {
+		         this.startSwallowTimer += 1;
+		         if(this.startSwallowTimer >= this.startSwallowTime)
+		         {
+		            this.swallow();
+		         }
+		      }
+		      else
+		      {
+		         this.startSwallowTimer = 0;
+		      }
+		      this.head.jaw.rotation += (this.jawAngleTarget - this.head.jaw.rotation) * 0.8;
+		   }
+		}
+		if(this.mood == ANGRY_MOOD || this.clenchTeethRatio > 0)
+		{
+		   this.head.jaw.rotation += (-6.5 - this.head.jaw.rotation) * this.clenchTeethRatio;
+		}
+		if(this.gagged)
+		{
+		   this.head.jaw.rotation = this.gaggedRotation;
+		}
+		this.head.jawBack.rotation = this.head.jaw.rotation;
+		this.head.headTan.jaw.rotation = this.head.headTan.jawBack.rotation = this.head.jaw.rotation;
+		G.herMouthOpeness = Math.max(0,Math.min(1,1 - this.head.jaw.rotation / this.closedJawAngle));
+		this.updateLips();
+		if(G.herMouthOpeness < 0.2)
+		{
+		   if(this.droolingCum)
+		   {
+		      this.stopDroolingCum();
+		   }
+		}
+		else if(!this.droolingCum && !this.mouthFull && this.headTilt > 0)
+		{
+		   this.startDroolingCum();
+		}
+		this.head.cheekMask.gotoAndStop(Math.floor(Math.min(144,Math.max(1,(this.head.jaw.rotation + 12) * 8))));
 		// this.leftBreastController.update(-this.movement / range * 0.2 - this.absYMovement * 0.002,this.breathingFactor * 1.25 - 1,-4 - this.breathingFactor * 3.125,this.breathingFactor * 1.75);
 		// this.rightBreastController.update(-this.movement / range * 0.2 - this.absYMovement * 0.002,this.breathingFactor * 1.25,-3 - this.breathingFactor * 4.375,this.breathingFactor * 1.75);
 		// this.braStrapController.update();
 		// this.shoulderStrapController.update();
 		// this.topStrapController.update();
-		// this.updateNipplePiercing();
-		// this.updateBreathingScaledElements();
-		// this.torsoBack.chestBack.rotation = 27 + this.breathingFactor * 2.6;
-		// if(this.mouthFull)
-		// {
-		//    this.cheekBulgeTarget = Math.min(1,Math.max(0,this.movement) / 20 + this.cumInMouth / 20 + this.pos / 2);
-		//    this.cheekSuckTarget = Math.min(1,Math.max(0,-this.movement) / 20 + this.suckPower);
-		// }
-		// else
-		// {
-		//    this.cheekBulgeTarget = 0;
-		//    this.cheekSuckTarget = 0;
-		// }
-		// this.suckPower *= 0.7;
-		// if(this.hilt)
-		// {
-		//    this.cheekBulgeTarget += 0.5;
-		// }
-		// this.head.cheekBulge.alpha += (this.cheekBulgeTarget - this.head.cheekBulge.alpha) / 5;
-		// this.head.cheekSuck.alpha += (this.cheekSuckTarget - this.head.cheekSuck.alpha) / 5;
-		// if(this.lookChangeTimer > 0)
-		// {
-		//    --this.lookChangeTimer;
-		// }
-		// else if(this.lookChangeTimer == 0)
-		// {
-		//    this.currentLookTarget = this.nextLookTarget;
-		//    this.lookChangeTimer = -1;
-		// }
-		// this.lookAt(this.currentLookTarget);
-		// if(this.eyelidMotion.shock > 0)
-		// {
-		//    --this.eyelidMotion.shock;
-		//    if(this.mood == AHEGAO_MOOD)
-		//    {
-		//    }
-		// }
-		// if(this.winceTimer > 0)
-		// {
-		//    --this.winceTimer;
-		//    this.eyelidMotion.pos += (this.eyePosWince - this.eyelidMotion.pos) * 0.75;
-		// }
-		// else if(this.blinkTimer > 0)
-		// {
-		//    --this.blinkTimer;
-		//    this.eyelidMotion.pos = this.eyePosBlink;
-		// }
-		// else if(this.eyelidMotion.isClosed || this.passedOut)
-		// {
-		//    this.eyelidMotion.pos += (this.eyePosBlink - this.eyelidMotion.pos) * 0.25;
-		//    this.tears.clearLowerEyelid(200 - this.eyelidMotion.pos);
-		//    ++this.eyelidMotion.closedTimer;
-		//    if(this.eyelidMotion.closedTimer >= 1200)
-		//    {
-		//       this.openEye();
-		//       this.cumInEye = 0;
-		//    }
-		// }
-		// else
-		// {
-		//    _loc8_ = !!G.penisOut ? 0 : int(Math.min(80,Math.floor(this.pos * 80)));
-		//    this.eyelidMotion.target = 101 - _loc8_ - this.eyelidMotion.shock - this.cumInMouth * 2 + Math.floor(this.swallowPoint * 100);
-		//    this.eyelidMotion.target = Math.max(2,Math.min(this.eyePosWince,this.eyelidMotion.target));
-		//    if(this.passOutFactor > 0)
-		//    {
-		//       this.eyelidMotion.target = Math.min(this.eyePosBlink,this.eyelidMotion.target + Math.floor(this.passOutFactor * 3));
-		//    }
-		//    this.eyelidMotion.pos += (this.eyelidMotion.target - this.eyelidMotion.pos) * 0.2;
-		//    this.tears.clearLowerEyelid(200 - this.eyelidMotion.pos);
-		// }
-		// this.updateEyes();
-		// var _loc6_:Number = 0.9 - (0.25 - this.eyelidMotion.pos / 400) - this.eyelidMotion.shock / 200;
-		// this.eye.ball.irisContainer.iris.scaleX = _loc6_;
-		// this.eye.ball.irisContainer.iris.scaleY = _loc6_;
-		// if(this.coughing)
-		// {
-		//    if(this.justCoughed)
-		//    {
-		//       this.justCoughed = false;
-		//       this.coughFactor *= 2;
-		//    }
-		//    else
-		//    {
-		//       this.coughFactor *= 0.8;
-		//       if(this.coughFactor <= 0.01)
-		//       {
-		//          this.coughFactor = 0;
-		//          this.coughing = false;
-		//       }
-		//    }
-		// }
+		this.updateNipplePiercing();
+		this.updateBreathingScaledElements();
+		this.torsoBack.chestBack.rotation = 27 + this.breathingFactor * 2.6;
+		if(this.mouthFull)
+		{
+		   this.cheekBulgeTarget = Math.min(1,Math.max(0,this.movement) / 20 + this.cumInMouth / 20 + this.pos / 2);
+		   this.cheekSuckTarget = Math.min(1,Math.max(0,-this.movement) / 20 + this.suckPower);
+		}
+		else
+		{
+		   this.cheekBulgeTarget = 0;
+		   this.cheekSuckTarget = 0;
+		}
+		this.suckPower *= 0.7;
+		if(this.hilt)
+		{
+		   this.cheekBulgeTarget += 0.5;
+		}
+		this.head.cheekBulge.alpha += (this.cheekBulgeTarget - this.head.cheekBulge.alpha) / 5;
+		this.head.cheekSuck.alpha += (this.cheekSuckTarget - this.head.cheekSuck.alpha) / 5;
+		if(this.lookChangeTimer > 0)
+		{
+		   --this.lookChangeTimer;
+		}
+		else if(this.lookChangeTimer == 0)
+		{
+		   this.currentLookTarget = this.nextLookTarget;
+		   this.lookChangeTimer = -1;
+		}
+		this.lookAt(this.currentLookTarget);
+		if(this.eyelidMotion.shock > 0)
+		{
+		   --this.eyelidMotion.shock;
+		   if(this.mood == AHEGAO_MOOD)
+		   {
+		   }
+		}
+		if(this.winceTimer > 0)
+		{
+		   --this.winceTimer;
+		   this.eyelidMotion.pos += (this.eyePosWince - this.eyelidMotion.pos) * 0.75;
+		}
+		else if(this.blinkTimer > 0)
+		{
+		   --this.blinkTimer;
+		   this.eyelidMotion.pos = this.eyePosBlink;
+		}
+		else if(this.eyelidMotion.isClosed || this.passedOut)
+		{
+		   this.eyelidMotion.pos += (this.eyePosBlink - this.eyelidMotion.pos) * 0.25;
+		   this.tears.clearLowerEyelid(200 - this.eyelidMotion.pos);
+		   ++this.eyelidMotion.closedTimer;
+		   if(this.eyelidMotion.closedTimer >= 1200)
+		   {
+		      this.openEye();
+		      this.cumInEye = 0;
+		   }
+		}
+		else
+		{
+		   _loc8_ = G.penisOut ? 0 : Std.int(Math.min(80,Math.floor(this.pos * 80)));
+		   this.eyelidMotion.target = 101 - _loc8_ - this.eyelidMotion.shock - this.cumInMouth * 2 + Math.floor(this.swallowPoint * 100);
+		   this.eyelidMotion.target = Math.max(2,Math.min(this.eyePosWince,this.eyelidMotion.target));
+		   if(this.passOutFactor > 0)
+		   {
+		      this.eyelidMotion.target = Math.min(this.eyePosBlink,this.eyelidMotion.target + Math.floor(this.passOutFactor * 3));
+		   }
+		   this.eyelidMotion.pos += (this.eyelidMotion.target - this.eyelidMotion.pos) * 0.2;
+		   this.tears.clearLowerEyelid(200 - this.eyelidMotion.pos);
+		}
+		this.updateEyes();
+		var _loc6_:Float = 0.9 - (0.25 - this.eyelidMotion.pos / 400) - this.eyelidMotion.shock / 200;
+		this.eye.ball.irisContainer.iris.scaleX = _loc6_;
+		this.eye.ball.irisContainer.iris.scaleY = _loc6_;
+		if(this.coughing)
+		{
+		   if(this.justCoughed)
+		   {
+		      this.justCoughed = false;
+		      this.coughFactor *= 2;
+		   }
+		   else
+		   {
+		      this.coughFactor *= 0.8;
+		      if(this.coughFactor <= 0.01)
+		      {
+		         this.coughFactor = 0;
+		         this.coughing = false;
+		      }
+		   }
+		}
 	}
 
 	public function updateBreathingScaledElements() {
@@ -2629,13 +2708,13 @@ class Her extends MovieClip {
 		var _loc2_ = this.globalToLocal(G.sceneLayer.localToGlobal(param1));
 		var _loc3_ = this.eyeAim;
 		var _loc4_ = new Point(_loc2_.x - _loc3_.x, _loc2_.y - _loc3_.y);
-		this.eyeMotion.target = Math.min(110, Math.max(75, G.getAngle(_loc4_.x, _loc4_.y)));
+		this.eyeMotion.target = Maths.clampf(Maths.getAngle(_loc4_.x, _loc4_.y), 75, 110);
 		if (this.mood == AHEGAO_MOOD) {
 			this.eyeMotion.target = 62 + this.eyelidMotion.pos * 0.05 + Math.random() * 2 - 1;
 		}
 		this.eyeMotion.target -= Math.random() * 0.5 * this.passOutFactor + this.passOutFactor * 0.5;
 		this.eyeMotion.ang += (this.eyeMotion.target - this.eyeMotion.ang) * 0.2;
-		// this.eye.ball.irisContainer.rotation = this.eyeMotion.ang - 90;
+		this.eye.ball.irisContainer.rotation = this.eyeMotion.ang - 90;
 	}
 
 	public function getJawAngle(param1:Float, param2:Float = 1):Float {
@@ -2643,93 +2722,93 @@ class Her extends MovieClip {
 	}
 
 	public function updateNeck() {
-		// this.head.neck.render(!!G.penisOut ? 0 : this.penisInMouthDist / 400);
-		// var _loc1_:Color = new Color();
-		// _loc1_.tintColor = G.characterControl.currentSkinPalette.shade1.rgb;
-		// _loc1_.tintMultiplier = !!G.penisOut ? Number(0) : Number(this.penisInMouthDist / 400 * g.him.getPenisWidthWithTwitch() * 0.6);
-		// this.head.jaw.jawBulge.transform.colorTransform = _loc1_;
-		// var _loc2_:Point = this.globalToLocal(this.head.localToGlobal(new Point(this.head.neck.x,this.head.neck.y)));
-		// var _loc3_:Point = this.globalToLocal(this.torso.localToGlobal(new Point(0,0)));
-		// var _loc4_:Number = (_loc4_ = G.getAngle(_loc3_.x - _loc2_.x,_loc3_.y - _loc2_.y)) + 180;
-		// this.head.neck.rotation = _loc4_;
-		// this.collarContainer.rotation = this.head.neck.rotation;
+		this.head.neck.render(G.penisOut ? 0 : this.penisInMouthDist / 400);
+		var _loc1_:Color = new Color();
+		_loc1_.tintColor = G.characterControl.currentSkinPalette.shade1.rgb;
+		_loc1_.tintMultiplier = G.penisOut ? 0 : this.penisInMouthDist / 400 * G.him.getPenisWidthWithTwitch() * 0.6;
+		this.head.jaw.jawBulge.transform.colorTransform = _loc1_;
+		var _loc2_:Point = this.globalToLocal(this.head.localToGlobal(new Point(this.head.neck.x,this.head.neck.y)));
+		var _loc3_:Point = this.globalToLocal(this.torso.localToGlobal(new Point(0,0)));
+		var _loc4_:Float = Maths.getAngle(_loc3_.x - _loc2_.x,_loc3_.y - _loc2_.y) + 180;
+		this.head.neck.rotation = _loc4_;
+		this.collarContainer.rotation = this.head.neck.rotation;
 	}
 
 	public function updateLips() {
-		var _loc1_ = 0;
-		var _loc2_ = 0;
-		// this.bottomLipstick.rotation = this.head.jaw.rotation;
-		// if(this.clenchTeeth || this.clenchTeethRatio > 0)
-		// {
-		//    ++this.clenchedTeethTimer;
-		//    if(this.clenchedTeethTimer >= this.clenchedTeethTime)
-		//    {
-		//       this.clenchTeeth = false;
-		//    }
-		//    if(this.clenchTeeth && this.clenchTeethRatio < 1)
-		//    {
-		//       this.clenchTeethRatio = Math.min(1,this.clenchTeethRatio + 0.2);
-		//    }
-		//    else if(!this.clenchTeeth)
-		//    {
-		//       this.clenchTeethRatio = Math.max(0,this.clenchTeethRatio - 0.3);
-		//    }
-		//    this.topTeethTween.tween(this.clenchTeethRatio);
-		//    this.bottomTeethTween.tween(this.clenchTeethRatio);
-		// }
-		// if(this.speaking || this.speakStopDelay > 0)
-		// {
-		//    _loc1_ = this.lastUpperLipPos + Math.round((this.targetPhoneme.upperLip - this.lastUpperLipPos) / (this.phonemeDelay + 1));
-		//    _loc2_ = this.lastLowerLipPos + Math.round((this.targetPhoneme.lowerLip - this.lastLowerLipPos) / (this.phonemeDelay + 1));
-		//    if(this.phonemeDelay > 0)
-		//    {
-		//       --this.phonemeDelay;
-		//    }
-		//    if(this.speakStopDelay > 0)
-		//    {
-		//       --this.speakStopDelay;
-		//    }
-		// }
-		// else
-		// {
-		//    _loc1_ = Math.min(79,Math.floor(Math.max(0,-this.head.jaw.rotation * 4.5 + 30)));
-		//    _loc2_ = _loc1_;
-		// }
-		// if(this.mood == ANGRY_MOOD || this.clenchTeethRatio > 0)
-		// {
-		//    _loc1_ = Math.round(_loc1_ + (58 - _loc1_) * this.clenchTeethRatio);
-		//    _loc2_ = Math.round(_loc2_ + (61 - _loc2_) * this.clenchTeethRatio);
-		//    _loc1_ = Math.max(0,_loc1_ - 1);
-		//    _loc2_ = Math.min(79,_loc2_ + 6);
-		// }
-		// this.bottomLipstick.gotoAndStop(_loc2_ + 2);
-		// this.topLipstickContainer.topLipstick.gotoAndStop(_loc1_ + 2);
-		// this.tongueContainer.gotoAndStop(_loc2_ + 2);
-		// this.tongueContainer.rotation = this.head.jaw.rotation;
-		// this.lastUpperLipPos = _loc1_;
-		// this.lastLowerLipPos = _loc2_;
-		// this.head.face.lipHighlight.gotoAndStop(_loc1_);
-		// this.head.face.lipShading.gotoAndStop(_loc1_);
-		// this.head.face.lipFill.gotoAndStop(_loc1_);
-		// this.head.face.lipOutline.gotoAndStop(_loc1_);
-		// this.head.headTan.face.lipFill.gotoAndStop(_loc1_);
-		// this.head.headTan.face.lipOutline.gotoAndStop(_loc1_);
-		// _loc2_ += this.lipSkinOffset;
-		// this.head.jaw.gotoAndStop(_loc2_);
-		// this.head.headTan.jaw.gotoAndStop(_loc2_);
+		var _loc1_:UInt = 0;
+		var _loc2_:UInt = 0;
+		this.bottomLipstick.rotation = this.head.jaw.rotation;
+		if(this.clenchTeeth || this.clenchTeethRatio > 0)
+		{
+		   ++this.clenchedTeethTimer;
+		   if(this.clenchedTeethTimer >= this.clenchedTeethTime)
+		   {
+		      this.clenchTeeth = false;
+		   }
+		   if(this.clenchTeeth && this.clenchTeethRatio < 1)
+		   {
+		      this.clenchTeethRatio = Math.min(1,this.clenchTeethRatio + 0.2);
+		   }
+		   else if(!this.clenchTeeth)
+		   {
+		      this.clenchTeethRatio = Math.max(0,this.clenchTeethRatio - 0.3);
+		   }
+		   this.topTeethTween.tween(this.clenchTeethRatio);
+		   this.bottomTeethTween.tween(this.clenchTeethRatio);
+		}
+		if(this.speaking || this.speakStopDelay > 0)
+		{
+		   _loc1_ = this.lastUpperLipPos + Math.round((this.targetPhoneme.upperLip - this.lastUpperLipPos) / (this.phonemeDelay + 1));
+		   _loc2_ = this.lastLowerLipPos + Math.round((this.targetPhoneme.lowerLip - this.lastLowerLipPos) / (this.phonemeDelay + 1));
+		   if(this.phonemeDelay > 0)
+		   {
+		      --this.phonemeDelay;
+		   }
+		   if(this.speakStopDelay > 0)
+		   {
+		      --this.speakStopDelay;
+		   }
+		}
+		else
+		{
+		   _loc1_ = Std.int(Maths.clampf(Math.floor(-this.head.jaw.rotation * 4.5 + 30), 0, 79));
+		   _loc2_ = _loc1_;
+		}
+		if(this.mood == ANGRY_MOOD || this.clenchTeethRatio > 0)
+		{
+		   _loc1_ = Math.round(_loc1_ + (58 - _loc1_) * this.clenchTeethRatio);
+		   _loc2_ = Math.round(_loc2_ + (61 - _loc2_) * this.clenchTeethRatio);
+		   _loc1_ = Std.int(Math.max(0,_loc1_ - 1));
+		   _loc2_ = Std.int(Math.min(79,_loc2_ + 6));
+		}
+		this.bottomLipstick.gotoAndStop(_loc2_ + 2);
+		this.topLipstickContainer.topLipstick.gotoAndStop(_loc1_ + 2);
+		this.tongueContainer.gotoAndStop(_loc2_ + 2);
+		this.tongueContainer.rotation = this.head.jaw.rotation;
+		this.lastUpperLipPos = _loc1_;
+		this.lastLowerLipPos = _loc2_;
+		this.head.face.lipHighlight.gotoAndStop(_loc1_);
+		this.head.face.lipShading.gotoAndStop(_loc1_);
+		this.head.face.lipFill.gotoAndStop(_loc1_);
+		this.head.face.lipOutline.gotoAndStop(_loc1_);
+		this.head.headTan.face.lipFill.gotoAndStop(_loc1_);
+		this.head.headTan.face.lipOutline.gotoAndStop(_loc1_);
+		_loc2_ += this.lipSkinOffset;
+		this.head.jaw.gotoAndStop(_loc2_);
+		this.head.headTan.jaw.gotoAndStop(_loc2_);
 	}
 
 	public function breastSizeChanged() {
 		this.updateBreastFirmness();
-		this.braStrapController.update();
-		this.shoulderStrapController.update();
-		this.topStrapController.update();
+		// this.braStrapController.update();
+		// this.shoulderStrapController.update();
+		// this.topStrapController.update();
 		this.updateNipplePiercing();
 	}
 
 	public function updateBreastFirmness() {
-		this.leftBreastController.updateFirmness(G.characterControl.breastSize, this.breastCostumeOn);
-		this.rightBreastController.updateFirmness(G.characterControl.breastSize, this.breastCostumeOn);
+		// this.leftBreastController.updateFirmness(G.characterControl.breastSize, this.breastCostumeOn);
+		// this.rightBreastController.updateFirmness(G.characterControl.breastSize, this.breastCostumeOn);
 	}
 
 	public function findChild(param1:String, param2:DisplayObjectContainer):DisplayObject {
@@ -2751,62 +2830,62 @@ class Her extends MovieClip {
 	}
 
 	public function updateNipplePiercing() {
-		var _loc1_:Point = null;
-		var _loc2_:Point = null;
-		var _loc3_:MovieClip = null;
-		var _loc4_:MovieClip = null;
-		// if(this.torsoBack.leftBreast.getChildByName("leftBreast"))
-		// {
-		//    _loc3_ = this.findChild("nipple",this.torsoBack.leftBreast.getChildByName("leftBreast")) as MovieClip;
-		// }
-		// if(!_loc3_)
-		// {
-		//    if(this.torsoBack.leftBreast.nipple.getChildByName("leftNipple"))
-		//    {
-		//       _loc3_ = this.torsoBack.leftBreast.nipple.getChildByName("leftNipple");
-		//    }
-		//    else
-		//    {
-		//       _loc3_ = this.torsoBack.leftBreast.nipple;
-		//    }
-		// }
-		// if(this.torso.midLayer.rightBreast.getChildByName("rightBreast"))
-		// {
-		//    _loc4_ = this.findChild("nipple",this.torso.midLayer.rightBreast.getChildByName("rightBreast")) as MovieClip;
-		// }
-		// if(!_loc4_)
-		// {
-		//    if(this.torso.midLayer.rightBreast.nipple.getChildByName("rightNipple"))
-		//    {
-		//       _loc4_ = this.torso.midLayer.rightBreast.nipple.getChildByName("rightNipple");
-		//    }
-		//    else
-		//    {
-		//       _loc4_ = this.torso.midLayer.rightBreast.nipple;
-		//    }
-		// }
-		// if(_loc3_.getChildByName("piercingPoint"))
-		// {
-		//    _loc2_ = new Point(_loc3_.getChildByName("piercingPoint").x,_loc3_.getChildByName("piercingPoint").y);
-		// }
-		// else
-		// {
-		//    _loc2_ = new Point();
-		// }
-		// if(_loc4_.getChildByName("piercingPoint"))
-		// {
-		//    _loc1_ = new Point(_loc4_.getChildByName("piercingPoint").x,_loc4_.getChildByName("piercingPoint").y);
-		// }
-		// else
-		// {
-		//    _loc1_ = new Point();
-		// }
-		// _loc2_ = this.torsoBack.globalToLocal(_loc3_.localToGlobal(_loc2_));
-		// _loc1_ = this.torso.globalToLocal(_loc4_.localToGlobal(_loc1_));
-		// this.torso.nipplePiercing.x = _loc1_.x;
-		// this.torso.nipplePiercing.y = _loc1_.y;
-		// this.torso.leftNipplePiercing.x = _loc2_.x;
-		// this.torso.leftNipplePiercing.y = _loc2_.y;
+		var rightPiercingPoint:Point = null;
+		var leftPiercingPoint:Point = null;
+		var leftNipple:MovieClip = null;
+		var rightNipple:MovieClip = null;
+		if(this.torsoBack.leftBreast.leftBreast != null)
+		{
+		   leftNipple = cast(this.findChild("nipple",this.torsoBack.leftBreast.leftBreast), MovieClip);
+		}
+		if(leftNipple == null)
+		{
+		   if(this.torsoBack.leftBreast.nipple.leftNipple != null)
+		   {
+		      leftNipple = this.torsoBack.leftBreast.nipple.leftNipple;
+		   }
+		   else
+		   {
+		      leftNipple = this.torsoBack.leftBreast.nipple;
+		   }
+		}
+		if(this.torso.midLayer.rightBreast.rightBreast != null)
+		{
+		   rightNipple = cast(this.findChild("nipple",this.torso.midLayer.rightBreast.rightBreast), MovieClip);
+		}
+		if(rightNipple == null)
+		{
+		   if(this.torso.midLayer.rightBreast.nipple.rightNipple != null)
+		   {
+		      rightNipple = this.torso.midLayer.rightBreast.nipple.rightNipple;
+		   }
+		   else
+		   {
+		      rightNipple = this.torso.midLayer.rightBreast.nipple;
+		   }
+		}
+		if(leftNipple.getChildByName("piercingPoint") != null)
+		{
+		   leftPiercingPoint = new Point(leftNipple.getChildByName("piercingPoint").x,leftNipple.getChildByName("piercingPoint").y);
+		}
+		else
+		{
+		   leftPiercingPoint = new Point();
+		}
+		if(rightNipple.getChildByName("piercingPoint") != null)
+		{
+		   rightPiercingPoint = new Point(rightNipple.getChildByName("piercingPoint").x,rightNipple.getChildByName("piercingPoint").y);
+		}
+		else
+		{
+		   rightPiercingPoint = new Point();
+		}
+		leftPiercingPoint = this.torsoBack.globalToLocal(leftNipple.localToGlobal(leftPiercingPoint));
+		rightPiercingPoint = this.torso.globalToLocal(rightNipple.localToGlobal(rightPiercingPoint));
+		this.torso.nipplePiercing.x = rightPiercingPoint.x;
+		this.torso.nipplePiercing.y = rightPiercingPoint.y;
+		this.torso.leftNipplePiercing.x = leftPiercingPoint.x;
+		this.torso.leftNipplePiercing.y = leftPiercingPoint.y;
 	}
 
 	public function updateTorso() {
@@ -2834,39 +2913,39 @@ class Her extends MovieClip {
 		}
 		var _loc6_:Matrix;
 		(_loc6_ = new Matrix()).rotate(-this.torsoIK.section2Angle);
-		// this.torso.leg.transform.matrix = _loc3_;
-		// this.torso.rightThighBottoms.transform.matrix = _loc3_;
-		// this.torso.rightThighBottomsOver.transform.matrix = _loc3_;
-		// this.torso.rightCalfContainer.transform.matrix = _loc3_;
-		// this.torso.rightThighStocking.transform.matrix = _loc3_;
-		// this.torso.rightThighStocking.stocking.hipLayer.transform.matrix = _loc6_;
-		// this.torso.rightThighStocking.stocking2.hipLayer.transform.matrix = _loc6_;
-		// this.torso.rightThighStocking.stocking.hipOverLayer.transform.matrix = _loc6_;
-		// this.torso.rightThighStockingB.transform.matrix = _loc3_;
-		// this.torso.rightThighStockingB.stocking.hipLayer.transform.matrix = _loc6_;
-		// this.torso.rightThighStockingB.stocking2.hipLayer.transform.matrix = _loc6_;
-		// this.torso.rightThighStockingB.stocking.hipOverLayer.transform.matrix = _loc6_;
-		// this.torso.rightThighCostume.transform.matrix = _loc3_;
-		// var _loc7_:Matrix;
-		// (_loc7_ = _loc3_.clone()).tx = 0;
-		// _loc7_.ty = 0;
-		// _loc7_.scale(0.95,0.95);
-		// _loc7_.translate(this.leftLegStartPoint.x,this.leftLegStartPoint.y);
-		// this.leftLegContainer.leg.transform.matrix = _loc7_;
-		// this.torso.chestCostume.legMask.rotation = this.torso.leg.rotation - 27.6;
-		// this.torso.rightThighCostumeMask.legMask.rotation = this.torso.leg.rotation;
-		// this.torso.rightCalfContainer.calf.transform.matrix = _loc4_;
-		// this.torso.rightCalfContainer.calfStocking.transform.matrix = _loc4_;
-		// this.torso.rightCalfContainer.calfStockingB.transform.matrix = _loc4_;
-		// this.torso.rightCalfContainer.footwear.transform.matrix = _loc4_;
-		// this.torso.rightCalfContainer.bottoms.transform.matrix = _loc4_;
-		// this.torso.rightCalfContainer.cuffs.transform.matrix = _loc4_;
-		// this.leftLegContainer.leg.calf.transform.matrix = _loc4_;
-		// this.leftLegContainer.leg.calfStocking.transform.matrix = _loc4_;
-		// this.leftLegContainer.leg.calfStockingB.transform.matrix = _loc4_;
-		// this.leftLegContainer.leg.footwear.transform.matrix = _loc4_;
-		// this.leftLegContainer.leg.leftCalfBottoms.transform.matrix = _loc4_;
-		// this.leftLegContainer.leg.cuffs.transform.matrix = _loc4_;
+		this.torso.leg.transform.matrix = _loc3_;
+		this.torso.rightThighBottoms.transform.matrix = _loc3_;
+		this.torso.rightThighBottomsOver.transform.matrix = _loc3_;
+		this.torso.rightCalfContainer.transform.matrix = _loc3_;
+		this.torso.rightThighStocking.transform.matrix = _loc3_;
+		this.torso.rightThighStocking.stocking.hipLayer.transform.matrix = _loc6_;
+		this.torso.rightThighStocking.stocking2.hipLayer.transform.matrix = _loc6_;
+		this.torso.rightThighStocking.stocking.hipOverLayer.transform.matrix = _loc6_;
+		this.torso.rightThighStockingB.transform.matrix = _loc3_;
+		this.torso.rightThighStockingB.stocking.hipLayer.transform.matrix = _loc6_;
+		this.torso.rightThighStockingB.stocking2.hipLayer.transform.matrix = _loc6_;
+		this.torso.rightThighStockingB.stocking.hipOverLayer.transform.matrix = _loc6_;
+		this.torso.rightThighCostume.transform.matrix = _loc3_;
+		var _loc7_:Matrix;
+		(_loc7_ = _loc3_.clone()).tx = 0;
+		_loc7_.ty = 0;
+		_loc7_.scale(0.95,0.95);
+		_loc7_.translate(this.leftLegStartPoint.x,this.leftLegStartPoint.y);
+		this.leftLegContainer.leg.transform.matrix = _loc7_;
+		this.torso.chestCostume.legMask.rotation = this.torso.leg.rotation - 27.6;
+		this.torso.rightThighCostumeMask.legMask.rotation = this.torso.leg.rotation;
+		this.torso.rightCalfContainer.calf.transform.matrix = _loc4_;
+		this.torso.rightCalfContainer.calfStocking.transform.matrix = _loc4_;
+		this.torso.rightCalfContainer.calfStockingB.transform.matrix = _loc4_;
+		this.torso.rightCalfContainer.footwear.transform.matrix = _loc4_;
+		this.torso.rightCalfContainer.bottoms.transform.matrix = _loc4_;
+		this.torso.rightCalfContainer.cuffs.transform.matrix = _loc4_;
+		this.leftLegContainer.leg.calf.transform.matrix = _loc4_;
+		this.leftLegContainer.leg.calfStocking.transform.matrix = _loc4_;
+		this.leftLegContainer.leg.calfStockingB.transform.matrix = _loc4_;
+		this.leftLegContainer.leg.footwear.transform.matrix = _loc4_;
+		this.leftLegContainer.leg.leftCalfBottoms.transform.matrix = _loc4_;
+		this.leftLegContainer.leg.cuffs.transform.matrix = _loc4_;
 	}
 
 	public function updateArms() {
@@ -2910,10 +2989,10 @@ class Her extends MovieClip {
 			}
 			this.leftArmContainer.upperArm.transform.matrix = _loc1_;
 			this.leftArmContainer.upperArmCostume.transform.matrix = _loc1_;
-			// this.leftArmContainer.upperArm.foreArm.transform.matrix = _loc2_;
-			// this.leftArmContainer.upperArmCostume.foreArmCostume.transform.matrix = _loc2_;
-			// this.leftArmContainer.upperArm.foreArm.hand.transform.matrix = _loc3_;
-			// this.leftArmContainer.upperArmCostume.foreArmCostume.handCostume.transform.matrix = this.leftArmContainer.upperArm.foreArm.hand.transform.matrix;
+			this.leftArmContainer.upperArm.foreArm.transform.matrix = _loc2_;
+			this.leftArmContainer.upperArmCostume.foreArmCostume.transform.matrix = _loc2_;
+			this.leftArmContainer.upperArm.foreArm.hand.transform.matrix = _loc3_;
+			this.leftArmContainer.upperArmCostume.foreArmCostume.handCostume.transform.matrix = this.leftArmContainer.upperArm.foreArm.hand.transform.matrix;
 			(_loc4_ = _loc3_.clone()).concat(_loc2_);
 			_loc4_.concat(_loc1_);
 			if (this.leftHandOver.parent == this.leftHandOverContainer) {
@@ -2969,58 +3048,59 @@ class Her extends MovieClip {
 			this.rightArmEraseContainer.upperArmCostume.transform.matrix = _loc5_;
 			this.rightForeArmContainer.upperArm.transform.matrix = _loc5_;
 			this.rightForeArmContainer.upperArmCostume.transform.matrix = _loc5_;
-			// this.rightForeArmContainer.upperArm.foreArm.transform.matrix = _loc6_;
-			// this.rightForeArmContainer.upperArmCostume.foreArmCostume.transform.matrix = _loc6_;
-			// this.rightForeArmContainer.upperArm.foreArm.hand.transform.matrix = _loc7_;
-			// this.rightForeArmContainer.upperArmCostume.foreArmCostume.handCostume.transform.matrix = this.rightForeArmContainer.upperArm.foreArm.hand.transform.matrix;
+			this.rightForeArmContainer.upperArm.foreArm.transform.matrix = _loc6_;
+			this.rightForeArmContainer.upperArmCostume.foreArmCostume.transform.matrix = _loc6_;
+			this.rightForeArmContainer.upperArm.foreArm.hand.transform.matrix = _loc7_;
+			this.rightForeArmContainer.upperArmCostume.foreArmCostume.handCostume.transform.matrix = this.rightForeArmContainer.upperArm.foreArm.hand.transform.matrix;
 		}
 	}
 
 	public function updateHandJobMode() {
-		// var _loc1_ = G.currentHandJobPos.x;
-		// var _loc2_:Float = G.him.getPosOnPenis(localToGlobal(this.topLipA)) + this.handJobHeadPadding / g.him.penisLengthScale;
-		// G.currentHandJobPos.x += (g.targetHandJobPos.x * (1 - _loc2_) + _loc2_ - g.currentHandJobPos.x) / 2;
-		// G.currentHandJobPos.x = Math.min(1, Math.max(_loc2_, g.currentHandJobPos.x));
-		// G.currentHandJobPos.y += (g.targetHandJobPos.y - g.currentHandJobPos.y) / 2;
-		// var _loc3_ = G.currentHandJobPos.x * range - _loc1_ * range;
-		// if (!this.passedOut) {
-		// 	G.him.givePleasure(!!Math.isNaN(_loc3_) ? 0 : _loc3_ * 0.8);
-		// 	if (Math.abs(_loc3_) > 10) {
-		// 		G.dialogueControl.buildState(Dialogue.HAND_JOB_STROKE, Dialogue.FRAME_BUILD);
-		// 	}
-		// }
-		// G.soundControl.updateRub(Math.min(0.5, _loc3_ * 0.01), this.pos);
-		// this.handJobPenisWidth = G.him.getSimplePenisWidth(g.her.rightForeArmContainer.upperArm.foreArm.hand.localToGlobal(new Point(0,0)));
-		// var _loc4_:Number = (_loc4_ = 0.5 - 0.5 * G.him.getPenisMinRatio() + 0.5 * this.handJobPenisWidth / 65) + Math.abs(Math.tan(this.rightHandAngleOffset / 180 * Math.PI) * 0.4);
-		// _loc4_ = Math.min(1.1,_loc4_);
-		// if(this.rightForeArmContainer.upperArm.foreArm.hand.grip)
-		// {
-		//    this.rightForeArmContainer.upperArm.foreArm.hand.grip.scaleY = _loc4_;
-		// }
-		// if(this.rightForeArmContainer.upperArmCostume.foreArmCostume.handCostume.glove.grip)
-		// {
-		//    this.rightForeArmContainer.upperArmCostume.foreArmCostume.handCostume.glove.grip.scaleY = _loc4_;
-		// }
-		// if(this.rightForeArmContainer.upperArm.foreArm.hand.tan.grip)
-		// {
-		//    this.rightForeArmContainer.upperArm.foreArm.hand.tan.grip.scaleY = _loc4_;
-		// }
-		// if(this.leftHandOver.hand.grip)
-		// {
-		//    this.leftHandOver.hand.scaleY = 0.8 + (1 - _loc4_) * 0.3;
-		// }
+		var _loc1_ = G.currentHandJobPos.x;
+		var _loc2_:Float = G.him.getPosOnPenis(localToGlobal(this.topLipA)) + this.handJobHeadPadding / G.him.penisLengthScale;
+		G.currentHandJobPos.x += (G.targetHandJobPos.x * (1 - _loc2_) + _loc2_ - G.currentHandJobPos.x) / 2;
+		G.currentHandJobPos.x = Math.min(1, Math.max(_loc2_, G.currentHandJobPos.x));
+		G.currentHandJobPos.y += (G.targetHandJobPos.y - G.currentHandJobPos.y) / 2;
+		var _loc3_ = G.currentHandJobPos.x * range - _loc1_ * range;
+		if (!this.passedOut) {
+			G.him.givePleasure(!!Math.isNaN(_loc3_) ? 0 : _loc3_ * 0.8);
+			if (Math.abs(_loc3_) > 10) {
+				G.dialogueControl.buildState(Dialogue.HAND_JOB_STROKE, Dialogue.FRAME_BUILD);
+			}
+		}
+		G.soundControl.updateRub(Math.min(0.5, _loc3_ * 0.01), this.pos);
+		this.handJobPenisWidth = G.him.getSimplePenisWidth(G.her.rightForeArmContainer.upperArm.foreArm.hand.localToGlobal(new Point(0,0)));
+        var _loc4_ = 0.5 - 0.5 * G.him.getPenisMinRatio() + 0.5 * this.handJobPenisWidth / 65;
+		_loc4_ += Math.abs(Math.tan(this.rightHandAngleOffset / 180 * Math.PI) * 0.4);
+		_loc4_ = Math.min(1.1,_loc4_);
+		if(this.rightForeArmContainer.upperArm.foreArm.hand.grip != null)
+		{
+		   this.rightForeArmContainer.upperArm.foreArm.hand.grip.scaleY = _loc4_;
+		}
+		if(this.rightForeArmContainer.upperArmCostume.foreArmCostume.handCostume.glove.grip != null)
+		{
+		   this.rightForeArmContainer.upperArmCostume.foreArmCostume.handCostume.glove.grip.scaleY = _loc4_;
+		}
+		if(this.rightForeArmContainer.upperArm.foreArm.hand.tan.grip != null)
+		{
+		   this.rightForeArmContainer.upperArm.foreArm.hand.tan.grip.scaleY = _loc4_;
+		}
+		if(this.leftHandOver.hand.grip != null)
+		{
+		   this.leftHandOver.hand.scaleY = 0.8 + (1 - _loc4_) * 0.3;
+		}
 	}
 
 	public function slipHands() {
 		if (armPositions[this.currentLeftArmPosition] == "On Him") {
-			if (G.breathLevel > g.outOfBreathPoint) {
+			if (G.breathLevel > G.outOfBreathPoint) {
 				this.leftArmIK.slip(this.passOutFactor / this.passOutMax * Math.random());
 			} else {
 				this.leftArmIK.resetTarget(0.3);
 			}
 		}
 		if (armPositions[this.currentRightArmPosition] == "On Him") {
-			if (G.breathLevel > g.outOfBreathPoint) {
+			if (G.breathLevel > G.outOfBreathPoint) {
 				this.rightArmIK.slip(this.passOutFactor / this.passOutMax * Math.random());
 			} else {
 				this.rightArmIK.resetTarget(0.3);
@@ -3047,93 +3127,93 @@ class Her extends MovieClip {
 		param1 = Math.min(8, param1);
 		param3 = Math.min(2, param3);
 		var _loc5_ = G.sceneLayer.globalToLocal(this.localToGlobal(this.topLipB));
-		// var _loc6_:Point = G.sceneLayer.globalToLocal(this.head.jaw.localToGlobal(this.bottomLipA));
-		// var _loc7_:Point = new Point(_loc5_.x - _loc6_.x,_loc5_.y - _loc6_.y);
-		// _loc7_.x /= 100;
-		// _loc7_.y /= 100;
-		// var _loc8_:uint = 0;
-		// while(_loc8_ < param2)
-		// {
-		//    _loc9_ = Math.random() * 100;
-		//    _loc10_ = new Point(_loc6_.x + _loc9_ * _loc7_.x,_loc6_.y + _loc9_ * _loc7_.y);
-		//    _loc11_ = (Math.random() * 2 - 1 - (_loc9_ - 50) * 0.25) * param3;
-		//    _loc12_ = (Math.random() * 8 - 4 + param1) * param3;
-		//    _loc13_ = Math.random() * 1.5 + 0.1;
-		//    if(param4)
-		//    {
-		//       G.cumLayer.addChild(new Droplet(_loc10_,new Point(_loc12_,_loc11_),_loc13_,0.2,1,true));
-		//    }
-		//    else if(G.spit)
-		//    {
-		//       G.strandFrontLayer.addChild(new Droplet(_loc10_,new Point(_loc12_,_loc11_),_loc13_));
-		//    }
-		//    _loc8_++;
-		// }
+		var _loc6_:Point = G.sceneLayer.globalToLocal(this.head.jaw.localToGlobal(this.bottomLipA));
+		var _loc7_:Point = new Point(_loc5_.x - _loc6_.x,_loc5_.y - _loc6_.y);
+		_loc7_.x /= 100;
+		_loc7_.y /= 100;
+		var _loc8_:UInt = 0;
+		while(_loc8_ < param2)
+		{
+		   _loc9_ = Math.random() * 100;
+		   _loc10_ = new Point(_loc6_.x + _loc9_ * _loc7_.x,_loc6_.y + _loc9_ * _loc7_.y);
+		   _loc11_ = (Math.random() * 2 - 1 - (_loc9_ - 50) * 0.25) * param3;
+		   _loc12_ = (Math.random() * 8 - 4 + param1) * param3;
+		   _loc13_ = Math.random() * 1.5 + 0.1;
+		   if(param4)
+		   {
+		      G.cumLayer.addChild(new Droplet(_loc10_,new Point(_loc12_,_loc11_),_loc13_,0.2,1,true));
+		   }
+		   else if(G.spit)
+		   {
+		      G.strandFrontLayer.addChild(new Droplet(_loc10_,new Point(_loc12_,_loc11_),_loc13_));
+		   }
+		   _loc8_++;
+		}
 	}
 
 	public function generateRandomStrand(param1:String = "front", param2:Bool = true) {
-		// var _loc3_:Point = null;
-		// var _loc4_:Number = NaN;
-		// var _loc5_:Point = null;
-		// var _loc6_:AnchorProp = null;
-		// var _loc7_:AnchorProp = null;
-		// var _loc8_:uint = 0;
-		// if(G.spit && !g.strandControl.maxPop())
-		// {
-		//    if(param1 == "random")
-		//    {
-		//       if(Math.random() > 0.7)
-		//       {
-		//          param1 = "front";
-		//       }
-		//       else
-		//       {
-		//          param1 = "back";
-		//       }
-		//    }
-		//    if(Math.random() > 0.5)
-		//    {
-		//       _loc3_ = new Point(this.topLipA.x - this.topLipB.x,this.topLipA.y - this.topLipB.y);
-		//       _loc4_ = Math.random();
-		//       _loc5_ = new Point(this.topLipB.x + _loc4_ * _loc3_.x,this.topLipB.y + _loc4_ * _loc3_.y);
-		//       _loc6_ = new AnchorProp(_loc5_.clone(),this);
-		//    }
-		//    else
-		//    {
-		//       _loc3_ = new Point(this.bottomLipA.x - this.bottomLipB.x,this.bottomLipA.y - this.bottomLipB.y);
-		//       _loc4_ = Math.random();
-		//       _loc5_ = new Point(this.bottomLipB.x + _loc4_ * _loc3_.x,this.bottomLipB.y + _loc4_ * _loc3_.y);
-		//       _loc6_ = new AnchorProp(_loc5_.clone(),this.head.jaw);
-		//    }
-		//    _loc7_ = G.him.getRandomAnchor(this.pos);
-		//    if(param2)
-		//    {
-		//       _loc8_ = Math.floor(Math.random() * 4) + 4;
-		//    }
-		//    else
-		//    {
-		//       _loc8_ = Math.floor(Math.random() * 2) + 3;
-		//    }
-		//    if(param1 == "front")
-		//    {
-		//       G.strandControl.newStrand(g.strandFrontLayer,_loc8_,g.randomSpitMass(),_loc6_,_loc7_,param2,new Point(this.movement / 5,0));
-		//    }
-		//    else if(param1 == "back")
-		//    {
-		//       G.strandControl.newStrand(g.strandBackLayer,_loc8_,g.randomSpitMass(),_loc6_,_loc7_,param2,new Point(this.movement / 5,0),true);
-		//    }
-		// }
+		var _loc3_:Point = null;
+		var _loc4_:Float = Math.NaN;
+		var _loc5_:Point = null;
+		var _loc6_:AnchorProp = null;
+		var _loc7_:AnchorProp = null;
+		var _loc8_:UInt = 0;
+		if(G.spit && !G.strandControl.maxPop())
+		{
+		   if(param1 == "random")
+		   {
+		      if(Math.random() > 0.7)
+		      {
+		         param1 = "front";
+		      }
+		      else
+		      {
+		         param1 = "back";
+		      }
+		   }
+		   if(Math.random() > 0.5)
+		   {
+		      _loc3_ = new Point(this.topLipA.x - this.topLipB.x,this.topLipA.y - this.topLipB.y);
+		      _loc4_ = Math.random();
+		      _loc5_ = new Point(this.topLipB.x + _loc4_ * _loc3_.x,this.topLipB.y + _loc4_ * _loc3_.y);
+		      _loc6_ = new AnchorProp(_loc5_.clone(),this);
+		   }
+		   else
+		   {
+		      _loc3_ = new Point(this.bottomLipA.x - this.bottomLipB.x,this.bottomLipA.y - this.bottomLipB.y);
+		      _loc4_ = Math.random();
+		      _loc5_ = new Point(this.bottomLipB.x + _loc4_ * _loc3_.x,this.bottomLipB.y + _loc4_ * _loc3_.y);
+		      _loc6_ = new AnchorProp(_loc5_.clone(),this.head.jaw);
+		   }
+		   _loc7_ = G.him.getRandomAnchor(this.pos);
+		   if(param2)
+		   {
+		      _loc8_ = Math.floor(Math.random() * 4) + 4;
+		   }
+		   else
+		   {
+		      _loc8_ = Math.floor(Math.random() * 2) + 3;
+		   }
+		   if(param1 == "front")
+		   {
+		      G.strandControl.newStrand(G.strandFrontLayer,_loc8_,G.randomSpitMass(),_loc6_,_loc7_,param2,new Point(this.movement / 5,0));
+		   }
+		   else if(param1 == "back")
+		   {
+		      G.strandControl.newStrand(G.strandBackLayer,_loc8_,G.randomSpitMass(),_loc6_,_loc7_,param2,new Point(this.movement / 5,0),true);
+		   }
+		}
 	}
 
 	public function generateTongueStrand() {
 		var _loc1_:AnchorProp = null;
 		var _loc2_:AnchorProp = null;
 		var _loc3_:UInt = 0;
-		if (G.spit && !g.strandControl.maxPop()) {
+		if (G.spit && !G.strandControl.maxPop()) {
 			_loc1_ = new AnchorProp(new Point(), this.tongue.tipPoint);
-			_loc2_ = new AnchorProp(G.him.penis.globalToLocal(this.tongue.localToGlobal(this.tongue.tip)), g.him.penis);
+			_loc2_ = new AnchorProp(G.him.penis.globalToLocal(this.tongue.localToGlobal(this.tongue.tip)), G.him.penis);
 			_loc3_ = Std.int(Math.ffloor(Math.random() * 2) + 4);
-			G.strandControl.newStrand(g.strandBackLayer, _loc3_, g.randomSpitMass() * 0.5, _loc1_, _loc2_, false, new Point(this.movement / 5, 0));
+			G.strandControl.newStrand(G.strandBackLayer, _loc3_, G.randomSpitMass() * 0.5, _loc1_, _loc2_, false, new Point(this.movement / 5, 0));
 		}
 	}
 
@@ -3164,10 +3244,10 @@ class Her extends MovieClip {
 	}
 
 	public function updateJawBulge() {
-		// this.head.jaw.jawBulge.gotoAndStop(this.lipSkinOffset + this.jawBulgeTarget);
-		// this.head.jawBack.jawBulgeOutline.gotoAndStop(this.jawBulgeTarget);
-		// this.head.headTan.jaw.jawBulge.gotoAndStop(this.lipSkinOffset + this.jawBulgeTarget);
-		// this.head.headTan.jawBack.jawBulgeOutline.gotoAndStop(this.jawBulgeTarget);
+		this.head.jaw.jawBulge.gotoAndStop(this.lipSkinOffset + this.jawBulgeTarget);
+		this.head.jawBack.jawBulgeOutline.gotoAndStop(this.jawBulgeTarget);
+		this.head.headTan.jaw.jawBulge.gotoAndStop(this.lipSkinOffset + this.jawBulgeTarget);
+		this.head.headTan.jawBack.jawBulgeOutline.gotoAndStop(this.jawBulgeTarget);
 	}
 
 	public function fillMouth(param1:Bool = false) {
@@ -3188,12 +3268,12 @@ class Her extends MovieClip {
 
 	public function lastSpurt() {
 		if (G.nostrilSpray && this.cumInMouth >= this.fullCumInMouth + this.minNostrilSpray) {
-			// this.currentNostrilSpray = G.strandControl.newCumStrand(this.nostril,this.head.face);
-			// this.currentNostrilSpray.myGravity = G.gravity / 2;
-			// this.shock(50);
-			// this.wince();
-			// this.nostrilSpraying = true;
-			// this.nostrilSprayToggle = true;
+			this.currentNostrilSpray = G.strandControl.newCumStrand(this.nostril,this.head.face);
+			this.currentNostrilSpray.myGravity = G.gravity / 2;
+			this.shock(50);
+			this.wince();
+			this.nostrilSpraying = true;
+			this.nostrilSprayToggle = true;
 		}
 	}
 
@@ -3219,11 +3299,11 @@ class Her extends MovieClip {
 				if (this.startedSpitDrool) {
 					this.currentSpitDrool.insertLink(new Point(0, 0), 2, G.randomSpitMass());
 				} else {
-					this.currentSpitDrool = G.strandControl.newStrand(g.strandFrontLayer, 1, g.randomSpitMass(), null, null, true);
-					// this.currentSpitDrool.addSourceLink(this.offBottomLip,this.head.jaw);
-					// this.currentSpitDrool.myGravity = G.gravity / 2;
-					// this.currentSpitDrool.collisionFree = 5;
-					// this.startedSpitDrool = true;
+					this.currentSpitDrool = G.strandControl.newStrand(G.strandFrontLayer, 1, G.randomSpitMass(), null, null, true);
+					this.currentSpitDrool.addSourceLink(this.offBottomLip,this.head.jaw);
+					this.currentSpitDrool.myGravity = G.gravity / 2;
+					this.currentSpitDrool.collisionFree = 5;
+					this.startedSpitDrool = true;
 				}
 			}
 		} else {
@@ -3260,10 +3340,10 @@ class Her extends MovieClip {
 				if (this.startedCumDrool) {
 					this.currentCumDrool.insertLink(new Point(0, 0), 2, G.randomCumMass() * 2);
 				} else {
-					// this.currentCumDrool = G.strandControl.newCumStrand(this.offBottomLip,this.head.jaw);
-					// this.currentCumDrool.myGravity = G.gravity / 2;
-					// this.currentCumDrool.collisionFree = 2;
-					// this.startedCumDrool = true;
+					this.currentCumDrool = G.strandControl.newCumStrand(this.offBottomLip,this.head.jaw);
+					this.currentCumDrool.myGravity = G.gravity / 2;
+					this.currentCumDrool.collisionFree = 2;
+					this.startedCumDrool = true;
 				}
 			}
 		} else {
@@ -3343,6 +3423,6 @@ class Her extends MovieClip {
 	@:flash.property public var penisOn(get, never):Bool;
 
 	function get_penisOn():Bool {
-		return this._penisControl.currentPenisID > 0;
+		return this.penisControl.currentPenisID > 0;
 	}
 }
