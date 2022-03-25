@@ -8,18 +8,17 @@ import openfl.geom.ColorTransform;
 import openfl.geom.Point;
 import obj.AlphaRGBObject;
 import obj.animation.IKController;
-// import obj.CharacterElementHelper;
+import obj.CharacterElementHelper;
 import obj.Him;
-// import obj.animation.BreastController;
+import obj.animation.BreastController;
 import obj.graphics.PaletteUtils;
 
 class HimFemaleBody extends HimMaleBody {
 	public var breastSize:UInt = 130;
 	public var breastOffset:Array<Float> = [2, 152, 302, 452, 602];
 	public var currentBreastOffset:Float = Math.NaN;
-	// public var leftBreastController:BreastController;
-	// public var rightBreastController:BreastController;
-	// public var footwearControl:CharacterElementHelper;
+	public var leftBreastController:Null<BreastController>;
+	public var rightBreastController:Null<BreastController>;
 	public var herSwatch:Array<AlphaRGBObject>;
 
 	public function new(param1:Him) {
@@ -39,7 +38,7 @@ class HimFemaleBody extends HimMaleBody {
 					this.updateBreastSlider();
 
 				case "hisFootwear":
-					// this.footwearControl.loadDataString(_loc2_[1]);
+					this.footwearControl.loadDataString(_loc2_[1]);
 			}
 		}
 	}
@@ -53,8 +52,8 @@ class HimFemaleBody extends HimMaleBody {
 
 	override public function move(param1:Float, param2:Float, param3:Float) {
 		super.move(param1, param2, param3);
-		// this.leftBreastController.update(xMovement * 0.001);
-		// this.rightBreastController.update(xMovement * 0.001);
+		this.leftBreastController.update(xMovement * 0.001);
+		this.rightBreastController.update(xMovement * 0.001);
 	}
 
 	override public function initElements() {
@@ -135,10 +134,10 @@ class HimFemaleBody extends HimMaleBody {
 	}
 
 	override public function setupElements() {
-		// if (this.leftBreastController == null) {
-			// this.leftBreastController = new BreastController(_him.torsoLayer.leftBreastContainer.leftBreast);
-			// this.rightBreastController = new BreastController(_him.torsoLayer.rightBreastContainer.rightBreast);
-		// }
+		if (this.leftBreastController == null) {
+			this.leftBreastController = new BreastController(_him.torsoLayer.leftBreastContainer.leftBreast);
+			this.rightBreastController = new BreastController(_him.torsoLayer.rightBreastContainer.rightBreast);
+		}
 		this.setSkinx(currentSkinID);
 		this.setBreasts(this.breastSize);
 		this.updateBreastSlider();
@@ -160,7 +159,7 @@ class HimFemaleBody extends HimMaleBody {
 		leftLegIK.newSegments(_him.leftLeg, _him.leftLeg.calf, _him.leftLeg.calf.foot);
 		rightArmIK.newSegments(_him.armContainer.arm, _him.armContainer.arm.upperArm, _him.armContainer.arm.upperArm.shoulderPoint);
 		leftArmIK.newSegments(_him.leftArmContainer.arm, _him.leftArmContainer.arm.foreArm, _him.leftArmContainer.arm.foreArm.hand);
-		// this.footwearControl.resetElement();
+		this.footwearControl.resetElement();
 	}
 
 	override public function setupMenu() {}
@@ -225,10 +224,10 @@ class HimFemaleBody extends HimMaleBody {
 		} else {
 			_him.torsoLayer.rightBreastContainer.rightBreast.nipple.gotoAndStop(skinNameList[currentSkinID].toLowerCase());
 		}
-		// if (this.leftBreastController) {
-		// 	this.leftBreastController.updateFirmness(param1);
-		// 	this.rightBreastController.updateFirmness(param1);
-		// }
+		if (this.leftBreastController != null) {
+			this.leftBreastController.updateFirmness(param1);
+			this.rightBreastController.updateFirmness(param1);
+		}
 		_him.torsoLayer.leftBreastContainer.leftBreast.nipple.tan.visible = false;
 		_him.torsoLayer.rightBreastContainer.rightBreast.nipple.tan.visible = false;
 	}
@@ -281,7 +280,7 @@ class HimFemaleBody extends HimMaleBody {
 	}
 
 	public function setFeet() {
-		// G.him.leftLeg.calf.foot.gotoAndStop(G.himSkinType + (this.footwearControl.selectedName == "Highheel" ? "Highheel" : ""));
-		// G.him.rightLeg.calf.foot.gotoAndStop(G.himSkinType + (this.footwearControl.selectedName == "Highheel" ? "Highheel" : ""));
+		G.him.leftLeg.calf.foot.gotoAndStop(G.himSkinType + (this.footwearControl.selectedName == "Highheel" ? "Highheel" : ""));
+		G.him.rightLeg.calf.foot.gotoAndStop(G.himSkinType + (this.footwearControl.selectedName == "Highheel" ? "Highheel" : ""));
 	}
 }

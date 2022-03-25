@@ -97,21 +97,21 @@ class ASCompat {
 	}
     #end
 
-	public static inline function toExponential(n:Float, ?digits:Int):String {
-		return (cast n).toExponential(digits);
-	}
+	// public static inline function toExponential(n:Float, ?digits:Int):String {
+	// 	return (cast n).toExponential(digits);
+	// }
 
-	public static inline function toFixed(n:Float, ?digits:Int):String {
-		return (cast n).toFixed(digits);
-	}
+	// public static inline function toFixed(n:Float, ?digits:Int):String {
+	// 	return (cast n).toFixed(digits);
+	// }
 
-	public static inline function toPrecision(n:Float, precision:Int):String {
-		return (cast n).toPrecision(precision);
-	}
+	// public static inline function toPrecision(n:Float, precision:Int):String {
+	// 	return (cast n).toPrecision(precision);
+	// }
 
-	public static inline function toRadix(n:Float, radix:Int = 10):String {
-		return (cast n).toString(radix);
-	}
+	// public static inline function toRadix(n:Float, radix:Int = 10):String {
+	// 	return (cast n).toString(radix);
+	// }
 
 	// TODO: this is temporary
 	public static inline function thisOrDefault<T>(value:T, def:T):T {

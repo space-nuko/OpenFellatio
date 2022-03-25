@@ -291,7 +291,7 @@ class G {
 					eraseParents.push(param1);
 				}
 			}
-			if (Std.is(_loc3_, DisplayObjectContainer)) {
+			if (Std.isOfType(_loc3_, DisplayObjectContainer)) {
 				getEraseItems(Std.downcast(_loc3_, DisplayObjectContainer));
 			}
 			_loc4_++;

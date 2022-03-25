@@ -1,6 +1,6 @@
 package obj;
 
-import swf.exporters.animate.AnimateSpriteSymbol;
+import fl.motion.Color;
 import openfl.Vector;
 import openfl.display.BlendMode;
 import openfl.display.DisplayObject;
@@ -10,19 +10,21 @@ import openfl.display.Sprite;
 import openfl.events.MouseEvent;
 import openfl.geom.Matrix;
 import openfl.geom.Point;
+import swf.exporters.animate.AnimateSpriteSymbol;
 import obj.Maths;
+import obj.animation.BreastController;
 import obj.animation.IKController;
 import obj.animation.LinearTween;
+import obj.dialogue.Dialogue;
+import obj.her.BraStrap;
+import obj.her.BreathMist;
 import obj.her.HerPenisControl;
 import obj.her.ITannable;
 import obj.her.Neck;
 import obj.her.Tan;
+import obj.her.TearPoint;
 import obj.her.Tongue;
 import obj.him.Penis;
-import obj.her.TearPoint;
-import obj.her.BreathMist;
-import obj.dialogue.Dialogue;
-import fl.motion.Color;
 
 @:rtti
 class BasicTannable extends MovieClip implements ITannable {
@@ -71,7 +73,7 @@ class HerChestCostumeBottoms extends MovieClip {
 
 @:rtti
 class ChestCostume extends MovieClip {
-	@:keep public var bellyPiercing(default, null):MovieClip;
+	@:keep public var bellyPiercing(default, null):RigidBody;
 	@:keep public var bottoms(default, null):HerChestCostumeBottoms;
 	@:keep public var legMask(default, null):MovieClip;
 }
@@ -177,6 +179,7 @@ class HerPenisContainer extends MovieClip {
 @:rtti
 class Torso extends MovieClip {
 	@:keep public var back(default, null):BasicTannable;
+	@:keep public var backMask(default, null):MovieClip;
 	@:keep public var backHighlight(default, null):MovieClip;
 	@:keep public var backCostume(default, null):BackCostume;
 	@:keep public var backUnderCostume(default, null):BackUnderCostume;
@@ -187,8 +190,8 @@ class Torso extends MovieClip {
 	@:keep public var chestUnderCostume(default, null):ChestUnderCostume;
 	@:keep public var cuffs(default, null):MovieClip;
 	@:keep public var leftGlove(default, null):MovieClip;
-	@:keep public var leftNipplePiercing(default, null):MovieClip;
-	@:keep public var nipplePiercing(default, null):MovieClip;
+	@:keep public var leftNipplePiercing(default, null):RigidBody;
+	@:keep public var nipplePiercing(default, null):RigidBody;
 	@:keep public var rightCalfContainer(default, null):RightCalfContainer;
 	@:keep public var rightGlove(default, null):MovieClip;
 	@:keep public var rightThighBottoms(default, null):MovieClip;
@@ -523,6 +526,7 @@ class HerUpperEyelid extends MovieClip {
 @:rtti
 class HerLowerEyelid extends MovieClip {
 	@:keep public var mascara(default, null):MovieClip;
+	@:keep public var mascaraContainer(default, null):MovieClip;
 }
 
 @:rtti
@@ -578,6 +582,7 @@ class HerHeadTan extends MovieClip {
 class HerJaw extends MovieClip {
 	@:keep public var jawBulge(default, null):MovieClip;
 	@:keep public var jawBulgeOutline(default, null):MovieClip;
+	@:keep public var teeth(default, null):MovieClip;
 }
 
 @:rtti
@@ -588,15 +593,16 @@ class HerJawBack extends MovieClip {
 
 @:rtti
 class HerHead extends MovieClip {
-	@:keep public var neck(default, null):Neck;
-	@:keep public var face(default, null):HerFace;
-	@:keep public var jaw(default, null):HerJaw;
-	@:keep public var jawBack(default, null):HerJawBack;
-	@:keep public var scalpHair(default, null):MovieClip;
 	@:keep public var headTan(default, null):HerHeadTan;
 	@:keep public var cheekSuck(default, null):MovieClip;
 	@:keep public var cheekBulge(default, null):MovieClip;
 	@:keep public var cheekMask(default, null):MovieClip;
+	@:keep public var neck(default, null):Neck;
+	@:keep public var face(default, null):HerFace;
+	@:keep public var jaw(default, null):HerJaw;
+	@:keep public var jawBack(default, null):HerJawBack;
+	@:keep public var teeth(default, null):MovieClip;
+	@:keep public var scalpHair(default, null):MovieClip;
 }
 
 @:rtti
@@ -924,12 +930,12 @@ class Her extends MovieClip {
 	public var passedOut:Bool = false;
 	public var passOutFactor:Float = 0;
 	public var passOutMax:Float = 40;
-	// public var leftBreastController:BreastController;
-	// public var rightBreastController:BreastController;
+	public var leftBreastController:BreastController;
+	public var rightBreastController:BreastController;
 	public var breastCostumeOn:Bool = false;
-	// public var braStrapController:BraStrap;
-	// public var shoulderStrapController:BraStrap;
-	// public var topStrapController:BraStrap;
+	public var braStrapController:BraStrap;
+	public var shoulderStrapController:BraStrap;
+	public var topStrapController:BraStrap;
 	public var cumInMouth:UInt = 0;
 	public var maxCumInMouth:UInt = 40;
 	public var droolingCum:Bool = false;
@@ -987,8 +993,65 @@ class Her extends MovieClip {
 		var symbol = library.symbols.get(1982);
 		symbol.__initObject(library, this);
 
-		this.previousResistance = this.resistance.upper;
-		// TODO!
+         this.previousResistance = this.resistance.upper;
+
+         this.leftBreastController = new BreastController(this.torsoBack.leftBreast,[this.torsoBackCostume.breastCostume]);
+         this.rightBreastController = new BreastController(this.torso.midLayer.rightBreast,[this.torso.breastCostume,this.torso.topContainer.breastTop]);
+         this.torso.back.cacheAsBitmap = true;
+         this.torso.backMask.cacheAsBitmap = true;
+         this.torso.back.mask = this.torso.backMask;
+         this.backModContainer.name = "backModContainer";
+         this.backModContainer.x = this.torso.back.x;
+         this.backModContainer.y = this.torso.back.y;
+         this.backModContainer.rotation = this.torso.back.rotation;
+         this.torso.addChildAt(this.backModContainer,this.torso.getChildIndex(this.torso.back) + 1);
+         this.leftEyebrowNormalTween = new LinearTween([this.leftEyebrow]);
+         this.rightEyebrowNormalTween = new LinearTween([this.rightEyebrow,this.eye.eyebrowMask]);
+         this.leftEyebrowAngryTween = new LinearTween([this.leftEyebrow]);
+         this.rightEyebrowAngryTween = new LinearTween([this.rightEyebrow,this.eye.eyebrowMask]);
+         this.leftEyebrowAngryTween.skewStart(-4.2,-71.9,0.627,0.997);
+         this.leftEyebrowAngryTween.offsetStart(1,-2.25);
+         this.leftEyebrowAngryTween.skewEnd(0,-63.4,1,0.557);
+         this.leftEyebrowAngryTween.offsetEnd(-2.25,15.25);
+         this.rightEyebrowAngryTween.offsetStart(0,0,26);
+         this.rightEyebrowAngryTween.offsetEnd(14,8,38);
+         this.topTeethTween = new LinearTween([this.head.teeth]);
+         this.topTeethTween.offsetEnd(-8.2,13.44);
+         this.bottomTeethTween = new LinearTween([this.head.jaw.teeth]);
+         this.bottomTeethTween.offsetEnd(5.1,-8.2);
+         this.noseSquashUp = new LinearTween([this.head.face.nose,this.head.headTan.face.nose]);
+         this.noseSquashUp.skewEnd(2.9,-11.6,0.762,1.041);
+         this.noseSquashUp.offsetEnd(1.75,2);
+         this.noseSquashDown = new LinearTween([this.head.face.nose,this.head.headTan.face.nose]);
+         this.noseSquashDown.skewEnd(-2,11.5,0.712,1.02);
+         this.noseSquashDown.offsetEnd(3.5,2);
+         this.currentNoseSquash = this.noseSquashUp;
+         this.x = fullUp;
+         this.y = 275;
+         this.tongue = this.tongueContainer.tongue;
+         this.torsoIK = new IKController(this,this.torso,this.torso.leg,this.torso.rightCalfContainer.calf);
+         this.updateKneeTarget();
+         this.torsoIK.rescale(this.bodyScale);
+         this.leftLegStartPoint = new Point(this.leftLegContainer.leg.x,this.leftLegContainer.leg.y);
+         this.tears.addLowerEyelidMascaraLayer(this.eye.lowerEyelid.mascaraContainer);
+         G.hairUnderLayer = this.hairMidContainer.hairUnderLayer;
+         G.hairBetweenLayer = this.hairBetweenLayer;
+         G.hairUnder = this.hairMidContainer.hairUnder;
+         G.hairBottom = this.hairMidContainer.hairBottom;
+         G.hairCostumeUnder = this.hairCostumeUnderLayer;
+         G.characterControl.addBreastSizeChangeListener(this.breastSizeChanged);
+         G.characterControl.braControl.registerListener(this.breastCostumeChanged);
+         G.characterControl.topControl.registerListener(this.breastCostumeChanged);
+         this.braStrapController = new BraStrap(this.torso.braStrap,this.torso.breastCostume.bra,"strapPoint",G.characterControl.braControl);
+         this.shoulderStrapController = new BraStrap(this.torso.shoulderStrap,this.torso.breastCostume.bra,"shoulderStrapPoint",G.characterControl.braControl);
+         this.topStrapController = new BraStrap(this.torso.topContainer.topStrap,this.torso.topContainer.breastTop,"strapPoint",G.characterControl.topControl);
+         this.torso.nipplePiercing.setLimit(20);
+         this.torso.leftNipplePiercing.setLimit(20);
+         this.torso.chestCostume.bellyPiercing.setLimit(30);
+         this.head.face.gotoAndStop("Normal");
+         this.head.headTan.face.gotoAndStop("Normal");
+         EventBus.addListener("penisTipPosChanged",this.updatePenisTipPos);
+         this.freckles.cacheAsBitmap = true;
 	}
 
 	public function getDataString():String {
@@ -1034,11 +1097,11 @@ class Her extends MovieClip {
 		this.leftHandOver.visible = false;
 		this.rightArmContainer.blendMode = BlendMode.LAYER;
 		this.rightArmEraseContainer.visible = false;
-		// this.leftArmIK = new IKController(this.torso, this.leftArmContainer.upperArm, this.leftArmContainer.upperArm.foreArm,
-		// 	this.leftArmContainer.upperArm.foreArm.hand);
-		// this.rightArmIK = new IKController(this.torso, this.rightArmContainer.upperArm, this.rightForeArmContainer.upperArm.foreArm,
-		// 	this.rightForeArmContainer.upperArm.foreArm.hand);
-		// this.leftArmIK.rescale(0.95);
+		this.leftArmIK = new IKController(this.torso, this.leftArmContainer.upperArm, this.leftArmContainer.upperArm.foreArm,
+			this.leftArmContainer.upperArm.foreArm.hand);
+		this.rightArmIK = new IKController(this.torso, this.rightArmContainer.upperArm, this.rightForeArmContainer.upperArm.foreArm,
+			this.rightForeArmContainer.upperArm.foreArm.hand);
+		this.leftArmIK.rescale(0.95);
 		this.leftShoulderPos = new Point(this.leftArmContainer.upperArm.x, this.leftArmContainer.upperArm.y);
 		this.rightShoulderPos = new Point(this.rightArmContainer.upperArm.x, this.rightArmContainer.upperArm.y);
 		this.foreArmPos = new Point(this.rightForeArmContainer.upperArm.foreArm.x, this.rightForeArmContainer.upperArm.foreArm.y);
@@ -1111,10 +1174,10 @@ class Her extends MovieClip {
 	public function setBodyScale(param1:ASAny) {
 		this.bodyScale = Math.max(this.minBodyScale, Math.min(this.maxBodyScale, param1));
 		var _loc2_ = 1 + (this.bodyScale - 1) * 0.5;
-		// this.head.neck.scaleX = _loc2_;
-		// this.head.neck.scaleY = _loc2_;
-		// this.collarContainer.scaleX = _loc2_;
-		// this.collarContainer.scaleY = _loc2_;
+		this.head.neck.scaleX = _loc2_;
+		this.head.neck.scaleY = _loc2_;
+		this.collarContainer.scaleX = _loc2_;
+		this.collarContainer.scaleY = _loc2_;
 		this.torsoIK.rescale(this.bodyScale);
 		this.updateTorso();
 		this.updateArms();
@@ -1127,7 +1190,7 @@ class Her extends MovieClip {
 
 	public function setSpeaking(param1:Bool) {
 		if (param1) {
-			// G.automaticControl.dialogueStarting();
+			G.automaticControl.dialogueStarting();
 			this.tongue.startFastIn();
 			this.clenchTeeth = false;
 			this.changeLookTarget(this.hisFace, 0, 1);
@@ -1154,11 +1217,11 @@ class Her extends MovieClip {
 		return this.clenchTeeth;
 	}
 
-	public function setTargetPhoneme(param1:ASObject, param2:UInt = 0) {
-		if (param1["phoneme"]) {
-			this.targetPhoneme = param1["phoneme"];
+	public function setTargetPhoneme(param1:obj.dialogue.Word.Phoneme, param2:UInt = 0) {
+		if (param1.phoneme != null) {
+			this.targetPhoneme = param1.phoneme;
 			this.phonemeDelay = param2;
-			if (G.tongue && param1["sayL"] && !this.tongue.tongueOut && this.topLipTongue.currentFrameLabel == "Hidden") {
+			if (G.tongue && param1.sayL && !this.tongue.tongueOut && this.topLipTongue.currentFrameLabel == "Hidden") {
 				this.topLipTongue.gotoAndPlay("SayL");
 			}
 		}
@@ -1981,8 +2044,8 @@ class Her extends MovieClip {
 			this.head.cheekBulge.alpha = 1;
 			this.tears.addTearSpot();
 			this.generateSplat(5, 10);
-			// this.leftBreastController.accelerate(0.1);
-			// this.rightBreastController.accelerate(0.1);
+			this.leftBreastController.accelerate(0.1);
+			this.rightBreastController.accelerate(0.1);
 			this.wince();
 			G.soundControl.playCough();
 			this.justCoughed = true;
@@ -1998,8 +2061,8 @@ class Her extends MovieClip {
 			this.tears.addTearSpot();
 			_loc1_ = this.cumInMouth > 0 ? true : false;
 			this.generateSplat(15, 5, 1, _loc1_);
-			// this.leftBreastController.accelerate(0.1);
-			// this.rightBreastController.accelerate(0.1);
+			this.leftBreastController.accelerate(0.1);
+			this.rightBreastController.accelerate(0.1);
 			this.wince();
 			this.justCoughed = true;
 		}
@@ -2536,11 +2599,11 @@ class Her extends MovieClip {
 		   this.startDroolingCum();
 		}
 		this.head.cheekMask.gotoAndStop(Math.floor(Math.min(144,Math.max(1,(this.head.jaw.rotation + 12) * 8))));
-		// this.leftBreastController.update(-this.movement / range * 0.2 - this.absYMovement * 0.002,this.breathingFactor * 1.25 - 1,-4 - this.breathingFactor * 3.125,this.breathingFactor * 1.75);
-		// this.rightBreastController.update(-this.movement / range * 0.2 - this.absYMovement * 0.002,this.breathingFactor * 1.25,-3 - this.breathingFactor * 4.375,this.breathingFactor * 1.75);
-		// this.braStrapController.update();
-		// this.shoulderStrapController.update();
-		// this.topStrapController.update();
+		this.leftBreastController.update(-this.movement / range * 0.2 - this.absYMovement * 0.002,this.breathingFactor * 1.25 - 1,-4 - this.breathingFactor * 3.125,this.breathingFactor * 1.75);
+		this.rightBreastController.update(-this.movement / range * 0.2 - this.absYMovement * 0.002,this.breathingFactor * 1.25,-3 - this.breathingFactor * 4.375,this.breathingFactor * 1.75);
+		this.braStrapController.update();
+		this.shoulderStrapController.update();
+		this.topStrapController.update();
 		this.updateNipplePiercing();
 		this.updateBreathingScaledElements();
 		this.torsoBack.chestBack.rotation = 27 + this.breathingFactor * 2.6;
@@ -2800,15 +2863,15 @@ class Her extends MovieClip {
 
 	public function breastSizeChanged() {
 		this.updateBreastFirmness();
-		// this.braStrapController.update();
-		// this.shoulderStrapController.update();
-		// this.topStrapController.update();
+		this.braStrapController.update();
+		this.shoulderStrapController.update();
+		this.topStrapController.update();
 		this.updateNipplePiercing();
 	}
 
 	public function updateBreastFirmness() {
-		// this.leftBreastController.updateFirmness(G.characterControl.breastSize, this.breastCostumeOn);
-		// this.rightBreastController.updateFirmness(G.characterControl.breastSize, this.breastCostumeOn);
+		this.leftBreastController.updateFirmness(G.characterControl.breastSize, this.breastCostumeOn);
+		this.rightBreastController.updateFirmness(G.characterControl.breastSize, this.breastCostumeOn);
 	}
 
 	public function findChild(param1:String, param2:DisplayObjectContainer):DisplayObject {

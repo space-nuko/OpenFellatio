@@ -749,11 +749,11 @@ class Him extends MovieClip
 			}
 		} else {
 			G.screenEffects.stopPulse();
-			// if (G.automaticControl.reducePleasureLoss()) {
-			// 	this.pleasure = Math.max(0, this.pleasure - 0.03);
-			// } else {
-			// 	this.pleasure = Math.max(0, this.pleasure - 0.05);
-			// }
+			if (G.automaticControl.reducePleasureLoss()) {
+				this.pleasure = Math.max(0, this.pleasure - 0.03);
+			} else {
+				this.pleasure = Math.max(0, this.pleasure - 0.05);
+			}
 			this.maxPleasureTimer = 0;
 		}
 		G.screenEffects.showWhiteout((this.pleasure - this.ejacPleasure + 20) * 5);
