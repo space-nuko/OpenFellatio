@@ -3,8 +3,8 @@ package chars;
 import openfl.display.MovieClip;
 import obj.Her;
 import obj.AlphaRGBObject;
+import obj.CostumeElement;
 
-/*dynamic*/
 abstract class Character {
 	public var charName:String = "xxx";
 	public var charShortName:String = "xxx";
@@ -82,7 +82,7 @@ abstract class Character {
 		this.eyewearFill = new AlphaRGBObject(1, 0, 0, 0);
 	}
 
-	public function generateElements():Array<MovieClip> {
+	public function generateElements():Array<CostumeElement> {
 		return [];
 	}
 }

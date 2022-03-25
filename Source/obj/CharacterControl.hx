@@ -101,7 +101,7 @@ class CharacterControl {
 	public var browOffsets:Array<UInt> = [0, 199, 399, 599];
 	public var lipOffsets:Array<UInt> = [2, 82, 162, 242];
 	public var currentSkinType:String;
-	public var currentElements:Array<ASAny>;
+	public var currentElements:Array<CostumeElement>;
 	public var currentElementsStatus:Array<ASAny>;
 	public var customHairLoaded:Bool = false;
 	public var customBGLoaded:Bool = false;
@@ -513,15 +513,13 @@ class CharacterControl {
 	}
 
 	public function clearElements() {
-		var _loc1_:ASAny = /*undefined*/ null;
-		for (_tmp_ in this.currentElements) {
-			_loc1_ = _tmp_;
-			_loc1_.removeEventListener("toggled", this.currentElementToggled);
-			_loc1_.kill();
+		for (elem in this.currentElements) {
+			elem.removeEventListener("toggled", this.currentElementToggled);
+			elem.kill();
 		}
 		this.currentElements = [];
-		G.strandControl.checkCostumeAnchors();
-		G.costumeHitElements = new Array<ASAny>();
+		// G.strandControl.checkCostumeAnchors();
+		G.costumeHitElements = new Array<CostumeElement>();
 	}
 
 	public function tryToSetChar(param1:Int, param2:Bool = true):Bool {
@@ -563,8 +561,8 @@ class CharacterControl {
 		G.her.head.cheekBulge.gotoAndStop(this.currentSkinType);
 		G.her.head.neck.setSkin(this.skinPalettes[this.skinNameList[this.currentSkin]]);
 		G.her.updateNeck();
-		var _loc3_ = new ColorTransform(1, 1, 1, 1, this.scalpFills[param1]["r"], this.scalpFills[param1]["g"], this.scalpFills[param1]["b"]);
-		G.her.head.scalpHair.transform.colorTransform = _loc3_;
+		var scalpColor = new ColorTransform(1, 1, 1, 1, this.scalpFills[param1].r, this.scalpFills[param1].g, this.scalpFills[param1].b);
+		G.her.head.scalpHair.transform.colorTransform = scalpColor;
 		this.setArmSkin(param2);
 		G.her.torso.midLayer.leftArm.gotoAndStop(this.currentSkinType);
 		G.her.torso.behindBackRightArm.gotoAndStop(this.currentSkinType);
@@ -591,7 +589,7 @@ class CharacterControl {
 		G.her.updateJawBulge();
 		G.her.tan.updateSkin(this.skinNameList[param1]);
 		G.her.penisControl.updatePenis();
-		G.strandControl.checkElementAnchors(G.her.torso.midLayer.rightBreast);
+		// G.strandControl.checkElementAnchors(G.her.torso.midLayer.rightBreast);
 	}
 
 	public function setLipFills() {
@@ -616,18 +614,16 @@ class CharacterControl {
 	}
 
 	public function setArmFrame(param1:MovieClip, param2:Bool, param3:Bool = false, param4:Bool = false) {
-		var _loc5_:ASAny;
-		if ((_loc5_ = (_loc5_ = (_loc5_ = if (ASCompat.stringAsBool(param1.currentFrameLabel)) param1.currentFrameLabel else this.currentSkinType)
-			.replace("Free", "")).replace("Grip", "")) != "None"
-			|| param3) {
-			_loc5_ = this.currentSkinType;
+		var label = if (param1.currentFrameLabel != null) param1.currentFrameLabel else this.currentSkinType;
+		if (label != "None" || param3) {
+			label = this.currentSkinType;
 		}
 		if (param4) {
-			_loc5_ += "Grip";
+			label += "Grip";
 		} else {
-			_loc5_ += !!param2 ? "Free" : "";
+			label += !!param2 ? "Free" : "";
 		}
-		param1.gotoAndStop(_loc5_);
+		param1.gotoAndStop(label);
 	}
 
 	public function findHair(param1:String, param2:Bool = true):Bool {
@@ -649,26 +645,24 @@ class CharacterControl {
 	}
 
 	public function setHair(param1:UInt, param2:Bool = true) {
-		var _loc4_:ASAny = /*undefined*/ null;
-		if (this.customHairLoaded) {
-			G.customElementLoader.clearCustomHair(false);
-			this.customHairLoaded = false;
-		}
-		G.customElementLoader.clearModTypes([ModTypes.HAIR, ModTypes.DYNAMIC_HAIR, ModTypes.HAIR_COSTUME]);
+		// if (this.customHairLoaded) {
+		// 	G.customElementLoader.clearCustomHair(false);
+		// 	this.customHairLoaded = false;
+		// }
+		// G.customElementLoader.clearModTypes([ModTypes.HAIR, ModTypes.DYNAMIC_HAIR, ModTypes.HAIR_COSTUME]);
 		this.clearElements();
-		var _loc3_:Character = this.characters[param1];
-		G.her.hairTop.gotoAndStop(_loc3_.hairTop);
-		G.her.hairMidContainer.hairUnder.gotoAndStop(_loc3_.hairUnder);
-		G.her.hairMidContainer.hairBottom.gotoAndStop(_loc3_.hairBottom);
-		G.her.hairBackContainer.hairBack.gotoAndStop(_loc3_.hairBack);
+		var chara:Character = this.characters[param1];
+		G.her.hairTop.gotoAndStop(chara.hairTop);
+		G.her.hairMidContainer.hairUnder.gotoAndStop(chara.hairUnder);
+		G.her.hairMidContainer.hairBottom.gotoAndStop(chara.hairBottom);
+		G.her.hairBackContainer.hairBack.gotoAndStop(chara.hairBack);
 		if (param2) {
-			this.setEyebrowFill(_loc3_.eyebrowFill);
-			this.setEyebrowLine(_loc3_.eyebrowLine);
+			this.setEyebrowFill(chara.eyebrowFill);
+			this.setEyebrowLine(chara.eyebrowLine);
 		}
-		this.currentElements = _loc3_.generateElements();
-		for (_tmp_ in this.currentElements) {
-			_loc4_ = _tmp_;
-			_loc4_.addEventListener("toggled", this.currentElementToggled, false, 0, true);
+		this.currentElements = chara.generateElements();
+		for (elem in this.currentElements) {
+			elem.addEventListener("toggled", this.currentElementToggled, false, 0, true);
 		}
 		this.updateCurrentElementsStatus();
 		this.waitToSetHeadwearPosition();
@@ -721,16 +715,16 @@ class CharacterControl {
 	}
 
 	public function setEyebrowFill(param1:ASObject, param2:String = "rgbFill") {
-		var _loc3_ = new ColorTransform(1, 1, 1, param1.a, param1.r, param1.g, param1.b);
-		G.her.rightEyebrow.rightEyebrowFill.transform.colorTransform = _loc3_;
-		G.her.leftEyebrow.leftEyebrowFill.transform.colorTransform = _loc3_;
+		var color = new ColorTransform(1, 1, 1, param1.a, param1.r, param1.g, param1.b);
+		G.her.rightEyebrow.rightEyebrowFill.transform.colorTransform = color;
+		G.her.leftEyebrow.leftEyebrowFill.transform.colorTransform = color;
 		this.eyebrowFillRGB = param1;
 	}
 
 	public function setEyebrowLine(param1:ASObject, param2:String = "rgbFill") {
-		var _loc3_ = new ColorTransform(1, 1, 1, param1.a, param1.r, param1.g, param1.b);
-		G.her.rightEyebrow.rightEyebrowLine.transform.colorTransform = _loc3_;
-		G.her.leftEyebrow.leftEyebrowLine.transform.colorTransform = _loc3_;
+		var color = new ColorTransform(1, 1, 1, param1.a, param1.r, param1.g, param1.b);
+		G.her.rightEyebrow.rightEyebrowLine.transform.colorTransform = color;
+		G.her.leftEyebrow.leftEyebrowLine.transform.colorTransform = color;
 		this.eyebrowLineRGB = param1;
 	}
 
@@ -797,31 +791,31 @@ class CharacterControl {
 	}
 
 	public function setEyeShadow(param1:ASObject, param2:String = "rgbFill") {
-		var _loc3_ = new ColorTransform(1, 1, 1, param1.a, param1.r, param1.g, param1.b);
-		G.her.eye.upperEyelid.eyeshadow.transform.colorTransform = _loc3_;
+		var color = new ColorTransform(1, 1, 1, param1.a, param1.r, param1.g, param1.b);
+		G.her.eye.upperEyelid.eyeshadow.transform.colorTransform = color;
 		this.eyeShadowRGB = param1;
 	}
 
 	public function setSclera(param1:ASObject, param2:String = "rgbFill") {
-		var _loc3_ = new ColorTransform(1, 1, 1, param1.a, param1.r, param1.g, param1.b);
-		G.her.eye.ball.sclera.overlay.transform.colorTransform = _loc3_;
+		var color = new ColorTransform(1, 1, 1, param1.a, param1.r, param1.g, param1.b);
+		G.her.eye.ball.sclera.overlay.transform.colorTransform = color;
 		this.scleraRGB = param1;
 	}
 
 	public function setBlush(param1:ASObject, param2:String = "rgbFill") {
-		var _loc3_ = new ColorTransform(1, 1, 1, param1.a, param1.r, param1.g, param1.b);
-		G.her.blush.transform.colorTransform = _loc3_;
+		var color = new ColorTransform(1, 1, 1, param1.a, param1.r, param1.g, param1.b);
+		G.her.blush.transform.colorTransform = color;
 		this.blushRGB = param1;
 	}
 
 	public function setFreckles(param1:ASObject, param2:String = "rgbFill") {
-		var _loc3_ = new ColorTransform(1, 1, 1, param1.a, param1.r, param1.g, param1.b);
-		G.her.freckles.transform.colorTransform = _loc3_;
+		var color = new ColorTransform(1, 1, 1, param1.a, param1.r, param1.g, param1.b);
+		G.her.freckles.transform.colorTransform = color;
 		this.frecklesRGB = param1;
 	}
 
 	public function setFreckleAmount(param1:Float) {
-		param1 = Math.fround(Math.max(0, Math.min(100, param1)));
+		param1 = Math.fround(Maths.clampf(param1, 0, 100));
 		if (param1 != G.frecklesAmount) {
 			G.frecklesAmount = param1;
 			G.her.setFreckleAmount(G.frecklesAmount);

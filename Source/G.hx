@@ -18,9 +18,10 @@ import obj.ui.InGameMenu;
 import obj.Her;
 import obj.Him;
 import obj.SaveData;
+import obj.CostumeElement;
 
 class G {
-	public static var ver:String = "v1.21.1b";
+	public static var ver:String = "v1.21.1b-hx";
 	public static var sceneLayer:DisplayObject;
 	// public static var defaultCM:ContextMenu;
 	public static var screenSize:Point = new Point(700, 600);
@@ -130,7 +131,7 @@ class G {
 	public static var hairCostumeUnderOver:Sprite;
 	public static var hairCostumeUnder:Sprite;
 	public static var hairCostumeBack:HairCostumeBack;
-	public static var costumeHitElements:Array<ASAny> = new Array();
+	public static var costumeHitElements:Array<CostumeElement> = new Array();
 	public static var currentMousePos:Point = new Point();
 	public static var currentPos:Point = new Point(0, 0);
 	public static var currentHandJobPos:Point = new Point(0, 0);

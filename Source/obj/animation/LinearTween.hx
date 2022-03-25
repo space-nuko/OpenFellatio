@@ -14,8 +14,8 @@ class LinearTween {
 	public var _tweenMatrix:Matrix;
 	public var _startAng:Float = 0;
 	public var _endAng:Float = 0;
-	public var _startSkew:Point;
-	public var _endSkew:Point;
+	public var _startSkew:Point = new Point();
+	public var _endSkew:Point = new Point();
 	public var _baseObject:DisplayObject;
 	public var _offsetMatrices:ASDictionary<DisplayObject, Matrix>;
 	public var _skewed:Bool = false;
@@ -23,33 +23,18 @@ class LinearTween {
 	public function new(rest:Array<DisplayObject> = null) {
 		if (rest == null)
 			rest = [];
-		tween = tween_l;
-		offsetStart = offsetStart_l;
-		offsetEnd = offsetEnd_l;
-		skewStart = skewStart_l;
-		skewEnd = skewEnd_l;
-		rotateStart = rotateStart_l;
-		rotateEnd = rotateEnd_l;
-		var _loc2_:ASAny = /*undefined*/ null;
-		var _loc3_:Matrix = null;
-		var _loc4_:Matrix = null;
-		this._startSkew = new Point();
-		this._endSkew = new Point();
-		// super();
 		this._targets = new Vector<DisplayObject>();
 		this._offsetMatrices = new ASDictionary<DisplayObject, Matrix>();
-		for (_tmp_ in rest) {
-			_loc2_ = _tmp_;
-			if (Std.is(_loc2_, DisplayObject)) {
-				this._targets.push(_loc2_);
-				if (this._baseObject == null) {
-					this._baseObject = _loc2_;
-				} else if (_loc2_.parent != this._baseObject.parent) {
-					_loc3_ = this._baseObject.parent.transform.matrix;
-					(_loc4_ = _loc2_.parent.transform.matrix).invert();
-					_loc3_.concat(_loc4_);
-					this._offsetMatrices[_loc2_] = _loc3_;
-				}
+		for (displayObj in rest) {
+			this._targets.push(displayObj);
+			if (this._baseObject == null) {
+				this._baseObject = displayObj;
+			} else if (displayObj.parent != this._baseObject.parent) {
+				var offsetMatrix = this._baseObject.parent.transform.matrix;
+				var parentMatrix = displayObj.parent.transform.matrix;
+                parentMatrix.invert();
+                offsetMatrix.concat(parentMatrix);
+				this._offsetMatrices[displayObj] = offsetMatrix;
 			}
 		}
 		this._startMatrix = new Matrix();
@@ -61,35 +46,30 @@ class LinearTween {
 		}
 	}
 
-	public function tween(param1:Float):Matrix {
-		var _loc2_:DisplayObject = null;
-		var _loc3_ = Math.NaN;
-		var _loc4_ = Math.NaN;
-		var _loc5_ = Math.NaN;
-		var _loc6_:Matrix = null;
+	public function tween(t:Float):Matrix {
 		if (this._skewed) {
-			this._tweenMatrix.a = this._startMatrix.a + param1 * (this._endMatrix.a - this._startMatrix.a);
-			this._tweenMatrix.d = this._startMatrix.d + param1 * (this._endMatrix.d - this._startMatrix.d);
-			this._tweenMatrix.c = Math.tan(this._startSkew.x + param1 * (this._endSkew.x - this._startSkew.x));
-			this._tweenMatrix.b = Math.tan(this._startSkew.y + param1 * (this._endSkew.y - this._startSkew.y));
+			this._tweenMatrix.a = this._startMatrix.a + t * (this._endMatrix.a - this._startMatrix.a);
+			this._tweenMatrix.d = this._startMatrix.d + t * (this._endMatrix.d - this._startMatrix.d);
+			this._tweenMatrix.c = Math.tan(this._startSkew.x + t * (this._endSkew.x - this._startSkew.x));
+			this._tweenMatrix.b = Math.tan(this._startSkew.y + t * (this._endSkew.y - this._startSkew.y));
 		} else {
-			_loc3_ = this._startAng + param1 * (this._endAng - this._startAng);
-			_loc4_ = Math.cos(_loc3_);
-			_loc5_ = Math.sin(_loc3_);
-			this._tweenMatrix.a = _loc4_;
-			this._tweenMatrix.b = _loc5_;
-			this._tweenMatrix.c = -_loc5_;
-			this._tweenMatrix.d = _loc4_;
+			var i = this._startAng + t * (this._endAng - this._startAng);
+			var j = Math.cos(i);
+			var k = Math.sin(i);
+			this._tweenMatrix.a = j;
+			this._tweenMatrix.b = k;
+			this._tweenMatrix.c = -k;
+			this._tweenMatrix.d = j;
 		}
-		this._tweenMatrix.tx = this._startMatrix.tx + param1 * (this._endMatrix.tx - this._startMatrix.tx);
-		this._tweenMatrix.ty = this._startMatrix.ty + param1 * (this._endMatrix.ty - this._startMatrix.ty);
-		for (_tmp_ in this._targets) {
-			_loc2_ = _tmp_;
-			if (this._offsetMatrices[_loc2_]) {
-				(_loc6_ = this._tweenMatrix.clone()).concat(this._offsetMatrices[_loc2_]);
-				_loc2_.transform.matrix = _loc6_;
+		this._tweenMatrix.tx = this._startMatrix.tx + t * (this._endMatrix.tx - this._startMatrix.tx);
+		this._tweenMatrix.ty = this._startMatrix.ty + t * (this._endMatrix.ty - this._startMatrix.ty);
+		for (displayObj in this._targets) {
+			if (this._offsetMatrices[displayObj] != null) {
+                var tweenMatrix = this._tweenMatrix.clone();
+				tweenMatrix.concat(this._offsetMatrices[displayObj]);
+				displayObj.transform.matrix = tweenMatrix;
 			} else {
-				_loc2_.transform.matrix = this._tweenMatrix;
+				displayObj.transform.matrix = this._tweenMatrix;
 			}
 		}
 		return this._tweenMatrix;

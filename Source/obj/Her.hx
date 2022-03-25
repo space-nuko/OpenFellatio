@@ -1,187 +1,166 @@
 package obj;
 
+import swf.exporters.animate.AnimateSpriteSymbol;
+import openfl.Vector;
 import openfl.display.BlendMode;
 import openfl.display.DisplayObject;
 import openfl.display.DisplayObjectContainer;
 import openfl.display.MovieClip;
 import openfl.display.Sprite;
 import openfl.events.MouseEvent;
-import openfl.geom.Point;
 import openfl.geom.Matrix;
-import openfl.Vector;
-import obj.animation.IKController;
-import obj.her.Tongue;
+import openfl.geom.Point;
 import obj.Maths;
-import swf.exporters.animate.AnimateSpriteSymbol;
+import obj.animation.IKController;
+import obj.animation.LinearTween;
 import obj.her.HerPenisControl;
-import obj.her.Tan;
-import obj.her.Neck;
 import obj.her.ITannable;
+import obj.her.Neck;
+import obj.her.Tan;
+import obj.her.Tongue;
 import obj.him.Penis;
 
 @:rtti
-class BasicTannable extends MovieClip implements ITannable
-{
+class BasicTannable extends MovieClip implements ITannable {
 	@:keep public var tan(default, null):MovieClip;
 }
 
 @:rtti
-class CollarContainer extends MovieClip
-{
+class CollarContainer extends MovieClip {
 	@:keep @:noCompletion @:dox(hide) public var collar(default, null):openfl.display.MovieClip;
 }
 
 @:rtti
-class RightCalfContainer extends MovieClip
-{
-    @:keep public var bottoms(default, null): MovieClip;
-    @:keep public var calf(default, null): BasicTannable;
-    @:keep public var cuffs(default, null): MovieClip;
-    @:keep public var calfStocking(default, null): MovieClip;
-    @:keep public var calfStockingB(default, null): MovieClip;
-    @:keep public var footwear(default, null): MovieClip;
+class RightCalfContainer extends MovieClip {
+	@:keep public var bottoms(default, null):MovieClip;
+	@:keep public var calf(default, null):BasicTannable;
+	@:keep public var cuffs(default, null):MovieClip;
+	@:keep public var calfStocking(default, null):MovieClip;
+	@:keep public var calfStockingB(default, null):MovieClip;
+	@:keep public var footwear(default, null):MovieClip;
 }
 
 @:rtti
-class ThighCostume extends MovieClip
-{
-    @:keep public var panties(default, null): MovieClip;
+class ThighCostume extends MovieClip {
+	@:keep public var panties(default, null):MovieClip;
 }
 
 @:rtti
-class BackUnderCostume extends MovieClip
-{
-    @:keep public var panties(default, null): MovieClip;
+class BackUnderCostume extends MovieClip {
+	@:keep public var panties(default, null):MovieClip;
 }
 
 @:rtti
-class HerChestCostumeBottoms extends MovieClip
-{
-    @:keep public var penisCostumeContainer(default, null): MovieClip;
+class HerChestCostumeBottoms extends MovieClip {
+	@:keep public var penisCostumeContainer(default, null):MovieClip;
 }
 
 @:rtti
-class ChestCostume extends MovieClip
-{
-    @:keep public var bellyPiercing(default, null): MovieClip;
-    @:keep public var bottoms(default, null): HerChestCostumeBottoms;
+class ChestCostume extends MovieClip {
+	@:keep public var bellyPiercing(default, null):MovieClip;
+	@:keep public var bottoms(default, null):HerChestCostumeBottoms;
 }
 
 @:rtti
-class HerPanties extends MovieClip
-{
-    @:keep public var penisCostumeContainer(default, null): MovieClip;
+class HerPanties extends MovieClip {
+	@:keep public var penisCostumeContainer(default, null):MovieClip;
 }
 
 @:rtti
-class ChestUnderCostume extends MovieClip
-{
-    @:keep public var panties(default, null): HerPanties;
+class ChestUnderCostume extends MovieClip {
+	@:keep public var panties(default, null):HerPanties;
 }
 
 @:rtti
-class BackCostume extends MovieClip
-{
-    @:keep public var bottoms(default, null): MovieClip;
+class BackCostume extends MovieClip {
+	@:keep public var bottoms(default, null):MovieClip;
 }
 
 @:rtti
-class TopContainer extends MovieClip
-{
-    @:keep public var backTop(default, null): MovieClip;
-    @:keep public var breastTop(default, null): MovieClip;
-    @:keep public var chestTop(default, null): MovieClip;
-    @:keep public var topStrap(default, null): MovieClip;
+class TopContainer extends MovieClip {
+	@:keep public var backTop(default, null):MovieClip;
+	@:keep public var breastTop(default, null):MovieClip;
+	@:keep public var chestTop(default, null):MovieClip;
+	@:keep public var topStrap(default, null):MovieClip;
 }
 
 @:rtti
-class UpperChestCostume extends MovieClip
-{
-    @:keep public var bra(default, null): MovieClip;
+class UpperChestCostume extends MovieClip {
+	@:keep public var bra(default, null):MovieClip;
 }
 
 @:rtti
-class HerRightNipple extends BasicTannable
-{
-    @:keep public var rightNipple(default, null): MovieClip;//?
+class HerRightNipple extends BasicTannable {
+	@:keep public var rightNipple(default, null):MovieClip; // ?
 }
 
 @:rtti
-class HerRightBreast extends MovieClip
-{
-    @:keep public var nipple(default, null): HerRightNipple;
+class HerRightBreast extends MovieClip {
+	@:keep public var nipple(default, null):HerRightNipple;
 }
 
 @:rtti
-class HerMidLayer extends MovieClip
-{
-    @:keep public var chest(default, null): BasicTannable;
-    @:keep public var rightBreast(default, null): HerRightBreast;
-    @:keep public var leftArm(default, null): BasicTannable;
+class HerMidLayer extends MovieClip {
+	@:keep public var chest(default, null):BasicTannable;
+	@:keep public var rightBreast(default, null):HerRightBreast;
+	@:keep public var leftArm(default, null):BasicTannable;
 }
 
 @:rtti
-class HerRightLeg extends MovieClip
-{
-    @:keep public var thigh(default, null): BasicTannable;
+class HerRightLeg extends MovieClip {
+	@:keep public var thigh(default, null):BasicTannable;
+	@:keep public var highlights(default, null):MovieClip;
 }
 
 @:rtti
-class HerRightChestStocking extends MovieClip
-{
-    @:keep public var penisCostumeContainer(default, null): MovieClip;
+class HerRightChestStocking extends MovieClip {
+	@:keep public var penisCostumeContainer(default, null):MovieClip;
 }
 
 @:rtti
-class HerRightHipLayer extends MovieClip
-{
-    @:keep public var backStocking(default, null): MovieClip;
-    @:keep public var chestStocking(default, null): HerRightChestStocking;
+class HerRightHipLayer extends MovieClip {
+	@:keep public var backStocking(default, null):MovieClip;
+	@:keep public var chestStocking(default, null):HerRightChestStocking;
 }
 
 @:rtti
-class HerRightHipOverLayer extends MovieClip
-{
-    @:keep public var backStocking(default, null): MovieClip;
-    @:keep public var chestStocking(default, null): MovieClip;
+class HerRightHipOverLayer extends MovieClip {
+	@:keep public var backStocking(default, null):MovieClip;
+	@:keep public var chestStocking(default, null):MovieClip;
 }
 
 @:rtti
-class HerRightStocking extends MovieClip
-{
-    @:keep public var hipLayer(default, null): HerRightHipLayer;
-    @:keep public var hipOverLayer(default, null): HerRightHipOverLayer;
+class HerRightStocking extends MovieClip {
+	@:keep public var hipLayer(default, null):HerRightHipLayer;
+	@:keep public var hipOverLayer(default, null):HerRightHipOverLayer;
 }
 
 @:rtti
-class HerRightHipLayer2 extends MovieClip
-{
-    @:keep public var backStocking(default, null): MovieClip;
-    @:keep public var chestStocking(default, null): MovieClip;
+class HerRightHipLayer2 extends MovieClip {
+	@:keep public var backStocking(default, null):MovieClip;
+	@:keep public var chestStocking(default, null):MovieClip;
 }
 
 @:rtti
-class HerRightStocking2 extends MovieClip
-{
-    @:keep public var hipLayer(default, null): HerRightHipLayer2;
+class HerRightStocking2 extends MovieClip {
+	@:keep public var hipLayer(default, null):HerRightHipLayer2;
 }
 
 @:rtti
-class HerRightThighStocking extends MovieClip
-{
-    @:keep public var stocking(default, null): HerRightStocking;
-    @:keep public var stocking2(default, null): HerRightStocking;
+class HerRightThighStocking extends MovieClip {
+	@:keep public var stocking(default, null):HerRightStocking;
+	@:keep public var stocking2(default, null):HerRightStocking;
 }
 
 @:rtti
-class HerPenisContainer extends MovieClip
-{
-    @:keep public var penis(default, null): Penis;
+class HerPenisContainer extends MovieClip {
+	@:keep public var penis(default, null):Penis;
 }
 
 @:rtti
 class Torso extends MovieClip {
 	@:keep public var back(default, null):BasicTannable;
+	@:keep public var backHighlight(default, null):MovieClip;
 	@:keep public var backCostume(default, null):BackCostume;
 	@:keep public var backUnderCostume(default, null):BackUnderCostume;
 	@:keep public var backside(default, null):BasicTannable;
@@ -246,7 +225,7 @@ class LeftHandOver extends MovieClip {
 
 @:rtti
 class HerLeftHand extends BasicTannable {
-	@:keep public var grip(default, null):MovieClip;//?
+	@:keep public var grip(default, null):MovieClip; // ?
 }
 
 @:rtti
@@ -310,7 +289,7 @@ class HerLeftArmContainer extends MovieClip {
 
 @:rtti
 class HerRightHand extends BasicTannable {
-	@:keep public var grip(default, null):MovieClip;//?
+	@:keep public var grip(default, null):MovieClip; // ?
 }
 
 @:rtti
@@ -408,7 +387,7 @@ class BacksideCostume extends MovieClip {
 
 @:rtti
 class HerLeftNipple extends BasicTannable {
-	@:keep public var leftNipple(default, null):MovieClip;//?
+	@:keep public var leftNipple(default, null):MovieClip; // ?
 }
 
 @:rtti
@@ -468,14 +447,63 @@ class HairBackContainer extends MovieClip {
 }
 
 @:rtti
-class HerEye extends MovieClip
-{
-	@:keep public var eyebrowUnderMask(default, null):BasicTannable;
+class HerLeftEyebrow extends MovieClip {
+	@:keep public var leftEyebrowLine(default, null):MovieClip;
+	@:keep public var leftEyebrowFill(default, null):MovieClip;
 }
 
 @:rtti
-class HerFace extends MovieClip
-{
+class HerRightEyebrow extends MovieClip {
+	@:keep public var rightEyebrowLine(default, null):MovieClip;
+	@:keep public var rightEyebrowFill(default, null):MovieClip;
+}
+
+@:rtti
+class HerIris extends MovieClip {
+	@:keep public var irisFill(default, null):MovieClip;
+}
+
+@:rtti
+class HerIrisContainer extends MovieClip {
+	@:keep public var iris(default, null):HerIris;
+}
+
+@:rtti
+class HerSclera extends MovieClip {
+	@:keep public var overlay(default, null):MovieClip;
+}
+
+@:rtti
+class HerEyeBall extends MovieClip {
+	@:keep public var highlights(default, null):MovieClip;
+	@:keep public var upperEyelidMask(default, null):MovieClip;
+	@:keep public var lowerEyelidMask(default, null):MovieClip;
+	@:keep public var sclera(default, null):HerSclera;
+	@:keep public var irisContainer(default, null):HerIrisContainer;
+}
+
+@:rtti
+class HerUpperEyelid extends MovieClip {
+	@:keep public var eyeshadow(default, null):MovieClip;
+	@:keep public var mascara(default, null):MovieClip;
+}
+
+@:rtti
+class HerLowerEyelid extends MovieClip {
+	@:keep public var mascara(default, null):MovieClip;
+}
+
+@:rtti
+class HerEye extends MovieClip {
+	@:keep public var eyebrowMask(default, null):MovieClip;
+	@:keep public var eyebrowUnderMask(default, null):BasicTannable;
+	@:keep public var upperEyelid(default, null):HerUpperEyelid;
+	@:keep public var lowerEyelid(default, null):HerLowerEyelid;
+	@:keep public var ball(default, null):HerEyeBall;
+}
+
+@:rtti
+class HerFace extends MovieClip {
 	@:keep public var lipFill(default, null):MovieClip;
 	@:keep public var lipShading(default, null):MovieClip;
 	@:keep public var skull(default, null):MovieClip;
@@ -483,11 +511,21 @@ class HerFace extends MovieClip
 }
 
 @:rtti
-class HerHead extends MovieClip
-{
+class HerHeadTanFace extends MovieClip {
+	@:keep public var nose(default, null):MovieClip;
+}
+
+@:rtti
+class HerHeadTan extends MovieClip {
+	@:keep public var face(default, null):HerHeadTanFace;
+}
+
+@:rtti
+class HerHead extends MovieClip {
 	@:keep public var neck(default, null):Neck;
 	@:keep public var face(default, null):HerFace;
-	@:keep public var headTan(default, null):MovieClip;
+	@:keep public var scalpHair(default, null):MovieClip;
+	@:keep public var headTan(default, null):HerHeadTan;
 	@:keep public var cheekSuck(default, null):MovieClip;
 	@:keep public var cheekBulge(default, null):MovieClip;
 }
@@ -507,85 +545,85 @@ class MouthShape {
 }
 
 class RandomMotion {
-    public var pos: Float;
-    public var speed: Float;
-    public var target: Float;
-    public var next: Float;
+	public var pos:Float;
+	public var speed:Float;
+	public var target:Float;
+	public var next:Float;
 
-	public function new(_pos: Float, _speed: Float, _target: Float, _next: Float) {
-    pos = _pos;
-    speed = _speed;
-    target = _target;
-    next = _next;
+	public function new(_pos:Float, _speed:Float, _target:Float, _next:Float) {
+		pos = _pos;
+		speed = _speed;
+		target = _target;
+		next = _next;
 	}
 }
 
 class Resistance {
-    public var upper: Float;
-    public var boundary: Float;
-    public var lower: Float;
-    public var multiplier: Float;
+	public var upper:Float;
+	public var boundary:Float;
+	public var lower:Float;
+	public var multiplier:Float;
 
-	public function new(_upper: Float, _boundary: Float, _lower: Float, _multiplier: Float) {
-    upper = _upper;
-    boundary = _boundary;
-    lower = _lower;
-    multiplier = _multiplier;
+	public function new(_upper:Float, _boundary:Float, _lower:Float, _multiplier:Float) {
+		upper = _upper;
+		boundary = _boundary;
+		lower = _lower;
+		multiplier = _multiplier;
 	}
 }
 
 class SwallowSequence {
-    public var build: Float;
-    public var swallow: Float;
-    public var relax: Float;
-    public var end: Float;
+	public var build:Float;
+	public var swallow:Float;
+	public var relax:Float;
+	public var end:Float;
 
-	public function new(_build: Float, _swallow: Float, _relax: Float, _end: Float) {
-    build = _build;
-    swallow = _swallow;
-    relax = _relax;
-    end = _end;
+	public function new(_build:Float, _swallow:Float, _relax:Float, _end:Float) {
+		build = _build;
+		swallow = _swallow;
+		relax = _relax;
+		end = _end;
 	}
 }
 
 class EyeMotion {
-    var ang: Float;
-    var target: Float;
+	public var ang:Float;
+	public var target:Float;
 
-	public function new(_ang: Float, _target: Float) {
-    ang = _ang;
-    target = _target;
+	public function new(_ang:Float, _target:Float) {
+		ang = _ang;
+		target = _target;
 	}
 }
 
 class EyelidMotion {
-    public var pos: Float;
-    public var shock: Float;
-    public var target: Float;
-    public var isClosed: Bool;
-    public var closedTimer: Float;
+	public var pos:Float;
+	public var shock:Float;
+	public var target:Float;
+	public var isClosed:Bool;
+	public var closedTimer:Float;
 
-	public function new(_pos: Float, _shock: Float, _target: Float, _isClosed: Bool, _closedTimer: Float) {
-    pos = _pos;
-    shock = _shock;
-    target = _target;
-    isClosed = _isClosed;
-    closedTimer = _closedTimer;
+	public function new(_pos:Float, _shock:Float, _target:Float, _isClosed:Bool, _closedTimer:Float) {
+		pos = _pos;
+		shock = _shock;
+		target = _target;
+		isClosed = _isClosed;
+		closedTimer = _closedTimer;
 	}
 }
 
 class PullOffPower {
-    public var start: Float;
-    public var current: Float;
-    public var increase: Float;
-    public var max: Float;
+	public var start:Float;
+	public var current:Float;
+	public var increase:Float;
+	public var max:Float;
 
-    public function new(_start: Float, _current: Float, _increase: Float, _max: Float) {
-        start = _start;
-        current = _current;
-        increase = _increase;
-        max = _max;
-    }
+	public function new(_start:Float, _current:Float, _increase:Float, _max:Float) {
+		start = _start;
+		current = _current;
+		increase = _increase;
+		max = _max;
+	}
 }
 
 @:rtti
@@ -596,8 +634,8 @@ class Her extends MovieClip {
 	public static var ANGRY_MOOD:String = "Angry";
 	public static var AHEGAO_MOOD:String = "Ahegao";
 
-    public static var armPositions:Array<String> = ["Back","On Legs","On His Legs","Hand Job","Loose"];
-    public static var randomArmPositions:Array<String> = ["Back","On Legs","On His Legs","Loose"];
+	public static var armPositions:Array<String> = ["Back", "On Legs", "On His Legs", "Hand Job", "Loose"];
+	public static var randomArmPositions:Array<String> = ["Back", "On Legs", "On His Legs", "Loose"];
 
 	public static var MouthShapeAH:MouthShape = new MouthShape("AH", 51, 61, -4.6);
 	public static var MouthShapeOO:MouthShape = new MouthShape("OO", 59, 64, -6.6);
@@ -634,13 +672,13 @@ class Her extends MovieClip {
 	@:keep public var hairTop(default, null):MovieClip;
 	@:keep public var head(default, null):HerHead;
 	@:keep public var leftArmContainer(default, null):HerLeftArmContainer;
-	@:keep public var leftEyebrow(default, null):MovieClip;
+	@:keep public var leftEyebrow(default, null):HerLeftEyebrow;
 	@:keep public var leftHandOverContainer(default, null):MovieClip;
 	@:keep public var leftHandOver(default, null):LeftHandOver;
 	@:keep public var rightForeArmContainer(default, null):HerRightForeArmContainer;
 	@:keep public var rightArmContainer(default, null):HerRightArmContainer;
 	@:keep public var rightArmEraseContainer(default, null):HerRightArmEraseContainer;
-	@:keep public var rightEyebrow(default, null):MovieClip;
+	@:keep public var rightEyebrow(default, null):HerRightEyebrow;
 	@:keep public var rightHandOver(default, null):MovieClip;
 	@:keep public var tears(default, null):obj.her.Tears;
 	@:keep public var tongueContainer(default, null):TongueContainer;
@@ -652,11 +690,11 @@ class Her extends MovieClip {
 	@:keep public var torsoUnderCostume(default, null):TorsoUnderCostume;
 	@:keep public var leftLegContainer(default, null):LegContainer;
 
-    public var backModContainer:Sprite = new Sprite();
+	public var backModContainer:Sprite = new Sprite();
 
-    public var initialised:Bool = false;
+	public var initialised:Bool = false;
 
-    public var userHasClicked:UInt = 0;
+	public var userHasClicked:UInt = 0;
 	public var heldTimer:UInt = 0;
 	public var tan(default, null):Tan;
 	public var penisControl(default, null):HerPenisControl;
@@ -723,9 +761,9 @@ class Her extends MovieClip {
 	public var neckSkinOffset:Float = 2;
 	public var offActionTimer:UInt = 0;
 	public var offActionTime:UInt = 9000;
-	// public var noseSquashUp:LinearTween;
-	// public var noseSquashDown:LinearTween;
-	// public var currentNoseSquash:LinearTween;
+	public var noseSquashUp:LinearTween;
+	public var noseSquashDown:LinearTween;
+	public var currentNoseSquash:LinearTween;
 	public var noseSquashAmount:Float = 0;
 	public var lastNoseSquash:Bool = false;
 	public var torsoIK:IKController;
@@ -778,8 +816,8 @@ class Her extends MovieClip {
 	public var swallowPoint:Float = 0;
 	public var swallowSequence:SwallowSequence = new SwallowSequence(20, 30, 40, 60);
 	public var tongue:Tongue;
-	// public var topTeethTween:LinearTween;
-	// public var bottomTeethTween:LinearTween;
+	public var topTeethTween:LinearTween;
+	public var bottomTeethTween:LinearTween;
 	public var clenchTeeth:Bool = false;
 	public var clenchTeethRatio:Float = 0;
 	public var clenchedTeethTimer:Int = 0;
@@ -799,10 +837,10 @@ class Her extends MovieClip {
 	public var winceTimer:UInt = 0;
 	public var lookChangeTimer:Int = -1;
 	public var cumInEye:UInt = 0;
-	// public var leftEyebrowNormalTween:LinearTween;
-	// public var rightEyebrowNormalTween:LinearTween;
-	// public var rightEyebrowAngryTween:LinearTween;
-	// public var leftEyebrowAngryTween:LinearTween;
+	public var leftEyebrowNormalTween:LinearTween;
+	public var rightEyebrowNormalTween:LinearTween;
+	public var rightEyebrowAngryTween:LinearTween;
+	public var leftEyebrowAngryTween:LinearTween;
 	public var eyebrowOffsets:Vector<UInt>;
 	public var passedOut:Bool = false;
 	public var passOutFactor:Float = 0;
@@ -870,7 +908,8 @@ class Her extends MovieClip {
 		var symbol = library.symbols.get(1982);
 		symbol.__initObject(library, this);
 
-this.previousResistance = this.resistance.upper;
+		this.previousResistance = this.resistance.upper;
+		// TODO!
 	}
 
 	public function getDataString():String {
@@ -2519,16 +2558,16 @@ this.previousResistance = this.resistance.upper;
 	public function updateBreathingScaledElements() {
 		var _loc1_ = 1 - this.breathingFactor * 0.024;
 		var _loc2_ = 1 / _loc1_;
-		// this.torso.midLayer.chest.scaleX = _loc1_;
-		// this.torso.chestCostume.scaleX = _loc1_;
-		// this.torso.chestUnderCostume.scaleX = _loc1_;
-		// this.torso.upperChestCostume.scaleX = _loc1_;
-		// this.torso.topContainer.chestTop.scaleX = _loc1_;
-		// this.torso.rightThighStocking.stocking.hipLayer.chestStocking.scaleX = _loc1_;
-		// this.torso.rightThighStocking.stocking.hipOverLayer.chestStocking.scaleX = _loc1_;
-		// this.torso.rightThighStocking.stocking2.hipLayer.chestStocking.scaleX = _loc1_;
-		// this.torso.rightThighStocking.stocking.hipLayer.chestStocking.penisCostumeContainer.scaleX = _loc2_;
-		// this.torso.chestCostume.bottoms.penisCostumeContainer.scaleX = _loc2_;
+		this.torso.midLayer.chest.scaleX = _loc1_;
+		this.torso.chestCostume.scaleX = _loc1_;
+		this.torso.chestUnderCostume.scaleX = _loc1_;
+		this.torso.upperChestCostume.scaleX = _loc1_;
+		this.torso.topContainer.chestTop.scaleX = _loc1_;
+		this.torso.rightThighStocking.stocking.hipLayer.chestStocking.scaleX = _loc1_;
+		this.torso.rightThighStocking.stocking.hipOverLayer.chestStocking.scaleX = _loc1_;
+		this.torso.rightThighStocking.stocking2.hipLayer.chestStocking.scaleX = _loc1_;
+		this.torso.rightThighStocking.stocking.hipLayer.chestStocking.penisCostumeContainer.scaleX = _loc2_;
+		this.torso.chestCostume.bottoms.penisCostumeContainer.scaleX = _loc2_;
 	}
 
 	public function updateEyes() {
@@ -2543,40 +2582,36 @@ this.previousResistance = this.resistance.upper;
 			_loc2_ += this.eyebrowOffsets[0];
 			this.eyebrowOffsets.splice(0, 1);
 		}
-		// this.rightEyebrow.rightEyebrowFill.gotoAndStop(_loc2_);
-		// this.rightEyebrow.rightEyebrowLine.gotoAndStop(_loc2_);
-		// this.leftEyebrow.leftEyebrowFill.gotoAndStop(_loc2_);
-		// this.leftEyebrow.leftEyebrowLine.gotoAndStop(_loc2_);
-		// if(this.mood == ANGRY_MOOD)
-		// {
-		//    _loc10_ = _loc2_ / 200;
-		//    this.leftEyebrowAngryTween.tween(_loc10_);
-		//    this.rightEyebrowAngryTween.tween(_loc10_);
-		// }
-		// else
-		// {
-		//    this.leftEyebrowNormalTween.tween(0);
-		//    this.rightEyebrowNormalTween.tween(0);
-		// }
-		// this.rightEyebrow.rightEyebrowFill.gotoAndStop(_loc2_);
-		// this.rightEyebrow.rightEyebrowLine.gotoAndStop(_loc2_);
-		// this.leftEyebrow.leftEyebrowFill.gotoAndStop(_loc2_);
-		// this.leftEyebrow.leftEyebrowLine.gotoAndStop(_loc2_);
-		// this.eye.eyebrowMask.gotoAndStop(_loc2_);
-		// var _loc7_:Number = Math.max(-55,Math.min(0,(this.eyeMotion.ang - 90) * 0.15 * Math.max(0,150 - _loc1_)));
-		// var _loc8_:uint = Math.floor(Math.max(2,_loc1_ + _loc7_));
-		// var _loc9_:uint = _loc1_;
-		// if(this.mood == HAPPY_MOOD)
-		// {
-		//    _loc9_ = _loc1_ + Math.max(0,(160 - _loc1_) * 0.9);
-		// }
-		// this.eye.upperEyelid.gotoAndStop(_loc8_);
-		// this.eye.lowerEyelid.gotoAndStop(_loc9_);
-		// this.eye.ball.upperEyelidMask.gotoAndStop(_loc8_);
-		// this.eye.ball.lowerEyelidMask.gotoAndStop(_loc9_);
-		// this.eye.upperEyelid.eyeshadow.gotoAndStop(_loc8_);
-		// this.eye.upperEyelid.mascara.gotoAndStop(_loc8_);
-		// this.eye.lowerEyelid.mascara.gotoAndStop(_loc9_);
+		this.rightEyebrow.rightEyebrowFill.gotoAndStop(_loc2_);
+		this.rightEyebrow.rightEyebrowLine.gotoAndStop(_loc2_);
+		this.leftEyebrow.leftEyebrowFill.gotoAndStop(_loc2_);
+		this.leftEyebrow.leftEyebrowLine.gotoAndStop(_loc2_);
+		if (this.mood == ANGRY_MOOD) {
+			_loc10_ = _loc2_ / 200;
+			this.leftEyebrowAngryTween.tween(_loc10_);
+			this.rightEyebrowAngryTween.tween(_loc10_);
+		} else {
+			this.leftEyebrowNormalTween.tween(0);
+			this.rightEyebrowNormalTween.tween(0);
+		}
+		this.rightEyebrow.rightEyebrowFill.gotoAndStop(_loc2_);
+		this.rightEyebrow.rightEyebrowLine.gotoAndStop(_loc2_);
+		this.leftEyebrow.leftEyebrowFill.gotoAndStop(_loc2_);
+		this.leftEyebrow.leftEyebrowLine.gotoAndStop(_loc2_);
+		this.eye.eyebrowMask.gotoAndStop(_loc2_);
+		var _loc7_:Float = Maths.clampf(-55, 0, (this.eyeMotion.ang - 90) * 0.15 * Math.max(0, 150 - _loc1_));
+		var _loc8_:UInt = Math.floor(Math.max(2, _loc1_ + _loc7_));
+		var _loc9_:UInt = _loc1_;
+		if (this.mood == HAPPY_MOOD) {
+			_loc9_ = _loc1_ + Std.int(Math.max(0, (160 - _loc1_) * 0.9));
+		}
+		this.eye.upperEyelid.gotoAndStop(_loc8_);
+		this.eye.lowerEyelid.gotoAndStop(_loc9_);
+		this.eye.ball.upperEyelidMask.gotoAndStop(_loc8_);
+		this.eye.ball.lowerEyelidMask.gotoAndStop(_loc9_);
+		this.eye.upperEyelid.eyeshadow.gotoAndStop(_loc8_);
+		this.eye.upperEyelid.mascara.gotoAndStop(_loc8_);
+		this.eye.lowerEyelid.mascara.gotoAndStop(_loc9_);
 	}
 
 	public function changeLookTarget(param1:Point, param2:UInt = 30, param3:UInt = 5) {
@@ -2775,7 +2810,8 @@ this.previousResistance = this.resistance.upper;
 	}
 
 	public function updateTorso() {
-		this.torsoJointAng = Math.min(G.animationControl.torsoMinAng, G.animationControl.torsoStartAng + this.pos * G.animationControl.torsoAngMultiplier - Maths.degToRad(this.rotation) * 0.9);
+		this.torsoJointAng = Math.min(G.animationControl.torsoMinAng,
+			G.animationControl.torsoStartAng + this.pos * G.animationControl.torsoAngMultiplier - Maths.degToRad(this.rotation) * 0.9);
 		this.torsoJointDist = Math.min(G.animationControl.torsoMinDist, G.animationControl.torsoStartDist + this.pos * G.animationControl.torsoDistMultiplier);
 		var torsoVec:Point = Maths.getVector(this.torsoJointDist, this.torsoJointAng);
 		this.torsoIK.update(torsoVec);

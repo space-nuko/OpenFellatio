@@ -5,6 +5,7 @@ import openfl.events.Event;
 import openfl.geom.Point;
 import obj.Maths;
 
+@:rtti
 @:access(swf.exporters.animate)
 class Tongue extends openfl.display.MovieClip {
 	public var tongueOut:Bool = false;

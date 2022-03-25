@@ -4,6 +4,7 @@ import openfl.display.MovieClip;
 import openfl.geom.Point;
 import obj.Rope;
 import obj.AlphaRGBObject;
+import obj.CostumeElement;
 import chars.sdchan.SDCHairLong;
 import chars.sdchan.SDCHairLong2;
 
@@ -28,7 +29,7 @@ class SDChan extends Character {
 		bg = 3;
 	}
 
-	override public function generateElements():Array<MovieClip> {
+	override public function generateElements():Array<CostumeElement> {
 		var hair1:ASAny = new Rope(new SDCHairLong(), G.hairUnderLayer, new Point(-105, -193), null, 0, "right", 0, 0);
 		var hair2:ASAny = new Rope(new SDCHairLong2(), G.hairBackLayer, new Point(-50, -140));
 		return [hair1, hair2];
