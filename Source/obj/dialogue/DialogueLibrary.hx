@@ -28,7 +28,7 @@ class DialogueLibrary {
 	public var allCleared:Bool = false;
 	public var finishesCleared:Bool = false;
 	public var dialogueTypes:Array<String>;
-	public var dialogueTypesPattern:compat.RegExp;
+	public var dialogueTypesPattern:EReg;
 
 	public function new() {
 		var _loc1_:String = null;
@@ -278,11 +278,11 @@ class DialogueLibrary {
 		return param1;
 	}
 
-	public function customEscape(param1:String):String {
-		param1 = new compat.RegExp("\\\\", "g").replace(param1, "%22");
-		param1 = new compat.RegExp("\\*", "g").replace(param1, "%2A");
-		return new compat.RegExp(":", "g").replace(param1, "%3A");
-	}
+	// public function customEscape(param1:String):String {
+	// 	param1 = new compat.RegExp("\\\\", "g").replace(param1, "%22");
+	// 	param1 = new compat.RegExp("\\*", "g").replace(param1, "%2A");
+	// 	return new compat.RegExp(":", "g").replace(param1, "%3A");
+	// }
 
 	public function outputLog(param1:String) {
 		// G.dialogueEditor.appendLog(param1);
@@ -646,6 +646,6 @@ class DialogueLibrary {
 		this.dialogueTypes.push(Dialogue.DROOL);
 		this.dialogueTypes.push(Dialogue.RESTART);
 		DialogueLibrary.allDialogueTypes = this.dialogueTypes;
-		this.dialogueTypesPattern = new compat.RegExp("(" + this.dialogueTypes.join("|") + "):\\s?\"(.+?)\"", "g");
+		this.dialogueTypesPattern = new EReg("(" + this.dialogueTypes.join("|") + "):[ \t]?\"(.+?)\"", "g");
 	}
 }

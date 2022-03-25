@@ -276,7 +276,7 @@ class G {
 
 	public static function dataName(param1:String):String {
 		var _loc2_ = param1.toLowerCase();
-		var _loc3_ = new compat.RegExp("\\W", "g");
+		var _loc3_ = ~/[A-Z]/g;
 		return _loc3_.replace(_loc2_, "");
 	}
 

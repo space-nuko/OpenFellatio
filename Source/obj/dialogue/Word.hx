@@ -23,30 +23,33 @@ class Word {
 		var _loc2_:UInt = 0;
 		var _loc3_:String = null;
 		var _loc4_:Array<String> = null;
-		var _loc5_ = false;
+		var isVowel = false;
 		var _loc6_:UInt = 0;
 		// super();
 		this.word = param1;
 		this.phonemes = new Array<Phoneme>();
 		this.wordLength = this.word.length;
-		if (new compat.RegExp("\\[.*?\\]").match(param1) != null) {
+		if (~/\[.*?\]/.match(param1)) {
 			this.actionWord = true;
 		} else {
 			_loc2_ = 0;
 			_loc3_ = "";
-            _loc4_ = new compat.RegExp("\\W*\\w", "i").match(this.word);
-			if (_loc4_ != null && _loc4_.length > 0) {
-				_loc5_ = new compat.RegExp("[^aeiouy]").test(_loc4_[0]);
+            var wordRegex = ~/[A-Z]*[a-z]/i;
+			if (wordRegex.match(this.word)) {
+                var result = wordRegex.matched(0);
+
+				isVowel = (~/[^aeiouy]/).match(result);
 				_loc6_ = 0;
 				while (_loc6_ < this.wordLength) {
-					if (_loc5_) {
-						if (new compat.RegExp("[^bcdfghjklmnpqrstvwxz]", "i").match(this.word.charAt(_loc6_)) != null) {
-							_loc5_ = false;
+                    var consonant = ~/[^bcdfghjklmnpqrstvwxz]/i;
+					if (isVowel) {
+						if (consonant.match(this.word.charAt(_loc6_))) {
+							isVowel = false;
 							this.phonemes[_loc6_] = this.findPhonemes(_loc3_);
 							_loc3_ = "";
 						}
-					} else if (new compat.RegExp("[bcdfghjklmnpqrstvwxz]", "i").match(this.word.charAt(_loc6_)) != null) {
-						_loc5_ = true;
+					} else if (consonant.match(this.word.charAt(_loc6_))) {
+						isVowel = true;
 						this.phonemes[_loc6_] = this.findPhonemes(_loc3_);
 						_loc3_ = "";
 					}
@@ -61,7 +64,7 @@ class Word {
 	@:flash.property public var action(get, never):String;
 
 	function get_action():String {
-		return new compat.RegExp("\\W", "gi").replace(this.word, "");
+		return (~/[A-Z]/gi).replace(this.word, "");
 	}
 
 	public function letter(param1:UInt):String {
@@ -95,24 +98,24 @@ class Word {
 		if (param1 == "I") {
 			_loc2_ = Her.MouthShapeUH;
 		} else if (param1 != null) {
-			if (new compat.RegExp("f|ph", "i").match(param1) != null) {
+			if ((~/f|ph/i).match(param1)) {
 				_loc2_ = Her.MouthShapeFF;
-			} else if (new compat.RegExp("m|p|b", "i").match(param1) != null) {
+			} else if ((~/m|p|b/i).match(param1)) {
 				_loc2_ = Her.MouthShapeMM;
-			} else if (new compat.RegExp("a|^a$").match(param1) != null) {
+			} else if ((~/a|^a$/).match(param1)) {
 				_loc2_ = Her.MouthShapeAH;
-			} else if (new compat.RegExp("^i$|ee|ea|oe|ou|^y$", "i").match(param1) != null) {
+			} else if ((~/^i$|ee|ea|oe|ou|^y$/i).match(param1)) {
 				_loc2_ = Her.MouthShapeEE;
-			} else if (new compat.RegExp("^e$|^u$|ou", "i").match(param1) != null) {
+			} else if ((~/^e$|^u$|ou/i).match(param1)) {
 				_loc2_ = Her.MouthShapeUH;
-			} else if (new compat.RegExp("^o$|oa", "i").match(param1) != null) {
+			} else if ((~/^o$|oa/i).match(param1)) {
 				_loc2_ = Her.MouthShapeOH;
-			} else if (new compat.RegExp("oo|w", "i").match(param1) != null) {
+			} else if ((~/oo|w/i).match(param1)) {
 				_loc2_ = Her.MouthShapeOO;
 			} else {
 				_loc2_ = Her.MouthShapeUH;
 			}
-			if (new compat.RegExp("l", "i").match(param1) != null) {
+			if ((~/l/i).match(param1)) {
 				_loc3_ = true;
 			}
 		}

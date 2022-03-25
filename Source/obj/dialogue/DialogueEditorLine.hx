@@ -157,14 +157,14 @@ class DialogueEditorLine extends openfl.display.MovieClip {
 	}
 
 	public function matchesFilter(param1:String):Bool {
-		var _loc2_ = new compat.RegExp(param1, "i");
-		if (this.phrase != null && _loc2_.match(this.phrase) != null) {
+		var filterRegex = new EReg(param1, "i");
+		if (this.phrase != null && filterRegex.match(this.phrase)) {
 			return true;
 		}
-		if (this.trigger != null && _loc2_.match(this.trigger) != null) {
+		if (this.trigger != null && filterRegex.match(this.trigger)) {
 			return true;
 		}
-		if (this._style != null && _loc2_.match(this._style) != null) {
+		if (this._style != null && filterRegex.match(this._style)) {
 			return true;
 		}
 		return false;
@@ -185,7 +185,7 @@ class DialogueEditorLine extends openfl.display.MovieClip {
 	function set_trigger(param1:String):String {
 		this._trigger = param1;
 		this.triggerLabel.text = this._trigger;
-		if (new compat.RegExp("finish", "i").match(this._trigger) != null) {
+		if (new EReg("finish", "i").match(this._trigger)) {
 			this.finish = true;
 		}
 		return param1;

@@ -180,7 +180,7 @@ class Dialogue extends MovieClip
 		} else {
 			for (_tmp_ in _loc3_) {
 				_loc5_ = _tmp_;
-				if (new compat.RegExp(param1, "i").match(_loc5_) != null) {
+				if (new EReg(param1, "i").match(_loc5_)) {
 					this.applyCustomFont(_loc5_);
 					break;
 				}
@@ -730,14 +730,14 @@ class Dialogue extends MovieClip
 		this.sayingWord = 0;
 		this.sayingChar = 0;
 		this.words = new Array<ASAny>();
-		_loc2_ = new compat.RegExp("(\\S)\\[", "gi").replace(_loc2_, "$1 [");
-		_loc2_ = new compat.RegExp("\\](\\S)", "gi").replace(_loc2_, "] $1");
+		_loc2_ = (~/([^ \t])\[/gi).replace(_loc2_, "$1 [");
+		_loc2_ = (~/\]([^ \t])/gi).replace(_loc2_, "] $1");
 		var _loc5_:Array<ASAny> = (cast _loc2_.split(" "));
 		for (_tmp_ in _loc5_) {
 			_loc6_ = _tmp_;
 			this.words.push(new Word(_loc6_));
 		}
-		new compat.RegExp("\\[.*?\\]", "gi").replace(_loc2_, "");
+		(~/\[.*?\]/gi).replace(_loc2_, "");
 		if (_loc4_ != null) {
 			this.typingSpeed = Std.int(_loc4_.length / _loc2_.length);
 		} else {
@@ -773,7 +773,7 @@ class Dialogue extends MovieClip
 	}
 
 	public function smartReplace(param1:String, param2:String, param3:ASFunction):String {
-		var _loc4_ = new compat.RegExp("\\*([^\\*]*?)" + param2 + "([^\\*]*?)\\*", "g");
+		var _loc4_ = new EReg("\\*([^\\*]*?)" + param2 + "([^\\*]*?)\\*", "g");
 		if (param3() != "") {
 			return _loc4_.replace(param1, "$1" + param3() + "$2");
 		}
@@ -796,7 +796,7 @@ class Dialogue extends MovieClip
 	}
 
 	public function partnerName():String {
-		return !!ASCompat.stringAsBool(G.customName) ? G.customName : "";
+		return G.customName != null ? G.customName : "";
 	}
 
 	public function partnerPosessive():String {
