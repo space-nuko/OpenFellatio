@@ -9,6 +9,7 @@ import openfl.display.DisplayObject;
 import openfl.display.DisplayObjectContainer;
 import openfl.filters.BlurFilter;
 import openfl.filters.ColorMatrixFilter;
+import openfl.filters.DropShadowFilter;
 import openfl.geom.Point;
 import openfl.geom.Matrix;
 import openfl.geom.Rectangle;
@@ -49,7 +50,7 @@ class G {
 	public static var cumLayer:Sprite;
 	public static var frontLayer:Sprite;
 	public static var screenEffects:ScreenEffects;
-	public static var stageRef:MovieClip;
+	public static var stageRef:Main;
 	// public static var clickPrompt:ClickPrompt;
 	public static var inGameMenu:InGameMenu;
 	public static var animationControl:AnimationControl;
@@ -65,9 +66,9 @@ class G {
 	// public static var highlight:ShaderFilter;
 	// public static var cumHighlightShader:Shader;
 	// public static var cumHighlight:ShaderFilter;
-	// public static var shadow:DropShadowFilter;
-	public static var spitShaders:Array<ASAny>;
-	public static var cumShaders:Array<ASAny>;
+	public static var shadow:DropShadowFilter;
+	// public static var spitShaders:Array<ASAny>;
+	// public static var cumShaders:Array<ASAny>;
 	public static var hairCM:ColorMatrixFilter;
 	public static var skinCM:ColorMatrixFilter;
 	public static var gravity:Float = 5.5;
@@ -123,8 +124,8 @@ class G {
 	public static var autoMode:UInt = 0;
 	public static var handsOff:Bool = false;
 	public static var baseCharNum:UInt = 0;
-	public static var storedChars:Array<ASAny> = new Array();
-	public static var defaultModFolders:Array<ASAny> = new Array();
+	// public static var storedChars:Array<ASAny> = new Array();
+	// public static var defaultModFolders:Array<ASAny> = new Array();
 	public static var bukkakeMode:Bool = false;
 	public static var hairOverContainer:Sprite;
 	public static var hairTop:MovieClip;
@@ -168,19 +169,60 @@ class G {
 
 	public function new() {}
 
-	public static function initGlobals() {
-		sceneLayer = new SceneLayer(G.defaultZoom);
-		automaticControl = new AutomaticControl();
-		animationControl = new AnimationControl();
-		soundControl = new SoundControl();
-		strandControl = new StrandControl();
-		characterControl = new CharacterControl();
+	public static function newHer():Her {
 		her = new Her();
+		return her;
+	}
+
+	public static function newHim():Him {
 		him = new Him();
+		return him;
+	}
+
+	public static function newInGameMenu():InGameMenu {
 		inGameMenu = new InGameMenu();
+		return inGameMenu;
+	}
+
+	public static function newSaveData():SaveData {
 		saveData = new SaveData();
-		screenEffects = new ScreenEffects();
-		hairBackContainer = new HairBackContainer();
+		return saveData;
+	}
+
+	public static function newSceneLayer(param1:Float):SceneLayer {
+		sceneLayer = new SceneLayer(param1);
+		return sceneLayer;
+	}
+
+	public static function getStrandControl():StrandControl {
+		strandControl = new StrandControl();
+		return strandControl;
+	}
+
+	public static function getSoundControl():SoundControl {
+		soundControl = new SoundControl();
+		return soundControl;
+	}
+
+	public static function getAutomaticControl():AutomaticControl {
+		automaticControl = new AutomaticControl();
+		return automaticControl;
+	}
+
+	public static function getCharacterControl():CharacterControl {
+		characterControl = new CharacterControl();
+		return characterControl;
+	}
+
+	// public static function getCustomElementLoader() : CustomElementLoader
+	// {
+	//    customElementLoader = new CustomElementLoader();
+	//    return customElementLoader;
+	// }
+
+	public static function getDialogue():Dialogue {
+		dialogueControl = new Dialogue();
+		return dialogueControl;
 	}
 
 	public static function showError(param1:String) {}

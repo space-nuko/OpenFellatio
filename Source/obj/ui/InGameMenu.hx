@@ -1,17 +1,17 @@
 package obj.ui;
 
-import flash.display.DisplayObject;
-import flash.display.Loader;
-import flash.display.MovieClip;
-import flash.display.StageQuality;
-import flash.events.Event;
-import flash.events.FocusEvent;
-import flash.events.IOErrorEvent;
-import flash.events.MouseEvent;
-import flash.geom.ColorTransform;
-import flash.net.FileReference;
-import flash.ui.Mouse;
-import flash.utils.ByteArray;
+import openfl.display.DisplayObject;
+import openfl.display.Loader;
+import openfl.display.MovieClip;
+import openfl.display.StageQuality;
+import openfl.events.Event;
+import openfl.events.FocusEvent;
+import openfl.events.IOErrorEvent;
+import openfl.events.MouseEvent;
+import openfl.geom.ColorTransform;
+import openfl.net.FileReference;
+import openfl.ui.Mouse;
+import openfl.utils.ByteArray;
 // import obj.animation.AnimationControl;
 import obj.dialogue.DialogueLibrary;
 

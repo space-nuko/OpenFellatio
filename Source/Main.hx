@@ -1,211 +1,657 @@
 package;
 
-import openfl.Assets;
 import openfl.display.Bitmap;
-import openfl.display.Sprite;
+import openfl.display.BitmapData;
+import openfl.display.BlendMode;
+import openfl.display.DisplayObject;
+import openfl.display.DisplayObjectContainer;
 import openfl.display.MovieClip;
+import openfl.display.Shader;
+import openfl.display.Sprite;
 import openfl.events.Event;
 import openfl.events.KeyboardEvent;
+import openfl.events.MouseEvent;
+import openfl.filters.BlurFilter;
 import openfl.ui.Keyboard;
+import openfl.ui.Mouse;
+import openfl.filters.ColorMatrixFilter;
+import openfl.filters.DropShadowFilter;
+import openfl.filters.ShaderFilter;
+import openfl.geom.Matrix;
+import openfl.geom.Point;
+import openfl.geom.Rectangle;
+import openfl.net.FileReference;
+import openfl.utils.AssetLibrary;
+// import openfl.utils.ByteArray;
+import openfl.Assets;
+import obj.AutomaticControl;
+import obj.CharacterControl;
+import obj.ClickPrompt;
+// import obj.CustomElementLoader;
+import obj.Her;
+import obj.Him;
+import obj.InGameMenu;
+import obj.SaveData;
+import obj.SceneLayer;
+import obj.ScreenEffects;
+import obj.SoundControl;
+import obj.StrandControl;
+import obj.animation.AnimationControl;
+import obj.dialogue.Dialogue;
+import obj.dialogue.DialogueEditor;
+// import obj.ui.IMouseWheelScrollable;
 import motion.easing.Elastic;
 import motion.Actuate;
+import com.kircode.debug.FPS_Mem;
 
 class Main extends Sprite {
-    var arrowKeyUp: Bool;
-    var arrowKeyDown: Bool;
-    var container: Sprite;
+	// public var preloaderBG:MenuBackground;
+	// public var preloadDisplay:PreloadDisplay;
+	// public var customElementLoader:CustomElementLoader;
+	public var bgLayer:Sprite;
+	public var strandBackLayer:Sprite;
+	public var strandBackMask:ScreenMask;
+	public var sceneLayer:SceneLayer;
+	public var strandFrontLayer:Sprite;
+	public var strandFrontMask:ScreenMask;
+	public var cumLayer:Sprite;
+	public var cumLayerMask:ScreenMask;
+	public var screenEffects:ScreenEffects;
+	public var uiLayer:Sprite;
+	public var menuLayer:Sprite;
+	public var sceneMask:ScreenMask;
+	// public var menuBG:MenuBackground;
+	// public var mainMenu:Menu;
+	public var fadingBG:Bool = false;
+	// public var clickPrompt:ClickPrompt;
+	public var currentMousePos:Point = new Point();
+	public var mouseScrollDeltas:Array<Float> = new Array<Float>();
+	// public var debug:TextField;
+	// public var debugBar:DebugBar;
+	// public var debugAnimationMode:UInt = 0;
+	// public var HighlightFilter:Class<Dynamic>;
 
-    public function new() {
-        super();
+	var arrowKeyUp:Bool;
+	var arrowKeyDown:Bool;
+	var container:Sprite;
 
-        var fps_mem = new com.kircode.debug.FPS_Mem(10, 10, 0x0000FF);
-        addChild(fps_mem);
+	public function new() {
+		super();
 
-        var bitmapData = Assets.getBitmapData("assets/rinari.png");
-        var bitmap = new Bitmap(bitmapData);
+		var fps_mem = new com.kircode.debug.FPS_Mem(10, 10, 0x0000FF);
+		addChild(fps_mem);
 
-        Assets.loadLibrary("sdt2").onComplete(function(_) {
-            trace("SWF library loaded");
-            initGame();
-            var lib = G.her;
+		Assets.loadLibrary("sdt2").onComplete(onLoaded);
+	}
 
-            var herLeftArm = new obj.Her.HerLeftArmContainer();
-            var herRightArm = new obj.Her.HerRightArmContainer();
-            var herRightArmErase = new obj.Her.HerRightArmEraseContainer();
-            var herRightForeArmErase = new obj.Her.HerRightForeArmContainer();
-            var leftHandOver = new obj.Her.LeftHandOver();
-            lib.giveArmContainers(herLeftArm, herRightArm, herRightForeArmErase, herRightArmErase, leftHandOver);
+	public function onLoaded(library: AssetLibrary) {
+		trace("SWF library loaded");
 
-            var hairBackContainer = new obj.Her.HairBackContainer();
-            lib.giveHairBackContainer(hairBackContainer);
+		initGame();
 
-            trace(lib);
-            trace(lib.rightForeArmContainer);
-            trace(lib.rightForeArmContainer.upperArmCostume);
-            trace(lib.rightForeArmContainer.upperArmCostume.foreArmCostume);
-            trace(lib.rightForeArmContainer.upperArmCostume.foreArmCostume.cuff);
+		// this.preloaderBG = new MenuBackground();
+		// addChild(this.preloaderBG);
+		// this.preloadDisplay = new PreloadDisplay();
+		// this.preloadDisplay.bar.scaleX = 0;
+		// this.preloadDisplay.x = 350;
+		// this.preloadDisplay.y = 300;
+		// addChild(this.preloadDisplay);
+		// this.loaderInfo.addEventListener(ProgressEvent.PROGRESS, this.updatePreloader);
+		// this.loaderInfo.addEventListener(Event.COMPLETE, this.completePreloader);
+		// G.highlightShader = new Shader(new this.HighlightFilter() as ByteArray);
+		// G.highlight = new ShaderFilter(G.highlightShader);
+		// G.highlightShader.data.trans.value = [0.275];
+		// G.highlightShader.data.totMult.value = [0.2];
+		// G.cumHighlightShader = new Shader(new this.HighlightFilter() as ByteArray);
+		// G.cumHighlight = new ShaderFilter(G.cumHighlightShader);
+		// G.cumHighlightShader.data.trans.value = [1.1];
+		// G.cumHighlightShader.data.totMult.value = [0.5];
+		// try {
+		// 	this.initContextMenu();
+		// } catch (e) {}
+	}
 
-            // var a = [
-            //     lib.collarContainer.collar,
-            //     lib.gagFront,
-            //     lib.gagBack,
-
-            //     lib.torso.cuffs,
-            //     lib.rightForeArmContainer.upperArmCostume.foreArmCostume.cuff,
-            //     lib.leftArmContainer.upperArmCostume.foreArmCostume.cuff,
-
-            //     lib.torso.rightCalfContainer.cuffs,
-            //     lib.leftLegContainer.leg.cuffs,
-
-            //     lib.eyewear,
-
-            //     lib.torso.rightThighCostume.panties,
-            //     lib.leftLegContainer.leg.leftThighCostume.panties,
-            //     lib.torso.backUnderCostume.panties,
-            //     lib.torso.chestUnderCostume.panties,
-            //     lib.torsoBackCostume.backsideCostume.panties,
-
-            //     lib.torso.leftGlove,
-            //     lib.torso.rightGlove,
-            //     lib.rightForeArmContainer.upperArmCostume.foreArmCostume.glove,
-            //     lib.leftArmContainer.upperArmCostume.foreArmCostume.glove,
-            //     lib.rightForeArmContainer.upperArmCostume.foreArmCostume.handCostume.glove,
-            //     lib.leftArmContainer.upperArmCostume.foreArmCostume.handCostume.glove,
-            //     lib.rightArmContainer.upperArmCostume.glove,
-            //     lib.leftArmContainer.upperArmCostume.glove,
-            //     lib.leftHandOver.hand.glove,
-
-            //     lib.torso.rightThighStocking,
-            //     lib.torso.rightCalfContainer.calfStocking,
-            //     lib.leftLegContainer.leg.stocking,
-            //     lib.leftLegContainer.leg.calfStocking,
-            //     lib.torsoBackCostume.backsideCostume.stocking,
-
-            //     lib.torso.rightThighStockingB,
-            //     lib.torso.rightCalfContainer.calfStockingB,
-            //     lib.leftLegContainer.leg.stockingB,
-            //     lib.leftLegContainer.leg.calfStockingB,
-            //     lib.torsoBackCostume.backsideCostume.stockingB,
-
-            //     lib.torso.rightThighBottoms,
-            //     lib.torso.rightThighBottomsOver,
-            //     lib.torso.rightCalfContainer.bottoms,
-            //     lib.torso.chestCostume.bottoms,
-            //     lib.torso.backCostume.bottoms,
-            //     lib.leftLegContainer.leg.leftThighBottoms,
-            //     lib.leftLegContainer.leg.leftCalfBottoms,
-            //     lib.torsoBackCostume.backsideCostume.bottoms,
-
-            //     lib.torso.rightCalfContainer.footwear,
-            //     lib.leftLegContainer.leg.footwear,
-
-            //     lib.torso.topContainer.breastTop,
-            //     lib.torso.topContainer.chestTop,
-            //     lib.torso.topContainer.backTop,
-            //     lib.torso.topContainer.topStrap,
-            //     lib.torsoBackCostume.breastCostume.top,
-            //     lib.torsoUnderCostume.top,
-            //     lib.rightArmContainer.upperArmCostume.top,
-            //     lib.leftArmContainer.upperArmCostume.top,
-
-            //     lib.torso.breastCostume.bra,
-            //     lib.torso.braStrap,
-            //     lib.torso.shoulderStrap,
-            //     lib.torso.upperChestCostume.bra,
-            //     lib.torsoBackCostume.breastCostume.bra,
-
-            //     // g.hairCostumeOver.headwear,
-            //     // g.hairCostumeBack.headwear,
-
-            //     lib.tongueContainer.tongue.piercing,
-            //     lib.tongueContainer.tongue.piercingBack,
-            //     lib.topLipTongue.piercing,
-            //     lib.topLipTongue.piercingBack,
-
-			// 	lib.torso.nipplePiercing,
-			// 	lib.torso.leftNipplePiercing,
-
-            // lib.torso.chestCostume.bellyPiercing,
-
-            // lib.earrings];
-            // for (f in a) {
-            //     trace(f);
-            //     if (f != null) {
-            //     f.stop();
-            //     }
-            // }
-
-         lib.hairTop.gotoAndStop("None");
-         lib.hairMidContainer.hairUnder.gotoAndStop("None");
-         lib.hairMidContainer.hairBottom.gotoAndStop("None");
-         lib.hairBackContainer.hairBack.gotoAndStop("None");
-            go(lib);
-
-			container = new Sprite();
-			// container.addChild(bitmap);
-			container.addChild(lib);
-			container.alpha = 0;
-			container.scaleX = 0.5;
-			container.scaleY = 0.5;
-			container.x = stage.stageWidth / 2;
-			container.y = stage.stageHeight / 2;
-
-			addChild(container);
-
-			Actuate.tween(container, 3, {alpha: 1});
-			// Actuate.tween(container, 6, {scaleX: 1, scaleY: 1}).delay(0.4).ease(Elastic.easeOut);
-
-			// lib.gotoAndPlay("InDone");
-			// lib.tipPoint.stop();
-			// lib.piercing.gotoAndStop("Barbell");
-			// lib.piercingBack.gotoAndStop("Barbell");
-
-            stage.addEventListener(KeyboardEvent.KEY_DOWN, keyDown);
-            stage.addEventListener(KeyboardEvent.KEY_UP, keyUp);
-		    this.addEventListener(Event.ENTER_FRAME, everyFrame);
-		});
-    }
-
-	function go(lib: MovieClip) {
-        lib.stop();
-        var length = lib.numChildren;
-        var i = 0;
+	function go(lib:MovieClip) {
+		lib.stop();
+		var length = lib.numChildren;
+		var i = 0;
 		while (i < length) {
-            var value = lib.getChildAt(i);
+			var value = lib.getChildAt(i);
 			if (Std.isOfType(value, MovieClip)) {
 				trace(i + " " + value);
 				go(cast(value, MovieClip));
 			}
-            i += 1;
+			i += 1;
 		}
 	}
 
-	private function keyDown(event:KeyboardEvent) {
-		if (event.keyCode == Keyboard.UP) {
-			arrowKeyUp = true;
-		}else if (event.keyCode == Keyboard.DOWN) {
-			arrowKeyDown = true;
-		}
-	}
+      public function initGame()
+      {
+         G.stageRef = this;
 
-	private function keyUp(event:KeyboardEvent) {
-		if (event.keyCode == Keyboard.UP) {
-			arrowKeyUp = false;
-		}else if (event.keyCode == Keyboard.DOWN) {
-			arrowKeyDown = false;
-		}
-	}
+         G.container = new Sprite();
+         addChild(G.container);
 
-    private function everyFrame(event:Event) {
-        if (arrowKeyUp) {
-            container.y += 5;
-        }
-        if (arrowKeyDown) {
-            container.y -= 5;
-        }
-    }
+         G.animationControl = new AnimationControl();
+         G.getStrandControl();
+         G.getSoundControl();
+         G.getCharacterControl();
+         G.getAutomaticControl();
+         G.getDialogue();
 
-	public function initGame() {
-		G.initGlobals();
-	}
+         G.bg = new Background();
+         this.sceneLayer = G.newSceneLayer(G.defaultZoom);
+         G.newHim();
+         G.newHer();
+
+         // this.customElementLoader = G.getCustomElementLoader();
+         G.shadow = new DropShadowFilter(1,-90,13288100,1,5,5,1.5,1,true);
+
+//         G.spitShaders = [G.highlight];
+//         G.cumShaders = [G.cumHighlight,G.shadow];
+//
+         this.bgLayer = new Sprite();
+         G.container.addChild(this.bgLayer);
+         this.bgLayer.addChild(G.bg);
+
+         G.backLayer = new Sprite();
+         G.container.addChild(G.backLayer);
+         var _loc1_= new ScreenMask();
+         G.container.addChild(_loc1_);
+         G.backLayer.mask = _loc1_;
+
+         G.mistLayer = new Sprite();
+         G.container.addChild(G.mistLayer);
+
+         this.strandBackLayer = new Sprite();
+         G.strandBackLayer = this.strandBackLayer;
+         G.container.addChild(this.strandBackLayer);
+         this.strandBackMask = new ScreenMask();
+         G.container.addChild(this.strandBackMask);
+         this.strandBackLayer.mask = this.strandBackMask;
+//         this.strandBackLayer.filters = G.spitShaders;
+
+         this.sceneLayer.aimCamera(200,50);
+         G.container.addChild(this.sceneLayer);
+
+         this.sceneMask = new ScreenMask();
+         G.container.addChild(this.sceneMask);
+         this.sceneLayer.mask = this.sceneMask;
+
+         var _loc2_= new HimArmContainer();
+         G.backLayer.addChild(_loc2_);
+
+         var _loc3_= new HairBackContainer();
+         G.backLayer.addChild(_loc3_);
+         G.hairBackContainer = _loc3_;
+         G.hairBackLayer = _loc3_.hairBackLayer;
+         G.hairBack = _loc3_.hairBack;
+
+         var _loc4_= new HerLeftArmContainer();
+         this.sceneLayer.addChild(_loc4_);
+
+         G.hairCostumeBack = new HairCostumeBack();
+         this.sceneLayer.addChild(G.hairCostumeBack);
+         this.sceneLayer.addChild(G.him);
+         this.sceneLayer.addChild(G.her);
+         G.her.giveHairBackContainer(_loc3_);
+
+         G.himOverLayer = new HimOverLayer();
+         G.him.giveOverLayer(G.himOverLayer);
+
+         var _loc5_= new HimLeftArmContainer();
+         G.himOverLayer.addChild(_loc5_);
+         G.him.giveHimLeftArm(_loc5_);
+         G.him.giveHimArm(_loc2_);
+
+         this.strandFrontLayer = new Sprite();
+         this.strandFrontLayer.mouseEnabled = false;
+         this.strandFrontLayer.mouseChildren = false;
+         G.strandFrontLayer = this.strandFrontLayer;
+         G.container.addChild(this.strandFrontLayer);
+
+         this.strandFrontMask = new ScreenMask();
+         G.container.addChild(this.strandFrontMask);
+         this.strandFrontLayer.mask = this.strandFrontMask;
+//         this.strandFrontLayer.filters = G.spitShaders;
+
+         this.cumLayer = new Sprite();
+         this.cumLayer.mouseEnabled = false;
+         this.cumLayer.mouseChildren = false;
+         G.cumLayer = this.cumLayer;
+         G.container.addChild(this.cumLayer);
+
+         this.cumLayerMask = new ScreenMask();
+         G.container.addChild(this.cumLayerMask);
+         this.cumLayer.mask = this.cumLayerMask;
+//         this.cumLayer.filters = G.cumShaders;
+
+         G.frontLayer = new Sprite();
+         G.container.addChild(G.frontLayer);
+
+         var _loc6_= new HerRightArmContainer();
+         var _loc7_= new HerRightArmEraseContainer();
+         var _loc8_= new HerRightForeArmContainer();
+         var _loc9_= new LeftHandOver();
+         G.hairCostumeUnderOver = new Sprite();
+         G.hairOverLayer = new Sprite();
+         G.hairOverContainer = new Sprite();
+         G.hairCostumeOver = new HairCostumeOver();
+         G.hairTop = G.her.hairTop;
+         G.her.removeChild(G.hairTop);
+         G.frontLayer.addChild(_loc6_);
+         G.hairOverContainer.addChild(G.hairTop);
+         G.hairOverContainer.addChild(G.hairOverLayer);
+         G.frontLayer.addChild(G.hairCostumeUnderOver);
+         G.frontLayer.addChild(G.hairOverContainer);
+         G.frontLayer.addChild(G.hairCostumeOver);
+         G.frontLayer.addChild(_loc8_);
+         G.frontLayer.addChild(_loc9_);
+         G.frontLayer.addChild(G.himOverLayer);
+         G.him.addChild(_loc7_);
+         _loc7_.blendMode = BlendMode.ERASE;
+         G.him.blendMode = BlendMode.LAYER;
+         G.her.giveArmContainers(_loc4_,_loc6_,_loc8_,_loc7_,_loc9_);
+
+         G.her.setupTan();
+
+         this.sceneLayer.giveExternalLayer(G.backLayer);
+         this.sceneLayer.giveExternalLayer(G.frontLayer);
+         this.sceneLayer.giveExternalLayer(this.strandBackLayer);
+         this.sceneLayer.giveExternalLayer(this.strandFrontLayer);
+         this.sceneLayer.giveExternalLayer(this.cumLayer);
+
+         var _loc10_= new ScreenMask();
+         G.container.addChild(_loc10_);
+         G.frontLayer.mask = _loc10_;
+
+         this.screenEffects = new ScreenEffects();
+         this.screenEffects.mouseEnabled = false;
+         this.screenEffects.mouseChildren = false;
+         G.screenEffects = this.screenEffects;
+         G.container.addChild(this.screenEffects);
+
+         G.getEraseItems(G.container);
+
+         this.menuLayer = new Sprite();
+         G.container.addChild(this.menuLayer);
+
+         // this.menuBG = new MenuBackground();
+         // this.menuBG.mouseEnabled = false;
+         // this.menuLayer.addChild(this.menuBG);
+         // this.mainMenu = new Menu();
+         // this.menuLayer.addChild(this.mainMenu);
+
+         this.uiLayer = new Sprite();
+         G.container.addChild(this.uiLayer);
+
+         // this.clickPrompt = new ClickPrompt();
+         // this.clickPrompt.x = 675;
+         // this.clickPrompt.y = 590;
+         // G.clickPrompt = this.clickPrompt;
+         // this.uiLayer.addChild(this.clickPrompt);
+
+         // G.container.addChild(G.dialogueControl);
+
+         G.newInGameMenu();
+         // this.customElementLoader.addListeners();
+         G.container.addChild(G.inGameMenu);
+         // this.customElementLoader.prepareModTargetElementsDictionary();
+
+         G.characterControl.registerComponents();
+
+         // G.dialogueEditor = new DialogueEditor();
+         // G.container.addChild(G.dialogueEditor);
+
+         this.addEventListener(Event.ENTER_FRAME,this.tick);
+         this.addEventListener(MouseEvent.MOUSE_DOWN,this.mousePressed);
+         this.addEventListener(MouseEvent.MOUSE_UP,this.mouseReleased);
+         this.addEventListener(MouseEvent.MOUSE_MOVE,this.mouseMoved);
+         this.addEventListener(MouseEvent.MOUSE_WHEEL,this.mouseWheel);
+
+         stage.addEventListener(KeyboardEvent.KEY_DOWN,this.keyPressed);
+         stage.addEventListener(KeyboardEvent.KEY_UP,this.keyReleased);
+         stage.addEventListener(Event.MOUSE_LEAVE,this.mouseLeft);
+
+         // this.mainMenu.buttonPlay.addEventListener(MouseEvent.CLICK,this.playClicked);
+         // this.mainMenu.buttonOptions.addEventListener(MouseEvent.CLICK,this.optionsClicked);
+
+         if(G.saveData.saveExists())
+         {
+            G.characterControl.initChar(false);
+            G.characterControl.initHim();
+            G.saveData.loadCurrentData();
+         }
+         else
+         {
+            G.characterControl.initChar();
+            G.characterControl.initHim();
+            G.saveData.saveOptionsData();
+            G.saveData.saveCharOptionsData();
+            // G.inGameMenu.characterMenu.updateCharOrder(G.characterControl.defaultCharOrder);
+         }
+
+         G.saveData.updatePlayCounter();
+         this.openMainMenu();
+
+         G.her.initialise();
+
+         // ----------------------------------------
+
+         startGame();
+      }
+
+      public function startGame()
+      {
+         if(!G.showMouse)
+         {
+            Mouse.hide();
+         }
+         G.soundControl.startBreathing();
+         this.currentMousePos = new Point(700,0);
+         G.gameRunning = true;
+      }
+
+      public function tick(param1:Event)
+      {
+         var _loc2_= Math.NaN;
+         var _loc3_:ASAny = false;
+         var _loc4_= false;
+         // if(this.fadingBG)
+         // {
+         //    this.menuBG.alpha -= 0.025;
+         //    if(this.menuBG.alpha <= 0)
+         //    {
+         //       this.menuBG.alpha = 0;
+         //       this.menuBG.visible = false;
+         //       this.fadingBG = false;
+         //    }
+         // }
+         if(G.gameRunning)
+         {
+            if(!G.gamePaused)
+            {
+               if(!G.controlLocked)
+               {
+                  _loc3_ = G.animationControl.currentAnimationName == AnimationControl.FACE_FUCK;
+                  if(_loc4_ = (G.mirrored || G.invertControls) && !(G.mirrored && G.invertControls))
+                  {
+                     _loc2_ = G.screenSize.x - this.currentMousePos.x;
+                  }
+                  else
+                  {
+                     _loc2_ = this.currentMousePos.x;
+                  }
+                  _loc2_ = (_loc2_ - 100) / 500;
+                  G.currentMousePos.x = Math.min(1.2,_loc2_);
+                  G.currentMousePos.y = Math.max(-1,Math.min(1,(this.currentMousePos.y - 100) / 200 - 1));
+                  if(G.autoModeOn)
+                  {
+                     G.currentPos = G.automaticControl.getPos().clone();
+                  }
+                  else
+                  {
+                     G.currentPos = G.currentMousePos.clone();
+                  }
+               }
+               G.animationControl.stepAnimation();
+               G.dialogueControl.update();
+            }
+            G.soundControl.tick();
+            G.characterControl.tick();
+         }
+      }
+
+      public function playClicked(param1:MouseEvent)
+      {
+         this.closeMainMenu();
+         this.startGame();
+      }
+
+      public function optionsClicked(param1:MouseEvent)
+      {
+         G.inGameMenu.openMenu(true);
+      }
+
+      public function mousePressed(param1:MouseEvent)
+      {
+         if(G.gameRunning && !G.gamePaused)
+         {
+            G.her.mousePressed(param1);
+            G.her.activeHold();
+            if(G.bukkakeMode)
+            {
+               G.him.startBMSpurt();
+            }
+         }
+      }
+
+      public function mouseReleased(param1:MouseEvent)
+      {
+         if(G.gameRunning && !G.gamePaused)
+         {
+            G.her.mouseReleased(param1);
+            G.him.stopBMSpurt();
+         }
+         G.inGameMenu.mouseReleased(param1);
+      }
+
+      public function mouseMoved(param1:MouseEvent)
+      {
+         if(!G.shiftDown && !G.controlLocked)
+         {
+            this.currentMousePos.x = mouseX;
+            this.currentMousePos.y = mouseY;
+         }
+         G.inGameMenu.mouseMoved(mouseX,mouseY);
+      }
+
+      public function mouseLeft(param1:Event)
+      {
+         if(!G.shiftDown && !G.controlLocked)
+         {
+            if(this.currentMousePos.x > G.screenSize.x / 2 + 200)
+            {
+               this.currentMousePos.x = G.screenSize.x;
+            }
+            else if(this.currentMousePos.x < G.screenSize.x / 2 - 200)
+            {
+               this.currentMousePos.x = 0;
+            }
+         }
+      }
+
+      public function mouseWheel(param1:MouseEvent)
+      {
+         var _loc2_= param1.delta > 0.5 ? 8 : (param1.delta < -0.5 ? -8 : 0);
+         // if(G.overScrollArea != null)
+         // {
+         //    G.overScrollArea.mouseWheelScroll(_loc2_);
+         // }
+         /*else*/ if(_loc2_ > 0)
+         {
+            G.sceneLayer.zoomIn(0.05);
+            G.saveData.saveOptionsData();
+         }
+         else if(_loc2_ < 0)
+         {
+            G.sceneLayer.zoomOut(0.05);
+            G.saveData.saveOptionsData();
+         }
+      }
+
+      public function keyReleased(param1:KeyboardEvent)
+      {
+         switch(param1.keyCode)
+         {
+            case 16:
+               if(!G.controlLocked)
+               {
+                  this.currentMousePos.x = mouseX;
+                  this.currentMousePos.y = mouseY;
+               }
+               G.shiftDown = false;
+
+            case 17:
+               G.ctrlDown = false;
+         }
+      }
+
+      public function keyPressed(param1:KeyboardEvent)
+      {
+         switch(param1.keyCode)
+         {
+            case Keyboard.SHIFT:
+               G.shiftDown = true;
+
+            case Keyboard.CONTROL:
+               G.ctrlDown = true;
+         }
+         if(!G.inTextField && !G.controlLocked)
+         {
+            switch(param1.keyCode)
+            {
+               case Keyboard.SLASH:
+                  if(G.shiftDown)
+                  {
+                     G.inGameMenu.shuffle();
+                  }
+                  else
+                  {
+                     G.takeScreenShot();
+                  }
+
+               case Keyboard.SPACE:
+                  G.her.activeHold();
+
+               case Keyboard.A:
+                  G.toggleAutoMode();
+                  G.inGameMenu.setCBAuto();
+
+               case Keyboard.P:
+                  G.inGameMenu.toggleMenu(true,5);
+
+               case Keyboard.O:
+                  G.inGameMenu.toggleMenu(true,4);
+
+               case Keyboard.I:
+                  G.inGameMenu.toggleMenu(true,3);
+
+               case Keyboard.U:
+                  G.inGameMenu.toggleMenu(true,2);
+
+               case Keyboard.Y:
+                  G.inGameMenu.toggleMenu(true,1);
+
+               case Keyboard.C:
+                  G.characterControl.nextCharacter();
+
+               case Keyboard.X:
+                  G.characterControl.prevCharacter();
+
+               case Keyboard.B:
+                  G.characterControl.toggleBackground();
+                  G.saveData.saveCharData();
+
+               case Keyboard.H:
+                  G.characterControl.toggleHim();
+                  G.saveData.saveCharData();
+
+               case Keyboard.K:
+                  G.her.swallow();
+
+               case Keyboard.T:
+                  G.characterControl.toggleBreasts();
+                  G.saveData.saveCharData();
+
+               case Keyboard.S:
+                  G.characterControl.toggleSkin();
+                  G.saveData.saveCharData();
+
+               case Keyboard.J:
+                  G.him.ejaculate();
+
+               case Keyboard.MINUS
+                  | Keyboard.NUMPAD_SUBTRACT:
+                  G.sceneLayer.zoomOut();
+                  G.saveData.saveOptionsData();
+
+               case Keyboard.EQUAL
+                  | Keyboard.NUMPAD_ADD:
+                  G.sceneLayer.zoomIn();
+                  G.saveData.saveOptionsData();
+
+               case Keyboard.COMMA:
+                  G.soundControl.decreaseVolume();
+                  G.saveData.saveOptionsData();
+
+               case Keyboard.PERIOD:
+                  G.soundControl.increaseVolume();
+                  G.saveData.saveOptionsData();
+
+               case Keyboard.M:
+                  G.soundControl.toggleMute();
+                  G.saveData.saveOptionsData();
+
+               case Keyboard.Q:
+                  G.toggleQuality();
+                  G.saveData.saveOptionsData();
+            }
+         }
+      }
+
+      public function closeMainMenu()
+      {
+         // this.fadingBG = true;
+         // this.mainMenu.visible = false;
+         // this.mainMenu.enabled = false;
+      }
+
+      public function openMainMenu()
+      {
+         if(G.introSound)
+         {
+            G.soundControl.playIntro();
+         }
+         // this.mainMenu.visible = true;
+         // this.mainMenu.enabled = true;
+      }
+
+      // public function initContextMenu()
+      // {
+      //    G.defaultCM = new ContextMenu();
+      //    G.defaultCM.hideBuiltInItems();
+      //    G.defaultCM.builtInItems.quality = true;
+      //    G.defaultCM.builtInItems.print = true;
+      //    var _loc1_= new ContextMenuItem("Kona ~ Modguy",false,false);
+      //    G.defaultCM.customItems.push(_loc1_);
+      //    var _loc2_= new ContextMenuItem(G.ver,false,false);
+      //    G.defaultCM.customItems.push(_loc2_);
+      //    this.contextMenu = G.defaultCM;
+      // }
+
+      // public function updatePreloader(param1:ProgressEvent)
+      // {
+      //    var _loc2_= param1.bytesLoaded / param1.bytesTotal;
+      //    this.preloadDisplay.bar.scaleX = _loc2_;
+      // }
+
+      // public function completePreloader(param1:Event)
+      // {
+      //    removeChild(this.preloadDisplay);
+      //    this.loaderInfo.removeEventListener(ProgressEvent.PROGRESS,this.updatePreloader);
+      //    this.loaderInfo.removeEventListener(Event.COMPLETE,this.completePreloader);
+      //    var _loc2_= new Timer(1000,1);
+      //    _loc2_.addEventListener(TimerEvent.TIMER_COMPLETE,this.loadDelayDone);
+      //    _loc2_.start();
+      //    // gotoAndStop(1,"Main");
+      //    this.initGame();
+      // }
+
+      // public function loadDelayDone(param1:TimerEvent)
+      // {
+      //    this.saveData.loadCustomChars();
+      //    param1.target.stop();
+      //    param1.target.removeEventListener(TimerEvent.TIMER_COMPLETE,this.loadDelayDone);
+      // }
 }

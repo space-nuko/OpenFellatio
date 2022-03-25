@@ -1,9 +1,9 @@
 package obj.him.bodies;
 
-import flash.events.MouseEvent;
-import flash.geom.ColorTransform;
-import flash.geom.Matrix;
-import flash.geom.Point;
+import openfl.events.MouseEvent;
+import openfl.geom.ColorTransform;
+import openfl.geom.Matrix;
+import openfl.geom.Point;
 import obj.CharacterControl;
 import obj.CharacterElementHelper;
 import obj.Him;

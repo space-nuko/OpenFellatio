@@ -1,6 +1,6 @@
 package obj.him.bodies;
 
-import flash.geom.Point;
+import openfl.geom.Point;
 
 interface IHimBody {
 	function setup():Void;

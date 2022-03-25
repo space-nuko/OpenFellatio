@@ -1,7 +1,7 @@
 package obj.animation;
 
-import flash.geom.Matrix;
-import flash.geom.Point;
+import openfl.geom.Matrix;
+import openfl.geom.Point;
 import obj.EventBus;
 
 class AnimationControl {

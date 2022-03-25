@@ -493,11 +493,11 @@ class CharacterControl {
 	}
 
 	public function loadStoredChar(param1:UInt) {
-		this.currentChar = param1 + G.baseCharNum;
+		// this.currentChar = param1 + G.baseCharNum;
 		// G.inGameMenu.loadData(G.storedChars[param1].charData, true, true, G.storedChars[param1]);
-		this.currentName = G.storedChars[param1].charName;
-		G.dialogueControl.loadCustomDialogue(G.storedChars[param1].dialogue);
-		G.inGameMenu.updateCharMenu(param1, false, true);
+		// this.currentName = G.storedChars[param1].charName;
+		// G.dialogueControl.loadCustomDialogue(G.storedChars[param1].dialogue);
+		// G.inGameMenu.updateCharMenu(param1, false, true);
 	}
 
 	public function setBackground(param1:UInt) {

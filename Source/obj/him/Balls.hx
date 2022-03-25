@@ -1,8 +1,8 @@
 package obj.him;
 
-import flash.display.MovieClip;
-import flash.display.Sprite;
-import flash.geom.Point;
+import openfl.display.MovieClip;
+import openfl.display.Sprite;
+import openfl.geom.Point;
 
 @:rtti
 @:access(swf.exporters.animate)

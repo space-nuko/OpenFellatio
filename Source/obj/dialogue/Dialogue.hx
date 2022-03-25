@@ -1,10 +1,10 @@
 package obj.dialogue ;
 
-import flash.display.MovieClip;
-import flash.events.TimerEvent;
-import flash.media.Sound;
-import flash.text.Font;
-import flash.text.TextFormat;
+import openfl.display.MovieClip;
+import openfl.events.TimerEvent;
+import openfl.media.Sound;
+import openfl.text.Font;
+import openfl.text.TextFormat;
 import openfl.Vector;
 import obj.AudioMod;
 import obj.Her;
