@@ -3,16 +3,6 @@ package obj;
 import openfl.display.DisplayObject;
 import openfl.geom.Point;
 
-class InterPoints {
-	public var inside:Point;
-	public var outside:Point;
-
-	public function new(_inside:Point, _outside:Point) {
-		inside = _inside;
-		outside = _outside;
-	}
-}
-
 class StrandLink extends Point {
 	public var speed:Point;
 	public var mass:Float = Math.NaN;
@@ -258,14 +248,14 @@ class StrandLink extends Point {
 		return false;
 	}
 
-	public function storeInterPoints(param1:ASObject) {
+	public function storeInterPoints(param1:InterPoints) {
 		this.storedInterPoints = new InterPoints(new Point(), new Point());
 		this.storedInterPoints.inside = this.anchorObject.container.globalToLocal(G.sceneLayer.localToGlobal(param1.inside.clone()));
 		this.storedInterPoints.outside = this.anchorObject.container.globalToLocal(G.sceneLayer.localToGlobal(param1.outside.clone()));
 		this.hasStoredInterPoints = true;
 	}
 
-	public function getStoredInterPoints():ASObject {
+	public function getStoredInterPoints():InterPoints {
 		var _loc1_ = G.sceneLayer.globalToLocal(this.anchorObject.container.localToGlobal(this.storedInterPoints.inside));
 		var _loc2_ = G.sceneLayer.globalToLocal(this.anchorObject.container.localToGlobal(this.storedInterPoints.outside));
 		return new InterPoints(_loc1_, _loc2_);
@@ -303,7 +293,7 @@ class StrandLink extends Point {
 		this.neighbour2 = param2;
 	}
 
-	public function giveMass(param1:ASAny):Float {
+	public function giveMass(param1:Float):Float {
 		if (this.anchored) {
 			return 0;
 		}

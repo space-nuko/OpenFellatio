@@ -2,6 +2,24 @@ package obj;
 import openfl.geom.Point;
 import openfl.geom.Matrix;
 
+class Intersection {
+    public var intersect: Bool;
+    public var d: Float;
+    public var x: Float;
+    public var y: Float;
+    public var onLine1: Bool;
+    public var onLine2: Bool;
+
+    public function new(intersect: Bool, d: Float = 0, x: Float = 0, y: Float = 0, onLine1: Bool = false, onLine2: Bool = false) {
+        this.intersect = intersect;
+        this.d = d;
+        this.x = x;
+        this.y = y;
+        this.onLine1 = onLine1;
+        this.onLine2 = onLine2;
+    }
+}
+
 class Maths
 {
    public static function getCMFMatrix(param1:Float, param2:Float, param3:Float, param4:Float) : Array<Float>
@@ -118,16 +136,16 @@ class Maths
       return param2 / Math.pow(10,param1);
    }
 
-   public static function intersect(param1:Line, param2:Line) : ASObject
+   public static function intersect(param1:Line, param2:Line) : Intersection
    {
       var _loc4_= Math.NaN;
       var _loc5_= Math.NaN;
       var _loc6_= false;
       var _loc7_= false;
-      var _loc3_:ASAny = param1.A * param2.B - param2.A * param1.B;
+      var _loc3_:Float = param1.A * param2.B - param2.A * param1.B;
       if(_loc3_ == 0)
       {
-         return {"intersect":false};
+         return new Intersection(false);
       }
       _loc4_ = (param2.B * param1.C - param1.B * param2.C) / _loc3_;
       _loc5_ = (param1.A * param2.C - param2.A * param1.C) / _loc3_;
@@ -149,14 +167,7 @@ class Maths
       {
          _loc7_ = true;
       }
-      return {
-         "intersect":true,
-         "d":_loc3_,
-         "x":_loc4_,
-         "y":_loc5_,
-         "onLine1":_loc6_,
-         "onLine2":_loc7_
-      };
+      return new Intersection(true, _loc3_, _loc4_, _loc5_, _loc6_, _loc7_);
    }
 
    public static function pointDot(param1:Point, param2:Point, param3:Point) : Float

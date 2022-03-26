@@ -243,7 +243,7 @@ class LeftHandOver extends MovieClip {
 	public function new() {
 		super();
 
-		var library = swf.exporters.animate.AnimateLibrary.get("FYA8BqNO2PenTmHMYgDK");
+		var library = swf.exporters.animate.AnimateLibrary.get("Ld39TJPQZsVJfqCLrG3m");
 		var symbol = library.symbols.get(2051);
 		symbol.__initObject(library, this);
 	}
@@ -307,7 +307,7 @@ class HerLeftArmContainer extends MovieClip {
 	public function new() {
 		super();
 
-		var library = swf.exporters.animate.AnimateLibrary.get("FYA8BqNO2PenTmHMYgDK");
+		var library = swf.exporters.animate.AnimateLibrary.get("Ld39TJPQZsVJfqCLrG3m");
 		var symbol = library.symbols.get(581);
 		symbol.__initObject(library, this);
 	}
@@ -337,7 +337,7 @@ class RightUpperForeArm extends MovieClip {
 	public function new() {
 		super();
 
-		var library = swf.exporters.animate.AnimateLibrary.get("FYA8BqNO2PenTmHMYgDK");
+		var library = swf.exporters.animate.AnimateLibrary.get("Ld39TJPQZsVJfqCLrG3m");
 		var symbol = library.symbols.get(2022);
 		symbol.__initObject(library, this);
 	}
@@ -352,7 +352,7 @@ class HerRightForeArmContainer extends MovieClip {
 	public function new() {
 		super();
 
-		var library = swf.exporters.animate.AnimateLibrary.get("FYA8BqNO2PenTmHMYgDK");
+		var library = swf.exporters.animate.AnimateLibrary.get("Ld39TJPQZsVJfqCLrG3m");
 		var symbol = library.symbols.get(2036);
 		symbol.__initObject(library, this);
 	}
@@ -368,7 +368,7 @@ class HerRightArmContainer extends MovieClip {
 	public function new() {
 		super();
 
-		var library = swf.exporters.animate.AnimateLibrary.get("FYA8BqNO2PenTmHMYgDK");
+		var library = swf.exporters.animate.AnimateLibrary.get("Ld39TJPQZsVJfqCLrG3m");
 		var symbol = library.symbols.get(1998);
 		symbol.__initObject(library, this);
 	}
@@ -383,7 +383,7 @@ class HerRightArmEraseContainer extends MovieClip {
 	public function new() {
 		super();
 
-		var library = swf.exporters.animate.AnimateLibrary.get("FYA8BqNO2PenTmHMYgDK");
+		var library = swf.exporters.animate.AnimateLibrary.get("Ld39TJPQZsVJfqCLrG3m");
 		var symbol = library.symbols.get(98);
 		symbol.__initObject(library, this);
 	}
@@ -475,7 +475,7 @@ class HairBackContainer extends MovieClip {
 	public function new() {
 		super();
 
-		var library = swf.exporters.animate.AnimateLibrary.get("FYA8BqNO2PenTmHMYgDK");
+		var library = swf.exporters.animate.AnimateLibrary.get("Ld39TJPQZsVJfqCLrG3m");
 		var symbol = library.symbols.get(598);
 		symbol.__initObject(library, this);
 	}
@@ -536,6 +536,7 @@ class HerEye extends MovieClip {
 	@:keep public var upperEyelid(default, null):HerUpperEyelid;
 	@:keep public var lowerEyelid(default, null):HerLowerEyelid;
 	@:keep public var ball(default, null):HerEyeBall;
+	@:keep public var hitBox(default, null):MovieClip;
 }
 
 @:rtti
@@ -710,10 +711,10 @@ class PullOffPower {
 @:rtti
 @:access(swf.exporters.animate)
 class Her extends MovieClip {
-	public static var NORMAL_MOOD:String = "Normal";
-	public static var HAPPY_MOOD:String = "Happy";
-	public static var ANGRY_MOOD:String = "Angry";
-	public static var AHEGAO_MOOD:String = "Ahegao";
+	public static var NORMAL_MOOD(default, never):String = "Normal";
+	public static var HAPPY_MOOD(default, never):String = "Happy";
+	public static var ANGRY_MOOD(default, never):String = "Angry";
+	public static var AHEGAO_MOOD(default, never):String = "Ahegao";
 
     public static var fullUp:Float = -40;
     public static var fullDown:Float = 250;
@@ -926,7 +927,7 @@ class Her extends MovieClip {
 	public var rightEyebrowNormalTween:LinearTween;
 	public var rightEyebrowAngryTween:LinearTween;
 	public var leftEyebrowAngryTween:LinearTween;
-	public var eyebrowOffsets:Vector<UInt>;
+	public var eyebrowOffsets:Vector<UInt> = new Vector<UInt>();
 	public var passedOut:Bool = false;
 	public var passOutFactor:Float = 0;
 	public var passOutMax:Float = 40;
@@ -976,7 +977,7 @@ class Her extends MovieClip {
 	public var eyelidStart:Point;
 	public var nostril:Point;
 	public var armConnection:Point;
-	public var hairLimits:Array<ASAny>;
+	public var hairLimits:Array<Float>;
 	public var eyeAim:Point;
 	public var hisFace:Point;
 	public var eyesDown:Point;
@@ -989,7 +990,7 @@ class Her extends MovieClip {
 	public function new() {
 		super();
 
-		var library = swf.exporters.animate.AnimateLibrary.get("FYA8BqNO2PenTmHMYgDK");
+		var library = swf.exporters.animate.AnimateLibrary.get("Ld39TJPQZsVJfqCLrG3m");
 		var symbol = library.symbols.get(1982);
 		symbol.__initObject(library, this);
 
@@ -1109,7 +1110,7 @@ class Her extends MovieClip {
 		this.setRightArmPosition(this.currentRightArmPosition);
 	}
 
-	public function getPositionLength(param1:ASAny):Float {
+	public function getPositionLength(param1: Point):Float {
 		return param1.x * param1.x + param1.y * param1.y;
 	}
 
@@ -1171,8 +1172,8 @@ class Her extends MovieClip {
 		this.setBodyScale(this.bodyScale);
 	}
 
-	public function setBodyScale(param1:ASAny) {
-		this.bodyScale = Math.max(this.minBodyScale, Math.min(this.maxBodyScale, param1));
+	public function setBodyScale(param1:Float) {
+		this.bodyScale = Maths.clampf(param1, this.minBodyScale, this.maxBodyScale);
 		var _loc2_ = 1 + (this.bodyScale - 1) * 0.5;
 		this.head.neck.scaleX = _loc2_;
 		this.head.neck.scaleY = _loc2_;
@@ -1481,11 +1482,11 @@ class Her extends MovieClip {
 		} else {
 			this.breastCostumeOn = true;
 		}
-		var _loc2_:ASAny = G.characterControl.braControl.selectedName != "None";
-		this.torsoBack.leftBreast.nipple.visible = !_loc2_;
-		this.torso.midLayer.rightBreast.nipple.visible = !_loc2_;
-		this.torso.nipplePiercing.visible = !_loc2_;
-		this.torso.leftNipplePiercing.visible = !_loc2_;
+		var hidden: Bool = G.characterControl.braControl.selectedName != "None";
+		this.torsoBack.leftBreast.nipple.visible = !hidden;
+		this.torso.midLayer.rightBreast.nipple.visible = !hidden;
+		this.torso.nipplePiercing.visible = !hidden;
+		this.torso.leftNipplePiercing.visible = !hidden;
 		this.updateBreastFirmness();
 	}
 

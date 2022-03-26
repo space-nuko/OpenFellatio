@@ -12,19 +12,19 @@ import obj.dialogue.Dialogue;
 class Strand extends MovieClip {
 	public var layer:Sprite;
 	public var strandLength:Float = Math.NaN;
-	public var links:Array<ASAny>;
+	public var links:Array<StrandLink>;
 	public var alive:Bool = false;
 	public var age:UInt = 0;
 	public var ageMax:UInt = 600;
 	public var myGravity:Float = Math.NaN;
-	public var interPoints:Array<ASAny>;
-	public var offsetPoints:Array<ASAny>;
+	public var interPoints:Array<InterPoints>;
+	public var offsetPoints:Array<InterPoints>;
 	public var topCap:Point;
 	public var bottomCap:Point;
 	public var maxInterpDist:Float = 1000;
-	public var topAnchor:ASObject;
+	public var topAnchor:AnchorProp;
 	public var topAttached:Bool = false;
-	public var bottomAnchor:ASObject;
+	public var bottomAnchor:AnchorProp;
 	public var bottomAttached:Bool = false;
 	public var topSource:Bool = false;
 	public var lM:Float = Math.NaN;
@@ -36,7 +36,7 @@ class Strand extends MovieClip {
 	public var distSplitDelay:UInt = 0;
 	public var collisionFree:UInt = 0;
 
-	public function new(param1:Sprite, param2:UInt = 0, param3:Float = 0, param4:ASObject = null, param5:ASObject = null, param6:Bool = false,
+	public function new(param1:Sprite, param2:UInt = 0, param3:Float = 0, param4:AnchorProp = null, param5:AnchorProp = null, param6:Bool = false,
 			param7:Bool = false) {
 		super();
 		this.disappearOnAllAnchor = param7;
@@ -130,7 +130,7 @@ class Strand extends MovieClip {
 		var _loc3_:StrandLink = null;
 		var _loc4_:Point = null;
 		var _loc5_:Point = null;
-		this.links = new Array<ASAny>();
+		this.links = new Array<StrandLink>();
 		var _loc2_:UInt = 0;
 		while (_loc2_ < this.strandLength) {
 			_loc3_ = new StrandLink(this.lM, 1, param1, this.collisionFree, this.cumStrand);
@@ -161,8 +161,8 @@ class Strand extends MovieClip {
 		this.alive = true;
 	}
 
-	public function giveLinks(param1:Array<ASAny>) {
-		this.links = new Array<ASAny>();
+	public function giveLinks(param1:Array<StrandLink>) {
+		this.links = new Array<StrandLink>();
 		var _loc2_:UInt = param1.length;
 		var _loc3_:UInt = 0;
 		while (_loc3_ < _loc2_) {
@@ -179,7 +179,7 @@ class Strand extends MovieClip {
 			this.cumStrand = true;
 			this.ageMax = 1500;
 		}
-		this.links = new Array<ASAny>();
+		this.links = new Array<StrandLink>();
 		this.sourceLink = new StrandLink(this.lM, 1, new Point(), this.collisionFree, false);
 		this.sourceLink.anchorTo(new AnchorProp(param1, param2), true);
 		var _loc4_ = G.sceneLayer.globalToLocal(param2.localToGlobal(param1));
@@ -215,7 +215,6 @@ class Strand extends MovieClip {
 		var _loc6_:StrandLink = null;
 		var _loc7_:Point = null;
 		var _loc8_:UInt = 0;
-		var _loc9_:ASAny = /*undefined*/ null;
 		var _loc10_:AnchorProp = null;
 		var _loc11_:UInt = 0;
 		if (this.alive && !G.gamePaused) {
@@ -229,10 +228,9 @@ class Strand extends MovieClip {
 						this.killMe();
 						break;
 					}
-					for (_tmp_ in this.links) {
-						_loc9_ = _tmp_;
-						_loc9_.tick(this.myGravity);
-						_loc9_.clearGlobalAnchor();
+					for (link in this.links) {
+						link.tick(this.myGravity);
+						link.clearGlobalAnchor();
 					}
 					if (!this.cumStrand && this.strandLength > G.maxStrandLength) {
 						_loc11_ = Math.floor(Math.random() * this.strandLength / 3 + this.strandLength / 3);
@@ -257,7 +255,7 @@ class Strand extends MovieClip {
 							this.splitStrand(_loc8_, false, true);
 						}
 						if (this.cumStrand) {
-							// G.her.tongueContainer.tongue.cumRemoved();
+							G.her.tongueContainer.tongue.cumRemoved();
 							G.her.fillMouth(true);
 						}
 					}
@@ -343,35 +341,35 @@ class Strand extends MovieClip {
 
 	public function splitStrandAtAnchorChange() {
 		var _loc1_:String = null;
-		// if(this.links[0].anchorContainer == G.her.head.face || this.links[0].anchorContainer == G.her.head.jaw)
-		// {
-		//    _loc1_ == "face";
-		// }
-		// else if(this.links[0].anchorContainer == G.her.torso.midLayer.rightBreast)
-		// {
-		//    _loc1_ == "breast";
-		// }
-		// var _loc2_:uint = 1;
-		// while(_loc2_ < this.strandLength)
-		// {
-		//    if(this.links[0].anchorContainer == G.her.head.face || this.links[0].anchorContainer == G.her.head.jaw)
-		//    {
-		//       if(_loc1_ == "breast")
-		//       {
-		//          this.splitStrand(_loc2_,false);
-		//          break;
-		//       }
-		//    }
-		//    else if(this.links[0].anchorContainer == G.her.torso.midLayer.rightBreast)
-		//    {
-		//       if(_loc1_ == "face")
-		//       {
-		//          this.splitStrand(_loc2_,false);
-		//          break;
-		//       }
-		//    }
-		//    _loc2_++;
-		// }
+		if(this.links[0].anchorContainer == G.her.head.face || this.links[0].anchorContainer == G.her.head.jaw)
+		{
+		   _loc1_ == "face";
+		}
+		else if(this.links[0].anchorContainer == G.her.torso.midLayer.rightBreast)
+		{
+		   _loc1_ == "breast";
+		}
+		var _loc2_:UInt = 1;
+		while(_loc2_ < this.strandLength)
+		{
+		   if(this.links[0].anchorContainer == G.her.head.face || this.links[0].anchorContainer == G.her.head.jaw)
+		   {
+		      if(_loc1_ == "breast")
+		      {
+		         this.splitStrand(_loc2_,false);
+		         break;
+		      }
+		   }
+		   else if(this.links[0].anchorContainer == G.her.torso.midLayer.rightBreast)
+		   {
+		      if(_loc1_ == "face")
+		      {
+		         this.splitStrand(_loc2_,false);
+		         break;
+		      }
+		   }
+		   _loc2_++;
+		}
 	}
 
 	public function splitStrandAtOffAnchor() {
@@ -395,145 +393,141 @@ class Strand extends MovieClip {
 	}
 
 	public function collide(param1:UInt):AnchorProp {
-		var _loc4_:AnchorProp = null;
-		var _loc5_:ASAny = /*undefined*/ null;
-		var _loc2_ = G.strandBackLayer.localToGlobal(new Point(this.links[param1].x, this.links[param1].y));
-		var _loc3_ = _loc2_.clone();
-		// for each(_loc5_ in G.costumeHitElements)
-		// {
-		//    if(_loc5_.showing)
-		//    {
-		//       if(_loc5_.hitTestPoint(_loc2_.x,_loc2_.y,false))
-		//       {
-		//          if(_loc5_.hitTestPoint(_loc2_.x,_loc2_.y,true))
-		//          {
-		//             return new AnchorProp(_loc5_.globalToLocal(_loc3_),_loc5_);
-		//          }
-		//       }
-		//    }
-		// }
-		// if(G.her.eyewear.hitTestPoint(_loc2_.x,_loc2_.y,false))
-		// {
-		//    if(G.her.eyewear.hitTestPoint(_loc2_.x,_loc2_.y,true))
-		//    {
-		//       return new AnchorProp(G.her.eyewear.globalToLocal(_loc3_),G.her.eyewear);
-		//    }
-		// }
-		// if(G.her.head.face.hitTestPoint(_loc2_.x,_loc2_.y,false))
-		// {
-		//    if(G.her.head.face.hitTestPoint(_loc2_.x,_loc2_.y,true))
-		//    {
-		//       _loc4_ = new AnchorProp(G.her.head.face.globalToLocal(_loc3_),G.her.head.face,false);
-		//       if(this.cumStrand)
-		//       {
-		//          if(G.her.eye.hitBox.hitTestPoint(_loc2_.x,_loc2_.y,false))
-		//          {
-		//             _loc4_.setEyeHit();
-		//          }
-		//       }
-		//       return _loc4_;
-		//    }
-		// }
-		// if(G.her.head.jaw.hitTestPoint(_loc2_.x,_loc2_.y,false))
-		// {
-		//    if(G.her.head.jaw.hitTestPoint(_loc2_.x,_loc2_.y,true))
-		//    {
-		//       return new AnchorProp(G.her.head.jaw.globalToLocal(_loc3_),G.her.head.jaw,false);
-		//    }
-		// }
-		// if(G.her.tongueContainer.tongue.okayToHit())
-		// {
-		//    if(G.her.tongueContainer.tongue.hitTestPoint(_loc2_.x,_loc2_.y,false))
-		//    {
-		//       if(G.her.tongueContainer.tongue.hitTestPoint(_loc2_.x,_loc2_.y,true))
-		//       {
-		//          if(this.cumStrand)
-		//          {
-		//             G.her.tongueContainer.tongue.cumHit();
-		//          }
-		//          (_loc4_ = new AnchorProp(G.her.tongueContainer.tongue.tipPoint.globalToLocal(_loc3_),G.her.tongueContainer.tongue.tipPoint,true)).setOriginalHitTarget(G.her.tongueContainer.tongue);
-		//          return _loc4_;
-		//       }
-		//    }
-		// }
-		// if(G.her.torso.midLayer.rightBreast.hitTestPoint(_loc2_.x,_loc2_.y,false))
-		// {
-		//    if(G.her.torso.midLayer.rightBreast.hitArea.hitTestPoint(_loc2_.x,_loc2_.y,true))
-		//    {
-		//       return new AnchorProp(G.her.torso.midLayer.rightBreast.globalToLocal(_loc3_),G.her.torso.midLayer.rightBreast,false);
-		//    }
-		// }
-		// if(G.her.torso.hitTestPoint(_loc2_.x,_loc2_.y,false))
-		// {
-		//    if(G.her.torso.leg.hitTestPoint(_loc2_.x,_loc2_.y,false))
-		//    {
-		//       if(G.her.torso.leg.hitTestPoint(_loc2_.x,_loc2_.y,true) && !G.her.torso.rightCalfContainer.calf.hitTestPoint(_loc2_.x,_loc2_.y,true))
-		//       {
-		//          return new AnchorProp(G.her.torso.leg.globalToLocal(_loc3_),G.her.torso.leg,false);
-		//       }
-		//    }
-		//    if(G.her.torso.midLayer.chest.hitTestPoint(_loc2_.x,_loc2_.y,true))
-		//    {
-		//       return new AnchorProp(G.her.torso.midLayer.chest.globalToLocal(_loc3_),G.her.torso.midLayer.chest,false);
-		//    }
-		//    if(G.her.torso.back.hitTestPoint(_loc2_.x,_loc2_.y,true))
-		//    {
-		//       return new AnchorProp(G.her.torso.back.globalToLocal(_loc3_),G.her.torso.back,false);
-		//    }
-		//    if(G.her.penisOn && G.her.torso.penisContainer.hitTestPoint(_loc2_.x,_loc2_.y,true))
-		//    {
-		//       return new AnchorProp(G.her.torso.penisContainer.globalToLocal(_loc3_),G.her.torso.penisContainer,false);
-		//    }
-		// }
-		// if(G.sceneLayer.globalToLocal(_loc2_).y > 1220 + Math.random() * 65)
-		// {
-		//    return new AnchorProp(G.sceneLayer.globalToLocal(_loc3_),G.sceneLayer);
-		// }
+		var anchor:AnchorProp = null;
+		var strandP = G.strandBackLayer.localToGlobal(new Point(this.links[param1].x, this.links[param1].y));
+		var strandP2 = strandP.clone();
+		for (element in G.costumeHitElements)
+		{
+		   if(element.showing)
+		   {
+		      if(element.hitTestPoint(strandP.x,strandP.y,false))
+		      {
+		         if(element.hitTestPoint(strandP.x,strandP.y,true))
+		         {
+		            return new AnchorProp(element.globalToLocal(strandP2),element);
+		         }
+		      }
+		   }
+		}
+		if(G.her.eyewear.hitTestPoint(strandP.x,strandP.y,false))
+		{
+		   if(G.her.eyewear.hitTestPoint(strandP.x,strandP.y,true))
+		   {
+		      return new AnchorProp(G.her.eyewear.globalToLocal(strandP2),G.her.eyewear);
+		   }
+		}
+		if(G.her.head.face.hitTestPoint(strandP.x,strandP.y,false))
+		{
+		   if(G.her.head.face.hitTestPoint(strandP.x,strandP.y,true))
+		   {
+		      anchor = new AnchorProp(G.her.head.face.globalToLocal(strandP2),G.her.head.face,false);
+		      if(this.cumStrand)
+		      {
+		         if(G.her.eye.hitBox.hitTestPoint(strandP.x,strandP.y,false))
+		         {
+		            anchor.setEyeHit();
+		         }
+		      }
+		      return anchor;
+		   }
+		}
+		if(G.her.head.jaw.hitTestPoint(strandP.x,strandP.y,false))
+		{
+		   if(G.her.head.jaw.hitTestPoint(strandP.x,strandP.y,true))
+		   {
+		      return new AnchorProp(G.her.head.jaw.globalToLocal(strandP2),G.her.head.jaw,false);
+		   }
+		}
+		if(G.her.tongueContainer.tongue.okayToHit())
+		{
+		   if(G.her.tongueContainer.tongue.hitTestPoint(strandP.x,strandP.y,false))
+		   {
+		      if(G.her.tongueContainer.tongue.hitTestPoint(strandP.x,strandP.y,true))
+		      {
+		         if(this.cumStrand)
+		         {
+		            G.her.tongueContainer.tongue.cumHit();
+		         }
+		         (anchor = new AnchorProp(G.her.tongueContainer.tongue.tipPoint.globalToLocal(strandP2),G.her.tongueContainer.tongue.tipPoint,true)).setOriginalHitTarget(G.her.tongueContainer.tongue);
+		         return anchor;
+		      }
+		   }
+		}
+		if(G.her.torso.midLayer.rightBreast.hitTestPoint(strandP.x,strandP.y,false))
+		{
+		   if(G.her.torso.midLayer.rightBreast.hitArea.hitTestPoint(strandP.x,strandP.y,true))
+		   {
+		      return new AnchorProp(G.her.torso.midLayer.rightBreast.globalToLocal(strandP2),G.her.torso.midLayer.rightBreast,false);
+		   }
+		}
+		if(G.her.torso.hitTestPoint(strandP.x,strandP.y,false))
+		{
+		   if(G.her.torso.leg.hitTestPoint(strandP.x,strandP.y,false))
+		   {
+		      if(G.her.torso.leg.hitTestPoint(strandP.x,strandP.y,true) && !G.her.torso.rightCalfContainer.calf.hitTestPoint(strandP.x,strandP.y,true))
+		      {
+		         return new AnchorProp(G.her.torso.leg.globalToLocal(strandP2),G.her.torso.leg,false);
+		      }
+		   }
+		   if(G.her.torso.midLayer.chest.hitTestPoint(strandP.x,strandP.y,true))
+		   {
+		      return new AnchorProp(G.her.torso.midLayer.chest.globalToLocal(strandP2),G.her.torso.midLayer.chest,false);
+		   }
+		   if(G.her.torso.back.hitTestPoint(strandP.x,strandP.y,true))
+		   {
+		      return new AnchorProp(G.her.torso.back.globalToLocal(strandP2),G.her.torso.back,false);
+		   }
+		   if(G.her.penisOn && G.her.torso.penisContainer.hitTestPoint(strandP.x,strandP.y,true))
+		   {
+		      return new AnchorProp(G.her.torso.penisContainer.globalToLocal(strandP2),G.her.torso.penisContainer,false);
+		   }
+		}
+		if(G.sceneLayer.globalToLocal(strandP).y > 1220 + Math.random() * 65)
+		{
+		   return new AnchorProp(G.sceneLayer.globalToLocal(strandP2),G.sceneLayer);
+		}
 		return null;
 	}
 
 	public function tongueCollide(param1:UInt):Bool {
-		var _loc3_ = false;
-		var _loc2_ = G.strandBackLayer.localToGlobal(new Point(this.links[param1].x, this.links[param1].y));
-		// _loc3_ = G.her.head.face.hitTestPoint(_loc2_.x,_loc2_.y,false);
-		// if(_loc3_)
-		// {
-		//    _loc3_ = G.her.head.face.hitTestPoint(_loc2_.x,_loc2_.y,true);
-		//    if(_loc3_)
-		//    {
-		//       return true;
-		//    }
-		// }
-		// _loc3_ = G.her.head.jaw.hitTestPoint(_loc2_.x,_loc2_.y,false);
-		// if(_loc3_)
-		// {
-		//    _loc3_ = G.her.head.jaw.hitTestPoint(_loc2_.x,_loc2_.y,true);
-		//    if(_loc3_)
-		//    {
-		//       return true;
-		//    }
-		// }
+		var collided = false;
+		var strandP = G.strandBackLayer.localToGlobal(new Point(this.links[param1].x, this.links[param1].y));
+		collided = G.her.head.face.hitTestPoint(strandP.x,strandP.y,false);
+		if(collided)
+		{
+		   collided = G.her.head.face.hitTestPoint(strandP.x,strandP.y,true);
+		   if(collided)
+		   {
+		      return true;
+		   }
+		}
+		collided = G.her.head.jaw.hitTestPoint(strandP.x,strandP.y,false);
+		if(collided)
+		{
+		   collided = G.her.head.jaw.hitTestPoint(strandP.x,strandP.y,true);
+		   if(collided)
+		   {
+		      return true;
+		   }
+		}
 		return false;
 	}
 
 	public function checkAllAnchored():Bool {
-		var _loc2_:ASAny = /*undefined*/ null;
-		var _loc1_ = true;
-		for (_tmp_ in this.links) {
-			_loc2_ = _tmp_;
-			if (!_loc2_.anchored) {
-				_loc1_ = false;
+		for (link in this.links) {
+			if (!link.anchored) {
+                return false;
 			}
 		}
-		return _loc1_;
+		return true;
 	}
 
 	public function renderStrand() {
-		var _loc1_:ASObject = null;
+		var _loc1_:InterPoints = null;
 		var _loc2_:StrandLink = null;
 		var _loc3_:StrandLink = null;
-		var _loc4_:ASObject = null;
-		var _loc5_:ASObject = null;
+		var _loc4_:InterPoints = null;
+		var _loc5_:InterPoints = null;
 		var _loc8_ = Math.NaN;
 		this.generateInterpolationPoints();
 		this.graphics.clear();
@@ -617,15 +611,15 @@ class Strand extends MovieClip {
 		var _loc17_:Point = null;
 		var _loc18_ = Math.NaN;
 		var _loc19_ = Math.NaN;
-		var _loc20_:ASObject = null;
-		var _loc21_:ASObject = null;
+		var _loc20_:Maths.Intersection = null;
+		var _loc21_:Maths.Intersection = null;
 		var _loc22_:Point = null;
 		var _loc23_:Point = null;
-		this.interPoints = new Array<ASAny>();
-		this.offsetPoints = new Array<ASAny>();
-		var _loc3_ = new Array<ASAny>();
-		var _loc4_ = new Array<ASAny>();
-		var _loc5_ = new Array<ASAny>();
+		this.interPoints = new Array<InterPoints>();
+		this.offsetPoints = new Array<InterPoints>();
+		var _loc3_ = new Array<Point>();
+		var _loc4_ = new Array<Point>();
+		var _loc5_ = new Array<InterLines>();
 		var _loc6_:UInt = 0;
 		while (_loc6_ < this.strandLength - 1) {
 			_loc1_ = this.links[_loc6_];
@@ -660,16 +654,10 @@ class Strand extends MovieClip {
 			} else if (_loc6_ == this.strandLength - 1) {
 				this.bottomCap = new Point(_loc1_.x + _loc7_.x * _loc19_ * 2, _loc1_.y + _loc7_.y * _loc19_ * 2);
 			}
-			this.offsetPoints[_loc6_] = {
-				"inside": _loc8_,
-				"outside": _loc9_
-			};
+			this.offsetPoints[_loc6_] = new InterPoints(_loc8_, _loc9_);
 			_loc11_ = new Line(new Point(_loc8_.x + _loc7_.x, _loc8_.y + _loc7_.y), new Point(_loc8_.x - _loc7_.x, _loc8_.y - _loc7_.y));
 			_loc10_ = new Line(new Point(_loc9_.x + _loc7_.x, _loc9_.y + _loc7_.y), new Point(_loc9_.x - _loc7_.x, _loc9_.y - _loc7_.y));
-			_loc5_[_loc6_] = {
-				"inside": _loc11_,
-				"outside": _loc10_
-			};
+			_loc5_[_loc6_] = new InterLines(_loc11_, _loc10_);
 			_loc6_++;
 		}
 		_loc6_ = 0;
@@ -717,10 +705,7 @@ class Strand extends MovieClip {
 					_loc12_ = Maths.normal(_loc5_[Std.int(this.strandLength - 2)].inside.p1, _loc5_[Std.int(this.strandLength - 2)].inside.p2, _loc14_);
 					_loc13_ = Maths.normal(_loc5_[Std.int(this.strandLength - 2)].outside.p1, _loc5_[Std.int(this.strandLength - 2)].outside.p2, _loc14_);
 				}
-				this.interPoints[_loc6_] = {
-					"inside": _loc12_,
-					"outside": _loc13_
-				};
+				this.interPoints[_loc6_] = new InterPoints(_loc12_, _loc13_);
 			}
 			_loc6_++;
 		}

@@ -305,7 +305,7 @@ class HimMaleBody extends HimBody {
 		CharacterControl.tryToSetFrameLabel(G.him.overLayer.torso.costume,this.topControl.selectedName);
 	}
 
-	public function setTopFill(param1:ASObject, param2:String = "rgbFill") {
+	public function setTopFill(param1:AlphaRGBObject, param2:String = "rgbFill") {
 		var _loc3_ = new ColorTransform(1, 1, 1, param1.a, param1.r, param1.g, param1.b);
 		CharacterControl.tryToSetFill(G.him.topBack, param2, _loc3_);
 		CharacterControl.tryToSetFill(G.him.overLayer.torso.costume,param2,_loc3_);
@@ -319,7 +319,7 @@ class HimMaleBody extends HimBody {
 		CharacterControl.tryToSetFrameLabel(G.him.midLayer.hips,this.bottomsControl.selectedName);
 	}
 
-	public function setBottomsFill(param1:ASObject, param2:String = "rgbFill") {
+	public function setBottomsFill(param1:AlphaRGBObject, param2:String = "rgbFill") {
 		var _loc3_ = new ColorTransform(1, 1, 1, param1.a, param1.r, param1.g, param1.b);
 		CharacterControl.tryToSetFill(G.him.rightLegCostume,param2,_loc3_);
 		CharacterControl.tryToSetFill(G.him.rightLegCostume.calf,param2,_loc3_);
@@ -333,7 +333,7 @@ class HimMaleBody extends HimBody {
 		CharacterControl.tryToSetFrameLabel(G.him.leftLegCostume.calf.foot,this.footwearControl.selectedName);
 	}
 
-	public function setFootwearFill(param1:ASObject, param2:String = "rgbFill") {
+	public function setFootwearFill(param1:AlphaRGBObject, param2:String = "rgbFill") {
 		var _loc3_ = new ColorTransform(1, 1, 1, param1.a, param1.r, param1.g, param1.b);
 		CharacterControl.tryToSetFill(G.him.rightLegCostume.calf.foot,param2,_loc3_);
 		CharacterControl.tryToSetFill(G.him.leftLegCostume.calf.foot,param2,_loc3_);

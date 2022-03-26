@@ -63,12 +63,13 @@ class Neck extends MovieClip {
 	@:keep public var highlight11(default, null):MovieClip;
 
 	public function new() {
-		var library = swf.exporters.animate.AnimateLibrary.get("FYA8BqNO2PenTmHMYgDK");
+		var library = swf.exporters.animate.AnimateLibrary.get("Ld39TJPQZsVJfqCLrG3m");
 		var symbol = library.symbols.get(992);
 		symbol.__init(library);
 
 		super();
 
+        _tanLayer = new Sprite();
 		_tanLayer.blendMode = BlendMode.OVERLAY;
 		addChild(_tanLayer);
 

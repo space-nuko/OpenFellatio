@@ -1,6 +1,18 @@
 package obj.dialogue;
 
-// import obj.Him;
+import obj.Him;
+
+class Settings
+{
+    public var style: Null<String>;
+    public var mood: Null<String>;
+    public var held: Null<String>;
+    public var next: Null<String>;
+    public var set: Null<String>;
+    public var check: Null<String>;
+
+    public function new() {}
+}
 
 class DialogueLine {
 	public static var SPEAKING_STYLE:String = "Speak";
@@ -8,19 +20,19 @@ class DialogueLine {
 	public static var HIM_STYLE:String = "Him";
 	// public static var advancedController:AdvancedDialogueController;
 
-	public var _settings:ASObject;
-	public var _style:String;
-	public var _mood:String;
-	public var _held:String;
-	public var _nextLine:String;
-	public var _phrase:String;
+	public var _settings:Settings;
+	public var _style:Null<String>;
+	public var _mood:Null<String>;
+	public var _held:Null<String>;
+	public var _nextLine:Null<String>;
+	public var _phrase:Null<String>;
 
-	public function new(param1:String, param2:ASObject = null) {
+	public function new(param1:String, param2:Settings = null) {
 		this._phrase = param1;
-		if (param2) {
+		if (param2 != null) {
 			this._settings = param2;
-			if (param2["style"]) {
-				this._style = param2["style"];
+			if (param2.style != null) {
+				this._style = param2.style;
 				if (this._style == SPEAKING_STYLE.toLowerCase()) {
 					this._style = SPEAKING_STYLE;
 				}
@@ -31,17 +43,17 @@ class DialogueLine {
 					this._style = HIM_STYLE;
 				}
 			}
-			if (param2["mood"]) {
-				this._mood = param2["mood"];
+			if (param2.mood != null) {
+				this._mood = param2.mood;
 			}
-			if (param2["held"]) {
-				this._held = param2["held"];
+			if (param2.held != null) {
+				this._held = param2.held;
 			}
-			if (param2["next"]) {
-				this._nextLine = param2["next"];
+			if (param2.next != null) {
+				this._nextLine = param2.next;
 			}
 		} else {
-			this._settings = {};
+			this._settings = new Settings();
 		}
 	}
 
@@ -51,28 +63,28 @@ class DialogueLine {
 		return this._phrase;
 	}
 
-	@:flash.property public var settings(get, never):ASObject;
+	@:flash.property public var settings(get, never):Settings;
 
-	function get_settings():ASObject {
+	function get_settings():Settings {
 		return this._settings;
 	}
 
 	@:flash.property public var style(get, never):String;
 
 	function get_style():String {
-		return !!ASCompat.stringAsBool(this._style) ? this._style : SPEAKING_STYLE;
+		return this._style != null ? this._style : SPEAKING_STYLE;
 	}
 
 	@:flash.property public var mood(get, never):String;
 
 	function get_mood():String {
-		return !!ASCompat.stringAsBool(this._mood) ? this._mood : "";
+		return this._mood != null ? this._mood : "";
 	}
 
 	@:flash.property public var held(get, never):String;
 
 	function get_held():String {
-		return !!ASCompat.stringAsBool(this._held) ? this._held : "";
+		return this._held != null? this._held : "";
 	}
 
 	@:flash.property public var nextLine(get, never):String;
@@ -87,23 +99,23 @@ class DialogueLine {
 		// if (advancedController != null && !advancedController.canPlay(this)) {
 		// 	return false;
 		// }
-		// if (G.her.passedOut && this._style == THOUGHT_STYLE) {
-		// 	return false;
-		// }
-		// if ((!ASCompat.stringAsBool(this._style) || this._style == SPEAKING_STYLE) && !G.her.canSpeak()) {
-		// 	return false;
-		// }
-		// if (ASCompat.stringAsBool(this._mood) && G.her.mood != this._mood) {
-		// 	return false;
-		// }
-		// if (ASCompat.stringAsBool(this._held)) {
-		// 	if (this._held == "true" && Him.armPositions[G.him.currentArmPosition] != "Holding") {
-		// 		return false;
-		// 	}
-		// 	if (this._held == "false" && Him.armPositions[G.him.currentArmPosition] != "Free") {
-		// 		return false;
-		// 	}
-		// }
+		if (G.her.passedOut && this._style == THOUGHT_STYLE) {
+			return false;
+		}
+		if ((this._style != null || this._style == SPEAKING_STYLE) && !G.her.canSpeak()) {
+			return false;
+		}
+		if (this._mood != null && G.her.mood != this._mood) {
+			return false;
+		}
+		if (this._held != null) {
+			if (this._held == "true" && Him.armPositions[G.him.currentArmPosition] != "Holding") {
+				return false;
+			}
+			if (this._held == "false" && Him.armPositions[G.him.currentArmPosition] != "Free") {
+				return false;
+			}
+		}
 		return true;
 	}
 

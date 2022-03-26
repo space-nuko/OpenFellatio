@@ -10,10 +10,10 @@ class TearPoint extends Point {
 	public var mascaraTime:Float = Math.NaN;
 	public var hasMascara:Bool = false;
 
-	public function new(param1:Float, param2:Float, param3:Float) {
-		super(param1, param2);
-		this.speedMult = param3;
-		this.alphaMult = param3;
+	public function new(x:Float, y:Float, multiplier:Float) {
+		super(x, y);
+		this.speedMult = multiplier;
+		this.alphaMult = multiplier;
 		if (Math.random() > Math.max(0.2, 1 - G.mascaraAmount * 0.015)) {
 			this.hasMascara = true;
 		} else {

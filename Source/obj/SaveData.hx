@@ -65,7 +65,7 @@ class SaveData {
 	public function clearCustomDialogue() {
 	}
 
-	public function saveCharacterListOrder(param1:Array<ASAny>) {
+	public function saveCharacterListOrder(param1:Array<UInt>) {
 	}
 
 	public function saveCustomChar(param1:UInt) {

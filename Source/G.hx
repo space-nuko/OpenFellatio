@@ -67,8 +67,8 @@ class G {
 	// public static var cumHighlightShader:Shader;
 	// public static var cumHighlight:ShaderFilter;
 	public static var shadow:DropShadowFilter;
-	// public static var spitShaders:Array<ASAny>;
-	// public static var cumShaders:Array<ASAny>;
+	// public static var spitShaders:Array<Shader>;
+	// public static var cumShaders:Array<Shader>;
 	public static var hairCM:ColorMatrixFilter;
 	public static var skinCM:ColorMatrixFilter;
 	public static var gravity:Float = 5.5;
@@ -124,7 +124,7 @@ class G {
 	public static var autoMode:UInt = 0;
 	public static var handsOff:Bool = false;
 	public static var baseCharNum:UInt = 0;
-	// public static var storedChars:Array<ASAny> = new Array();
+	// public static var storedChars:Array<CustomCharacter> = new Array();
 	// public static var defaultModFolders:Array<ASAny> = new Array();
 	public static var bukkakeMode:Bool = false;
 	public static var hairOverContainer:Sprite;
@@ -250,11 +250,9 @@ class G {
 	}
 
 	public static function clearSmudgeCache() {
-		var _loc1_:ASObject = null;
-		for (_tmp_ in smudgeCache) {
-			_loc1_ = _tmp_;
-			_loc1_.updated = false;
-			_loc1_.lastPoint = _loc1_.localPoint;
+		for (smudge in smudgeCache) {
+			smudge.updated = false;
+			smudge.lastPoint = smudge.localPoint;
 		}
 	}
 
@@ -420,55 +418,61 @@ class G {
 	}
 
 	public static function generateCharacterShot(param1:Float = 0.1):BitmapData {
-		var _loc3_:Matrix = null;
 		var _loc2_ = new BitmapData(Std.int(700 * param1), Std.int(600 * param1), false, 0xFFFFFFFF);
-		var _loc4_:ASObject = characterControl.hairHSL;
-		var _loc5_ = new ColorMatrixFilter(Maths.getCMFMatrix(_loc4_.h, _loc4_.s, _loc4_.l, _loc4_.c));
+
+		var hairHSL: ColorHsl = characterControl.hairHSL;
+		var _loc5_ = new ColorMatrixFilter(Maths.getCMFMatrix(hairHSL.h, hairHSL.s, hairHSL.l, hairHSL.c));
 		hairBack.filters = [_loc5_];
 		hairBackLayer.filters = [_loc5_];
 		hairTop.filters = [_loc5_];
 		hairOverLayer.filters = [_loc5_];
+
 		var _loc6_ = her.rightArmContainer.upperArmMask.visible;
 		her.rightArmContainer.upperArmMask.visible = false;
 		setEraseContainersForRendering(true);
-		_loc3_ = new Matrix();
-		_loc3_.scale(param1, param1);
-		_loc2_.draw(bg, _loc3_);
-		_loc3_ = new Matrix();
-		_loc3_.rotate(-15 / 180 * Math.PI);
-		_loc3_.scale(0.85 * param1, 0.85 * param1);
-		_loc3_.translate(700 * param1 * 0.5, 600 * param1 * 0.5);
+
+		var mat1 = new Matrix();
+		mat1.scale(param1, param1);
+		_loc2_.draw(bg, mat1);
+		mat1 = new Matrix();
+		mat1.rotate(-15 / 180 * Math.PI);
+		mat1.scale(0.85 * param1, 0.85 * param1);
+		mat1.translate(700 * param1 * 0.5, 600 * param1 * 0.5);
+
 		var _loc7_:Matrix;
 		(_loc7_ = new Matrix()).translate(-her.x, -her.y);
 		_loc7_.rotate(-her.rotation / 180 * Math.PI);
 		_loc7_.rotate(-15 / 180 * Math.PI);
 		_loc7_.scale(0.85 * param1, 0.85 * param1);
 		_loc7_.translate(700 * param1 * 0.5, 600 * param1 * 0.5);
+
 		var _loc8_:Matrix;
 		(_loc8_ = new Matrix()).rotate(her.torso.rotation / 180 * Math.PI);
 		_loc8_.translate(her.torso.x, her.torso.y);
-		_loc8_.concat(_loc3_);
-		_loc2_.draw(hairBack, _loc3_);
+		_loc8_.concat(mat1);
+		_loc2_.draw(hairBack, mat1);
 		_loc2_.draw(hairBackLayer, _loc7_);
-		_loc2_.draw(hairCostumeBack, _loc3_);
+		_loc2_.draw(hairCostumeBack, mat1);
 		_loc2_.draw(her.leftArmContainer, _loc8_);
-		_loc2_.draw(her, _loc3_);
+		_loc2_.draw(her, mat1);
 		_loc2_.draw(her.rightArmContainer, _loc8_);
 		_loc2_.draw(her.rightForeArmContainer, _loc8_);
-		_loc2_.draw(hairCostumeUnderOver, _loc3_);
-		_loc2_.draw(hairTop, _loc3_);
+		_loc2_.draw(hairCostumeUnderOver, mat1);
+		_loc2_.draw(hairTop, mat1);
 		_loc2_.draw(hairOverLayer, _loc7_);
-		_loc2_.draw(hairCostumeOver, _loc3_);
+		_loc2_.draw(hairCostumeOver, mat1);
+
 		setEraseContainersForRendering(false);
 		hairBack.filters = [];
 		hairBackLayer.filters = [];
 		hairTop.filters = [];
 		hairOverLayer.filters = [];
 		her.rightArmContainer.upperArmMask.visible = _loc6_;
+
 		return _loc2_;
 	}
 
-	public static function getCMFMatrix(param1:Float, param2:Float, param3:Float, param4:Float):Array<ASAny> {
+	public static function getCMFMatrix(param1:Float, param2:Float, param3:Float, param4:Float):Array<Float> {
 		var _loc5_ = param3 * param2 * Math.cos(param1 * Math.PI / 180);
 		var _loc6_ = param3 * param2 * Math.sin(param1 * Math.PI / 180);
 		var _loc7_ = (0.299 * param3 + 0.701 * _loc5_ + 0.168 * _loc6_) * param4;
@@ -480,16 +484,16 @@ class G {
 		var _loc13_ = (0.299 * param3 - 0.3 * _loc5_ + 1.25 * _loc6_) * param4;
 		var _loc14_ = (0.587 * param3 - 0.588 * _loc5_ - 1.05 * _loc6_) * param4;
 		var _loc15_ = (0.114 * param3 + 0.886 * _loc5_ - 0.203 * _loc6_) * param4;
-		var _loc16_:Array<ASAny>;
-		(_loc16_ = [1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0])[0] = [_loc7_];
-		_loc16_[1] = [_loc8_];
-		_loc16_[2] = [_loc9_];
-		_loc16_[5] = [_loc10_];
-		_loc16_[6] = [_loc11_];
-		_loc16_[7] = [_loc12_];
-		_loc16_[10] = [_loc13_];
-		_loc16_[11] = [_loc14_];
-		_loc16_[12] = [_loc15_];
+		var _loc16_:Array<Float> = [1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0];
+        _loc16_[0] = _loc7_;
+        _loc16_[1] = _loc8_;
+		_loc16_[2] = _loc9_;
+		_loc16_[5] = _loc10_;
+		_loc16_[6] = _loc11_;
+		_loc16_[7] = _loc12_;
+		_loc16_[10] = _loc13_;
+		_loc16_[11] = _loc14_;
+		_loc16_[12] = _loc15_;
 		var _loc17_ = 128 - param4 * 128;
 		_loc16_[4] = _loc17_;
 		_loc16_[9] = _loc17_;

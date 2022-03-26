@@ -18,7 +18,7 @@ class RopeLink extends Point {
 		this.lastPos = new Point();
 	}
 
-	public function move_l(param1:Point) {
+	public function move(param1:Point) {
 		this.lastPos.x = this.x;
 		this.lastPos.y = this.y;
 		this.x += param1.x * this.mass;

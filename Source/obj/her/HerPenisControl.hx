@@ -62,7 +62,7 @@ class HerPenisControl {
 		this.updatePenisLengthSlider();
 		// this.penisMenu.visible = false;
 		// this.penisMenu.scaleY = 0;
-		// this.penisControl.select(0);
+		this.penisControl.select(0);
 	}
 
 	public function getDataString():String {

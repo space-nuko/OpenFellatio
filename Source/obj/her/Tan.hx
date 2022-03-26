@@ -46,7 +46,7 @@ class Tan
 
    public function updateSkin(param1:String = "")
    {
-      if(ASCompat.stringAsBool(param1))
+      if(param1 != null)
       {
          this._currentAlphaScaling = ASCompat.thisOrDefault(this._skinAlphaScaling[param1], 0);
       }

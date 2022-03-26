@@ -50,7 +50,7 @@ class Tongue extends openfl.display.MovieClip {
 	public function new() {
 		super();
 
-		var library = swf.exporters.animate.AnimateLibrary.get("FYA8BqNO2PenTmHMYgDK");
+		var library = swf.exporters.animate.AnimateLibrary.get("Ld39TJPQZsVJfqCLrG3m");
 		var symbol = library.symbols.get(975);
 		symbol.__initObject(library, this);
 
@@ -329,8 +329,8 @@ class Tongue extends openfl.display.MovieClip {
 	}
 
 	public function randomAction() {
-		var _loc1_:Array<ASAny> = null;
-		var _loc2_:UInt = 0;
+		var actions: Array<ASFunction> = null;
+		var idx: UInt = 0;
 		this.actionTimer = 0;
 		this.mouthFullTimer = 0;
 		if (this.increasedAction > 0) {
@@ -339,16 +339,16 @@ class Tongue extends openfl.display.MovieClip {
 			this.nextActionTime = Std.int(Math.ffloor(Math.random() * 60) + 15);
 		}
 		if (G.her.currentPenisDistance > 0 && this.mouthFull) {
-			_loc1_ = this.shaftActions;
+			actions = this.shaftActions;
 		} else {
-			_loc1_ = this.offActions;
+			actions = this.offActions;
 		}
 		if (this.increasedAction > 0) {
-			_loc2_ = Std.int(Math.ffloor(Math.random() * (_loc1_.length - 1)) + 1);
+			idx = Std.int(Math.ffloor(Math.random() * (actions.length - 1)) + 1);
 		} else {
-			_loc2_ = Math.floor(Math.random() * _loc1_.length);
+			idx = Math.floor(Math.random() * actions.length);
 		}
-		this.nextAction = _loc1_[_loc2_];
+		this.nextAction = actions[idx];
 	}
 
 	public function performNextAction() {

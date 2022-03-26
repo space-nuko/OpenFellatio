@@ -7,6 +7,7 @@ import openfl.geom.Point;
 import obj.Maths;
 import openfl.Vector;
 
+@:rtti
 class SimplePenisWidth
 {
     public var width: Float;
@@ -18,6 +19,7 @@ class SimplePenisWidth
     }
 }
 
+@:rtti
 class PenisWidth {
 	public var width:Float;
 	public var startY:Float;
@@ -36,11 +38,13 @@ class PenisWidth {
     }
 }
 
-class LipstickElements {
+@:rtti
+class LipstickElements extends MovieClip {
 	@:keep public var lipstickContainer(default, null):MovieClip;
 	@:keep public var lipstickMask(default, null):MovieClip;
 }
 
+@:rtti
 class Penis extends MovieClip {
     public var _sourceGraphic:DisplayObject;
 	public var _tip:Point;
@@ -57,6 +61,12 @@ class Penis extends MovieClip {
 
 	public function new(param1:DisplayObject, param2:Point) {
         super();
+
+        if (param1 == null) {
+            // autoinstantiating
+            return;
+        }
+
 		this._sourceGraphic = param1;
 		this._tip = param2;
 		this._length = Maths.vectorLength(this._tip);
@@ -101,7 +111,7 @@ class Penis extends MovieClip {
 		return Math.max(0, Math.min(1, (this._fullLength + _loc2_.x) / this._fullLength));
 	}
 
-	public function getSimplePenisWidth(param1:Point):ASObject {
+	public function getSimplePenisWidth(param1:Point):SimplePenisWidth {
 		var _loc4_:WidthDefinition = null;
 		var _loc5_:WidthDefinition = null;
 		var _loc6_:WidthDefinition = null;

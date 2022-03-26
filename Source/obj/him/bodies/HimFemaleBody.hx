@@ -201,7 +201,7 @@ class HimFemaleBody extends HimMaleBody {
 		this.setFeet();
 	}
 
-	public function setFootwearxFill(param1:ASObject, param2:String = "rgbFill") {
+	public function setFootwearxFill(param1:AlphaRGBObject, param2:String = "rgbFill") {
 		var _loc3_ = new ColorTransform(1, 1, 1, param1.a, param1.r, param1.g, param1.b);
 		CharacterControl.tryToSetFill(G.him.rightLegCostume.calf.foot, param2, _loc3_);
 		CharacterControl.tryToSetFill(G.him.leftLegCostume.calf.foot, param2, _loc3_);

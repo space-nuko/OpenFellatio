@@ -11,6 +11,7 @@ import openfl.geom.Rectangle;
 import obj.dialogue.Dialogue;
 import obj.him.Balls;
 import obj.him.Penis;
+import obj.him.Ejaculation;
 import obj.him.bodies.HimFemaleBody;
 import obj.him.bodies.HimMaleBody;
 import obj.him.bodies.IHimBody;
@@ -165,7 +166,7 @@ class Him extends MovieClip
     public var penisControl:CharacterElementHelper;
     public var penisType1:Penis;
     public var penisType2:Penis;
-    public var penisTypes:Array<ASAny>;
+    public var penisTypes:Array<Penis>;
     public var currentBalls:UInt = 0;
     public var penisTilt:Float = 0;
     public var penisTiltSpeed:Float = 0;
@@ -180,22 +181,26 @@ class Him extends MovieClip
     public var maxPleasureTimer:UInt = 0;
     public var inMouth:Bool = false;
     public var handOpen:Bool = true;
+
     public var ejaculating:Bool = false;
-    public var ejaculation:Array<ASAny>;
+    public var ejaculation:Array<Ejaculation>;
     public var playingCumSound:Bool = false;
+
     public var spurting:Bool = false;
     public var startedSpurt:Bool = false;
     public var currentSpurt:Strand;
+    public var spurt:UInt = 0;
+    public var spurtNum:UInt = 0;
+    public var linkFreq:UInt = 2;
+
     public var spurtTimer:UInt = 0;
     public var spurtTimerStart:UInt = 0;
-    public var spurt:UInt = 0;
     public var randomSpurtAngle:Float = Math.NaN;
     public var randomSpurtAngleRange:Float = Math.NaN;
     public var randomSpurtSpeed:Float = Math.NaN;
     public var randomSpurtCollisionDelay:UInt = 0;
-    public var spurtNum:UInt = 0;
-    public var linkFreq:UInt = 2;
     public var pauseTimer:UInt = 0;
+
     public var startSpeed:Point;
     public var timerScale:Float = Math.NaN;
     public var bmEjaculating:Bool = false;
@@ -218,7 +223,7 @@ class Him extends MovieClip
 
 	public function new()
 	{
-		var library = swf.exporters.animate.AnimateLibrary.get("FYA8BqNO2PenTmHMYgDK");
+		var library = swf.exporters.animate.AnimateLibrary.get("Ld39TJPQZsVJfqCLrG3m");
 		var symbol = library.symbols.get(448);
 		symbol.__init(library);
 
@@ -284,7 +289,7 @@ class Him extends MovieClip
 		var _loc6_:UInt = 0;
 		var _loc7_:Array<String> = null;
 		var _loc8_:UInt = 0;
-		var _loc2_:ASAny = false;
+		var _loc2_:Bool = false;
 		for (_tmp_ in param1) {
 			_loc3_ = _tmp_;
 			switch (_loc3_[0]) {
@@ -476,7 +481,7 @@ class Him extends MovieClip
 		this.penis.scaleX = this.currentPenisLengthScale;
 		this.penis.scaleY = this.currentPenisWidthScale;
 		G.her.hisPenisSizeChanged(this.currentPenisLengthScale * this.currentPenis.length);
-		EventBus.dispatch("penisTipPosChanged");
+		EventBus.dispatch("penisTipPosChanged");
 	}
 
 	public function setPenisWidth(param1:Float) {
@@ -496,18 +501,17 @@ class Him extends MovieClip
 	}
 
 	public function getSimplePenisWidth(param1:Point):Float {
-		var _loc2_:ASObject = this.currentPenis.getSimplePenisWidth(param1);
-		return _loc2_.width;
+		return this.currentPenis.getSimplePenisWidth(param1).width;
 	}
 
 	public function getPenisWidth(param1:Point, param2:Point, param3:Bool = false):Float {
-		var _loc4_:ASObject = this.currentPenis.getPenisWidth(param1, param2);
+		var penisWidth: obj.him.Penis.PenisWidth = this.currentPenis.getPenisWidth(param1, param2);
 		if (param3) {
-			this.inMouthTiltOffset = Math.max(-3, Math.min(3, _loc4_.angOffset));
+			this.inMouthTiltOffset = Math.max(-3, Math.min(3, penisWidth.angOffset));
 		} else {
 			this.inMouthTiltOffset *= 0.5;
 		}
-		return _loc4_.width * this.penis.scaleY;
+		return penisWidth.width * this.penis.scaleY;
 	}
 
 	public function getPosOnPenis(param1:Point):Float {
@@ -656,33 +660,29 @@ class Him extends MovieClip
 		this.leftArmContainer.arm.foreArm.hand.gotoAndStop(G.himSkinType);
 	}
 
-	public function givePleasure(param1:Float) {
-		var _loc2_ = param1 > 0 ? param1 * 0.01 : -param1 * 0.01;
-		this.pleasure = Math.min(this.ejacPleasure + 6, this.pleasure + _loc2_);
-		this.buildUp += _loc2_;
+	public function givePleasure(amount:Float) {
+		var scaled = amount > 0 ? amount * 0.01 : -amount * 0.01;
+		this.pleasure = Math.min(this.ejacPleasure + 6, this.pleasure + scaled);
+		this.buildUp += scaled;
 	}
 
 	public function smearLipstick(param1:Float, param2:Float) {
-		var _loc3_:Matrix = null;
-		var _loc4_:ColorTransform = null;
-		var _loc5_:ASObject = null;
-		var _loc6_ = Math.NaN;
 		if (this.lipstickRGB.alphaMultiplier > 0 && this.lipstickCounter >= 5) {
 			this.lipstickCounter = 0;
-			_loc3_ = new Matrix();
-			_loc4_ = new ColorTransform(1, 1, 1, this.lipstickRGB.alphaMultiplier * Math.random() * 0.4 + 0.2, this.lipstickRGB.redOffset,
+			var mat = new Matrix();
+			var color = new ColorTransform(1, 1, 1, this.lipstickRGB.alphaMultiplier * Math.random() * 0.4 + 0.2, this.lipstickRGB.redOffset,
 				this.lipstickRGB.greenOffset, this.lipstickRGB.blueOffset);
-			_loc5_ = this.getRandomAnchor(param1);
-			_loc6_ = Math.random();
-			_loc6_ *= _loc6_;
+			var anchor = this.getRandomAnchor(param1);
+			var offsetY = Math.random();
+			offsetY *= offsetY;
 			if (Math.random() > 0.5) {
-				_loc6_ = 80 - _loc6_ * 40;
+				offsetY = 80 - offsetY * 40;
 			} else {
-				_loc6_ *= 40;
+				offsetY *= 40;
 			}
-			_loc3_.scale(Math.max(0.1, Math.random() * 0.1 - 0.05 + param2 * 0.05), Math.random() * 0.8 + 0.2);
-			_loc3_.translate((param1 - 0.2) * 380, _loc6_);
-			this.lipstickData.draw(this.smearGraphic, _loc3_, _loc4_);
+			mat.scale(Math.max(0.1, Math.random() * 0.1 - 0.05 + param2 * 0.05), Math.random() * 0.8 + 0.2);
+			mat.translate((param1 - 0.2) * 380, offsetY);
+			this.lipstickData.draw(this.smearGraphic, mat, color);
 		} else {
 			++this.lipstickCounter;
 		}
@@ -702,7 +702,6 @@ class Him extends MovieClip
 	}
 
 	public function move(param1:Float, param2:Float, param3:Float) {
-		var _loc4_:ASAny = /*undefined*/ null;
 		this.inMouth = G.her.isInMouth();
 		if (this.inMouth) {
 			if (this.mouthConstraintSmoothing < 1) {
@@ -849,9 +848,9 @@ class Him extends MovieClip
 								this.currentSpurt.detachSourceLink(new Point(0, 0), 0);
 							} else {
 								this.startSpeed = new Point();
-								_loc4_ = this.randomSpurtAngle + Math.sin(this.timerScale * Math.PI) * this.randomSpurtAngleRange;
-								this.startSpeed.x = Math.cos(_loc4_) * (this.randomSpurtSpeed - Math.random());
-								this.startSpeed.y = Math.sin(_loc4_) * (this.randomSpurtSpeed - Math.random());
+								var spurtAngle = this.randomSpurtAngle + Math.sin(this.timerScale * Math.PI) * this.randomSpurtAngleRange;
+								this.startSpeed.x = Math.cos(spurtAngle) * (this.randomSpurtSpeed - Math.random());
+								this.startSpeed.y = Math.sin(spurtAngle) * (this.randomSpurtSpeed - Math.random());
 								this.currentSpurt.insertLink(this.startSpeed, Std.int(this.randomSpurtCollisionDelay + Math.ffloor(this.timerScale * 2)),
 									G.randomCumMass());
 								G.soundControl.adjustCumVolume(this.timerScale, 0.3);
@@ -917,7 +916,7 @@ class Him extends MovieClip
 			++G.totalFinishes;
 			_loc1_ = Math.min(30, Math.max(0, (this.buildUp - this.ejacPleasure - 20) / 6));
 			_loc2_ = Math.ffloor(60 + Math.random() * 10);
-			this.ejaculation = new Array<ASAny>();
+			this.ejaculation = new Array<Ejaculation>();
 			_loc3_ = 0;
 			_loc4_ = Std.int(_loc2_ + _loc1_);
 			_loc5_ = true;
@@ -941,38 +940,30 @@ class Him extends MovieClip
 	}
 
 	public function addRandomSpurt(param1:UInt, param2:Bool = false) {
-		var _loc3_:ASObject = {
-			"spurtTimer": 0,
-			"spurtTimerStart": 0,
-			"randomSpurtAngle": 0,
-			"randomSpurtAngleRange": 0,
-			"randomSpurtSpeed": 0,
-			"randomSpurtCollisionDelay": 0,
-			"pauseTimer": 0
-		};
-		_loc3_.spurtTimer = param1;
-		_loc3_.spurtTimerStart = param1;
-		_loc3_.randomSpurtAngle = Math.random() * 0.8 - 3.3;
-		_loc3_.randomSpurtAngleRange = Math.random() * 0.4 + 0.1;
-		_loc3_.randomSpurtSpeed = Math.random() * 15 + 25;
-		_loc3_.randomSpurtCollisionDelay = Math.ffloor(Math.random() * 3) + 1;
-		if (param2) {
-			_loc3_.pauseTimer = 0;
-		} else {
-			_loc3_.pauseTimer = Math.ffloor(Math.random() * 4 * Math.max(1, 3 - this.ejaculation.length) + 5);
-		}
-		this.ejaculation.push(_loc3_);
-	}
+        var pauseTimer: UInt;
 
-	public function nextSpurt() {
-		var _loc1_:ASObject = this.ejaculation[0];
-		this.spurtTimer = _loc1_.spurtTimer;
-		this.spurtTimerStart = _loc1_.spurtTimerStart;
-		this.randomSpurtAngle = _loc1_.randomSpurtAngle;
-		this.randomSpurtAngleRange = _loc1_.randomSpurtAngleRange;
-		this.randomSpurtSpeed = _loc1_.randomSpurtSpeed;
-		this.randomSpurtCollisionDelay = _loc1_.randomSpurtCollisionDelay;
-		this.pauseTimer = _loc1_.pauseTimer;
+        if (!param2) {
+            pauseTimer = 0;
+        } else {
+            pauseTimer = Std.int(Math.ffloor(Math.random() * 4 * Math.max(1, 3 - this.ejaculation.length) + 5));
+        }
+
+        var ejac = new Ejaculation(param1, param1, Math.random() * 0.8
+            - 3.3, Math.random() * 0.4
+            + 0.1, Math.random() * 15 + 25,
+            Std.int(Math.ffloor(Math.random() * 3)) + 1, pauseTimer);
+        this.ejaculation.push(ejac);
+    }
+
+    public function nextSpurt() {
+        var ejac:Ejaculation = this.ejaculation[0];
+        this.spurtTimer = ejac.spurtTimer;
+		this.spurtTimerStart = ejac.spurtTimerStart;
+		this.randomSpurtAngle = ejac.randomSpurtAngle;
+		this.randomSpurtAngleRange = ejac.randomSpurtAngleRange;
+		this.randomSpurtSpeed = ejac.randomSpurtSpeed;
+		this.randomSpurtCollisionDelay = ejac.randomSpurtCollisionDelay;
+		this.pauseTimer = ejac.pauseTimer;
 		this.ejaculation.splice(0, 1);
 		G.her.tongueContainer.tongue.ejaculating();
 	}

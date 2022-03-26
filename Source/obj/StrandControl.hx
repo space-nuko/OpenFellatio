@@ -3,6 +3,7 @@ package obj;
 import openfl.display.DisplayObject;
 import openfl.display.Sprite;
 import openfl.geom.Point;
+import obj.AnchorProp;
 
 class StrandControl {
     public var strands:Array<Strand>;
@@ -16,7 +17,7 @@ class StrandControl {
         this.lockedStrands = new Array<LockedStrand>();
     }
 
-    public function newStrand(param1:Sprite, param2:UInt, param3:Float, param4:ASObject = null, param5:ASObject = null, param6:Bool = false,
+    public function newStrand(param1:Sprite, param2:UInt, param3:Float, param4:AnchorProp = null, param5:AnchorProp = null, param6:Bool = false,
             param7:Point = null, param8:Bool = false):Strand {
         var _loc9_ = new Strand(param1, param2, param3, param4, param5, param6, param8);
         _loc9_.instancePoints(param7);
@@ -86,9 +87,9 @@ class StrandControl {
         return _loc3_;
     }
 
-    public function addStrand(param1:Strand, param2:Array<ASAny>, param3:Float) {
-        var _loc4_:Strand;
-        (_loc4_ = new Strand(param1.layer, 0, param3)).giveLinks(param2);
+    public function addStrand(param1:Strand, param2:Array<StrandLink>, param3:Float) {
+        var _loc4_:Strand = new Strand(param1.layer, 0, param3);
+        _loc4_.giveLinks(param2);
         _loc4_.age = param1.age;
         _loc4_.ageMax = param1.ageMax;
         _loc4_.cumStrand = param1.cumStrand;

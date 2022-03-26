@@ -10,11 +10,11 @@ package obj;
    {
       public var ropeGraphic:MovieClip;
       public var ropeLength:UInt = 0;
-      public var segLength:Array<ASAny>;
+      public var segLength:Array<Float>;
       public var segNum:Float = 4;
-      public var links:Array<ASAny>;
-      public var segments:Array<ASAny>;
-      public var widthEstimates:Array<ASAny>;
+      public var links:Array<RopeLink>;
+      public var segments:Array<DisplayObjectContainer>;
+      public var widthEstimates:Array<Float>;
       public var mass:Float = 20;
       public var friction:Float = 0.9;
       public var damping:Float = 0.595;
@@ -32,27 +32,26 @@ package obj;
       public var leftLimitedMultiplier:Float = 0;
       public var rightLimited:Bool = false;
       public var rightLimitedMultiplier:Float = 0;
-      public var collisionImpulses:Array<ASAny>;
+      public var collisionImpulses:Array<Point>;
       public var leftLimit:UInt = 0;
       public var rightLimit:UInt = 0;
       public var hairCollisionTest:Bool = false;
 
-      public function new(param1:MovieClip, param2:ASObject, param3:Point = null, param4:DisplayObjectContainer = null, param5:Float = 0, param6:String = "none", param7:UInt = 0, param8:UInt = 0, param9:UInt = 0, param10:Array<ASAny> = null)
+      public function new(param1:MovieClip, param2:DisplayObjectContainer, param3:Point = null, param4:DisplayObjectContainer = null, param5:Float = 0, param6:String = "none", param7:UInt = 0, param8:UInt = 0, param9:UInt = 0, param10:Array<Float> = null)
       {
          var _loc14_:UInt = 0;
          var _loc15_:UInt = 0;
          var _loc16_= Math.NaN;
          var _loc17_:UInt = 0;
-         var _loc18_:ASAny = /*undefined*/null;
-         this.segLength = new Array<ASAny>();
-         this.links = new Array<ASAny>();
-         this.segments = new Array<ASAny>();
-         this.widthEstimates = new Array<ASAny>();
+         this.segLength = new Array<Float>();
+         this.links = new Array<RopeLink>();
+         this.segments = new Array<DisplayObjectContainer>();
+         this.widthEstimates = new Array<Float>();
          this.subScaling = new Point(1,1);
          this.impulse = new Point();
          this.collisionImpulse = new Point();
          this.gravityDirection = new Point();
-         this.collisionImpulses = new Array<ASAny>();
+         this.collisionImpulses = new Array<Point>();
          super();
          this.ropeGraphic = param1;
          this.ropeGraphic.x = 0;
@@ -81,15 +80,16 @@ package obj;
          this.gravityDirection = new Point(Math.sin(_loc11_) * 1.2,-Math.cos(_loc11_) * 1.2);
          if(param10 == null)
          {
-            this.segLength = new Array<ASAny>();
-            this.segments = new Array<ASAny>();
+            this.segLength = new Array<Float>();
+            this.segments = new Array<DisplayObjectContainer>();
             this.ropeLength = this.ropeGraphic.numChildren;
             _loc14_ = 0;
             while(_loc14_ < this.ropeLength)
             {
-               if(Std.isOfType((_loc18_ = this.ropeGraphic.getChildAt(_loc14_)), DisplayObjectContainer))
+               var child = this.ropeGraphic.getChildAt(_loc14_);
+               if(Std.isOfType(child, DisplayObjectContainer))
                {
-                  this.segments.push(_loc18_);
+                  this.segments.push(cast(child, DisplayObjectContainer));
                }
                _loc14_++;
             }
@@ -131,7 +131,7 @@ package obj;
          this.anchorPoint = param3;
          this.currentAnchor = G.sceneLayer.globalToLocal(this.anchorContainer.localToGlobal(this.anchorPoint));
          var _loc12_:Float = 0;
-         this.links = new Array<ASAny>();
+         this.links = new Array<RopeLink>();
          this.links[0] = new RopeLink(this.currentAnchor.x,this.currentAnchor.y,this.friction,this.mass);
          var _loc13_:UInt = 1;
          while(_loc13_ < this.ropeLength + 1)

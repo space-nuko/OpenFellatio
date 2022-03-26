@@ -12,7 +12,7 @@ class BreathMist extends openfl.display.MovieClip {
 	public var maxAlpha:Float = Math.NaN;
 
 	public function new() {
-		var library = swf.exporters.animate.AnimateLibrary.get("FYA8BqNO2PenTmHMYgDK");
+		var library = swf.exporters.animate.AnimateLibrary.get("Ld39TJPQZsVJfqCLrG3m");
 		var symbol = library.symbols.get(2060);
 		symbol.__init(library);
 

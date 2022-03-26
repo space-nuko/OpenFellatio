@@ -75,7 +75,7 @@ class CharacterElementHelper {
 		}
 	}
 
-	public function defaultFillFunction(param1:ASObject, param2:String = "rgbFill") {
+	public function defaultFillFunction(param1:AlphaRGBObject, param2:String = "rgbFill") {
 		var color = new ColorTransform(1, 1, 1, param1.a, param1.r, param1.g, param1.b);
 		for (comp in this.components) {
 			this.tryToSetFill(comp, param2, color);
@@ -99,7 +99,7 @@ class CharacterElementHelper {
 	public function componentClicked(param1:MouseEvent) {
 		if (G.shiftDown) {
 			this.findName("None");
-			if (ASCompat.stringAsBool(this.associatedModType)) {
+			if (this.associatedModType != null) {
 				// G.customElementLoader.clearModTypes([this.associatedModType]);
 			}
 			this.updateMenuList();
@@ -110,30 +110,27 @@ class CharacterElementHelper {
 	public function prepForMod(param1:String, param2:Bool = false) {
 		if (param2) {
 			this.findName("None");
-			if (ASCompat.stringAsBool(this.associatedModType)) {
+			if (this.associatedModType != null) {
 				// G.customElementLoader.clearModTypes([this.associatedModType]);
 			}
 		}
 		this.updateMenuList(param1);
 	}
 
-	public function tryToSetFrameLabel(param1:MovieClip, param2:String) {
-		var _loc3_:Array<ASAny> = null;
-		var _loc4_:FrameLabel = null;
-		if (param1 != null) {
-			_loc3_ = param1.currentLabels;
-			for (_tmp_ in _loc3_) {
-				_loc4_ = _tmp_;
-				if (_loc4_.name == param2) {
-					param1.gotoAndStop(param2);
+	public function tryToSetFrameLabel(target:Null<MovieClip>, labelName:String) {
+		if (target != null) {
+			var labels = target.currentLabels;
+			for (label in labels) {
+				if (label.name == labelName) {
+					target.gotoAndStop(labelName);
 					return;
 				}
 			}
-			param1.gotoAndStop("None");
+			target.gotoAndStop("None");
 		}
 	}
 
-	public function tryToSetFill(param1:MovieClip, param2:String, param3:ColorTransform) {
+	public function tryToSetFill(param1:Null<MovieClip>, param2:String, param3:ColorTransform) {
 		if (param1 != null) {
 			this.tryToSetFillChildren(param1, param2, param3);
 		}

@@ -6,6 +6,7 @@ import openfl.media.Sound;
 import openfl.text.Font;
 import openfl.text.TextFormat;
 import openfl.Vector;
+import obj.animation.AnimationControl;
 import obj.AudioMod;
 import obj.Her;
 
@@ -72,7 +73,7 @@ class Dialogue extends MovieClip
 	public var fadingOut:Bool = false;
 	public var fadingIn:Bool = false;
 	public var currentText:String;
-	public var words:Array<ASAny>;
+	public var words:Array<Word>;
 	public var sayingState:String;
 	public var sayingPhrase:String;
 	public var sayingWord:UInt = 0;
@@ -82,20 +83,14 @@ class Dialogue extends MovieClip
 	public var waitingToContinue:Bool = false;
 	public var queuedPhrase:String = "";
 	public var sayingAudio:Sound;
-	public var audioCues:Array<ASAny>;
 	public var cumulativeMovement:Float = 0;
 	public var postEjaculation:Bool = false;
 	public var firstThroatSpoken:Bool = false;
 	public var states:ASDictionary<String, DialogueState>;
 	public var debugMode:Bool = false;
-	public var debugBars:ASDictionary<ASAny, ASAny>;
+	public var debugBars:ASDictionary<String, DebugBar> = new ASDictionary<String, DebugBar>();
 
 	public function new() {
-		var _loc1_:UInt = 0;
-		var _loc2_:Array<ASAny> = null;
-		var _loc3_:ASAny = null;
-		var _loc4_:DebugBar = null;
-		this.debugBars = new ASDictionary<ASAny, ASAny>();
 		super();
 		this.x = 0;
 		this.y = G.screenSize.y;
@@ -139,22 +134,21 @@ class Dialogue extends MovieClip
 		}
 		this.readyToSpeak();
 		if (this.debugMode) {
-			_loc1_ = 0;
-			_loc2_ = new Array<ASAny>();
-			for (_tmp_ in this.states.keys()) {
-				_loc3_ = _tmp_;
-				_loc2_.push(_loc3_);
+			var i = 0;
+			var sortedKeys = new Array<String>();
+			for (key in this.states.keys()) {
+				sortedKeys.push(key);
 			}
-			_loc2_.sort(Reflect.compare);
-			for (_tmp_ in _loc2_) {
-				_loc3_ = _tmp_;
-				(_loc4_ = new DebugBar()).scaleX = this.states[_loc3_].max / MAX_BUILD;
-				_loc4_.x = 100;
-				_loc4_.y = _loc1_ * 12 - 550;
-				_loc4_.labelField.text = _loc3_;
-				this.addChild(_loc4_);
-				this.debugBars[_loc3_] = _loc4_;
-				_loc1_++;
+			sortedKeys.sort(Reflect.compare);
+			for (key in sortedKeys) {
+                var bar = new DebugBar();
+				bar.scaleX = this.states[key].max / MAX_BUILD;
+				bar.x = 100;
+				bar.y = i * 12 - 550;
+				bar.labelField.text = key;
+				this.addChild(bar);
+				this.debugBars[key] = bar;
+				i++;
 			}
 		}
 	}
@@ -166,22 +160,17 @@ class Dialogue extends MovieClip
 		// this.tfContainer.dialogueField.setTextFormat(this.originalTextFormat);
 	}
 
-	public function setCustomFont(param1:String) {
-		var _loc4_:Font = null;
-		var _loc5_:String = null;
-		var _loc2_ = Font.enumerateFonts(true);
-		var _loc3_ = new Array<ASAny>();
-		for (_tmp_ in _loc2_) {
-			_loc4_ = _tmp_;
-			_loc3_.push(_loc4_.fontName);
+	public function setCustomFont(fontName:String) {
+		var fonts = new Array<String>();
+		for (font in Font.enumerateFonts(true)) {
+			fonts.push(font.fontName);
 		}
-		if (_loc3_.indexOf(param1) != -1) {
-			this.applyCustomFont(param1);
+		if (fonts.indexOf(fontName) != -1) {
+			this.applyCustomFont(fontName);
 		} else {
-			for (_tmp_ in _loc3_) {
-				_loc5_ = _tmp_;
-				if (new EReg(param1, "i").match(_loc5_)) {
-					this.applyCustomFont(_loc5_);
+			for (font in fonts) {
+				if (new EReg(fontName, "i").match(font)) {
+					this.applyCustomFont(font);
 					break;
 				}
 			}
@@ -208,11 +197,11 @@ class Dialogue extends MovieClip
 		this.setDefaultFont();
 	}
 
-	public function getCurrentDialogue():ASDictionary<ASAny, ASAny> {
+	public function getCurrentDialogue():ASDictionary<String, Array<DialogueLine>> {
 		return this.library.getCurrentDialogue();
 	}
 
-	public function getCurrentFinishes():ASDictionary<ASAny, ASAny> {
+	public function getCurrentFinishes():ASDictionary<String, Array<DialogueLine>> {
 		return this.library.getCurrentFinishes();
 	}
 
@@ -227,7 +216,7 @@ class Dialogue extends MovieClip
 		}
 	}
 
-	public function loadDialogueMod(param1:ASAny) {
+	public function loadDialogueMod(param1:DialogueMod) {
 		this.library.loadDialogueMod(param1);
 	}
 
@@ -307,10 +296,8 @@ class Dialogue extends MovieClip
 	}
 
 	public function clearStates() {
-		var _loc1_:ASAny = null;
-		for (_tmp_ in this.states.keys()) {
-			_loc1_ = _tmp_;
-			this.states[_loc1_].clearBuild();
+		for (key in this.states.keys()) {
+			this.states[key].clearBuild();
 		}
 		this.firstThroatSpoken = false;
 	}
@@ -339,22 +326,20 @@ class Dialogue extends MovieClip
 	}
 
 	public function interrupt() {
-		var _loc1_:UInt = 0;
-		var _loc2_:UInt = 0;
 		this.nextLineTimer = 0;
 		if (this.sayingSpeakingStyle) {
 			G.her.setSpeaking(false);
 			if (this.speaking) {
-				_loc1_ = this.words[this.sayingWord] ? Std.int(this.words[this.sayingWord].length - 1 - this.sayingChar) : 0;
-				if (_loc1_ < 3) {
+				var charsLeft = this.words[this.sayingWord] != null ? Std.int(this.words[this.sayingWord].length - 1 - this.sayingChar) : 0;
+				if (charsLeft < 3) {
 					if (this.sayingSpace) {
 						this.sayingSpace = false;
 						this.currentText += " ";
 					}
-					_loc2_ = 0;
-					while (_loc2_ <= _loc1_) {
+					var i = 0;
+					while (i <= charsLeft) {
 						this.currentText += this.nextChar();
-						_loc2_++;
+						i++;
 					}
 				} else {
 					this.sayingChar = 0;
@@ -378,7 +363,7 @@ class Dialogue extends MovieClip
 		var _loc1_:UInt = 0;
 		var _loc2_:String = null;
 		var _loc3_:UInt = 0;
-		if (this.speaking && this.sayingSpeakingStyle && this.words[this.sayingWord]) {
+		if (this.speaking && this.sayingSpeakingStyle && this.words[this.sayingWord] != null) {
 			_loc1_ = this.words[this.sayingWord].length - 1 - this.sayingChar;
 			if (_loc1_ < 3) {
 				if (this.sayingSpace) {
@@ -405,11 +390,6 @@ class Dialogue extends MovieClip
 	}
 
 	public function checkForSpeechStart() {
-		var _loc1_:String = null;
-		var _loc2_:Array<ASAny> = null;
-		var _loc3_:UInt = 0;
-		var _loc4_:ASAny = null;
-		var _loc5_ = false;
 		if (G.dialogue) {
 			if (this.interruptTimer > 0) {
 				if (this.waitingToContinue) {
@@ -428,41 +408,41 @@ class Dialogue extends MovieClip
 			}
 			this.nextLineTimer += Math.max(Math.random() * 0.2, this.speechUrgency());
 			if (this.nextLineTimer > this.SPEAK_DELAY && !this.speaking && !this.waitingToContinue) {
-				_loc1_ = ZERO_STATE;
-				_loc2_ = new Array<ASAny>();
-				_loc3_ = 0;
+				var stateName = ZERO_STATE;
+				var _loc2_ = new Array<String>();
+				var _loc3_ = 0;
 				for (_tmp_ in this.states.keys()) {
-					_loc4_ = _tmp_;
+					var _loc4_ = _tmp_;
 					if (this.states[_loc4_].build > STATE_THRESHOLD) {
 						if (this.states[_loc4_].priority > _loc3_) {
-							_loc2_ = new Array<ASAny>();
+							_loc2_ = new Array<String>();
 							_loc3_ = this.states[_loc4_].priority;
 						}
 						_loc2_.push(_loc4_);
 					}
 				}
-				_loc5_ = false;
+				var _loc5_ = false;
 				for (_tmp_ in _loc2_) {
-					_loc4_ = _tmp_;
-					if (this.states[_loc4_].build > this.states[_loc1_].build) {
-						_loc1_ = _loc4_;
-						if (this.states[_loc1_].build > 0) {
+					var _loc4_ = _tmp_;
+					if (this.states[_loc4_].build > this.states[stateName].build) {
+						stateName = _loc4_;
+						if (this.states[stateName].build > 0) {
 							_loc5_ = true;
 						}
 					}
 				}
 				if (G.her.intro) {
-					if (this.states[_loc1_].build < STATE_THRESHOLD) {
-						_loc1_ = INTRO;
+					if (this.states[stateName].build < STATE_THRESHOLD) {
+						stateName = INTRO;
 						_loc5_ = true;
 					}
 				}
 				if (_loc5_) {
-					if (_loc1_ == QUEUED) {
+					if (stateName == QUEUED) {
 						this.states[QUEUED].clearBuild();
 						this.sayRandomPhrase(this.queuedPhrase);
 					} else {
-						this.sayRandomPhrase(_loc1_, true);
+						this.sayRandomPhrase(stateName, true);
 					}
 				} else if (Math.random() < this.GENERAL_PHRASE_FREQ) {
 					this.sayRandomPhrase(GENERAL);
@@ -494,32 +474,31 @@ class Dialogue extends MovieClip
 	}
 
 	public function sayRandomPhrase(param1:String, param2:Bool = false) {
-		var _loc5_:DialogueLine = null;
-		var _loc6_:UInt = 0;
-		var _loc7_:DialogueLine = null;
-		var _loc3_:Array<ASAny> = this.library.getPhrases(param1).copy();
-		var _loc4_ = new Array<ASAny>();
-		for (_tmp_ in _loc3_) {
-			_loc5_ = _tmp_;
-			if (_loc5_.canPlay) {
-				_loc4_.push(_loc5_);
+		var lines:Array<DialogueLine> = this.library.getPhrases(param1).copy();
+
+		var canPlayLines = new Array<DialogueLine>();
+		for (phrase in lines) {
+			if (phrase.canPlay) {
+				canPlayLines.push(phrase);
 			}
 		}
-		if (G.dialogue && _loc4_.length > 0) {
+
+		if (G.dialogue && canPlayLines.length > 0) {
 			if (!this.states.exists(param1)) {
 				this.states[param1] = new DialogueState(0, 0);
 			}
 			this.states[param1].clearBuild();
 			this.states[param1].delayBuild();
-			_loc6_ = this.states[param1].randomPhrase(_loc4_);
-			if ((_loc7_ = _loc4_[_loc6_]) != null) {
-				if (param1 == FIRST_THROAT && _loc7_.style == DialogueLine.SPEAKING_STYLE) {
+			var idx = this.states[param1].randomPhrase(canPlayLines);
+            var phrase = canPlayLines[idx];
+			if (phrase != null) {
+				if (param1 == FIRST_THROAT && phrase.style == DialogueLine.SPEAKING_STYLE) {
 					this.firstThroatSpoken = true;
 				}
 				if (param2) {
 					this.reduceStates();
 				}
-				this.startSpeakingPhrase(_loc7_);
+				this.startSpeakingPhrase(phrase);
 				this.sayingState = param1;
 				this.nextLineTimer = 0;
 			}
@@ -533,14 +512,8 @@ class Dialogue extends MovieClip
 	}
 
 	public function update() {
-		var _loc1_:ASAny = null;
-		var _loc3_:ASAny = null;
-		var _loc4_:ASObject = null;
-		var _loc5_:ASObject = null;
-		var _loc6_:UInt = 0;
-		for (_tmp_ in this.states.keys()) {
-			_loc1_ = _tmp_;
-			this.states[_loc1_].reduce();
+		for (key in this.states.keys()) {
+			this.states[key].reduce();
 		}
 		if (this.interruptTimer > 0) {
 			--this.interruptTimer;
@@ -562,33 +535,33 @@ class Dialogue extends MovieClip
 		this.lastFrameTime -= this.frameTime % this.typingSpeed;
 		G.soundControl.updateDialogue();
 		if (this.debugMode) {
-			for (_tmp_ in this.states.keys()) {
-				_loc3_ = _tmp_;
-				if (this.debugBars[_loc3_]) {
-					this.debugBars[_loc3_].bar.scaleX = this.states[_loc3_].build / this.states[_loc3_].max;
+			for (key in this.states.keys()) {
+				if (this.debugBars[key] != null) {
+					this.debugBars[key].bar.scaleX = this.states[key].build / this.states[key].max;
 				}
 			}
 		}
-		var _loc2_:UInt = 0;
-		while (_loc2_ < this.dialogueTicks) {
+		var i:UInt = 0;
+		while (i < this.dialogueTicks) {
 			if (this.speaking) {
 				if (this.coughDelay == 0) {
 					this.typingDelay = 0;
 					if (this.sayingSpace) {
 						this.sayingSpace = false;
-						_loc4_ = {
-							"phoneme": Her.allMouthShapes[Math.floor(Math.random() * Her.allMouthShapes.length)],
-							"sayL": false
-						};
-						G.her.setTargetPhoneme(_loc4_, 2);
+						var phoneme = new obj.dialogue.Word.Phoneme(
+							Her.allMouthShapes[Math.floor(Math.random() * Her.allMouthShapes.length)],
+							false
+						);
+						G.her.setTargetPhoneme(phoneme, 2);
 						this.currentText += " ";
 						this.updateTextField();
-					} else if (this.words[this.sayingWord]) {
+					} else if (this.words[this.sayingWord] != null) {
 						if (this.sayingSpeakingStyle) {
-							if (_loc5_ = this.words[this.sayingWord].phoneme(this.sayingChar)) {
-								_loc6_ = Std.int(Math.min(5,
+                            var targetPhoneme = this.words[this.sayingWord].phoneme(this.sayingChar);
+							if (targetPhoneme != null) {
+								var idx = Std.int(Math.min(5,
 									Math.max(1, this.words[this.sayingWord].phonemeLength(this.sayingChar) * (this.typingSpeed + 1))));
-								G.her.setTargetPhoneme(_loc5_, _loc6_);
+								G.her.setTargetPhoneme(targetPhoneme, idx);
 							}
 						}
 						this.currentText += this.nextChar();
@@ -598,7 +571,7 @@ class Dialogue extends MovieClip
 					}
 				}
 			}
-			_loc2_++;
+			i++;
 		}
 		if (!this.speaking) {
 			if (this.showingText && !this.waitingToContinue) {
@@ -657,21 +630,107 @@ class Dialogue extends MovieClip
 	}
 
 	public function checkWordAction() {
-		/*
-		 * Decompilation error
-		 * Code may be obfuscated
-		 * Tip: You can try enabling "Automatic deobfuscation" in Settings
-		 * Error type: NullPointerException (null)
-		 */
-		throw new flash.errors.IllegalOperationError("Not decompiled due to error");
-	}
+        var action: ASFunction = null;
+        var extraDelay: UInt = 0;
+        var queuedName: String = null;
 
-	public function pauseSpeakingForAction(param1:UInt = 0) {
+        switch (this.words[this.sayingWord].action) {
+            case"SWALLOW":
+                action = function() { G.her.swallow(); } // ???
+            case"DROOL":
+                action = function() { G.her.randomSpitDrool(); } // ???
+            case"COUGH":
+                action = G.her.cough;
+                extraDelay = Std.int(Math.random() * 15) + 5;
+            case"CLENCH_TEETH":
+                action = G.her.startClenchingTeeth;
+                extraDelay = Std.int(Math.random() * 30) + 30;
+            case"ARMS_BACK":
+                action = function() { G.her.setArmPosition(0); }
+            case"ARMS_LEGS":
+                action = function() { G.her.setArmPosition(1); }
+            case"ARMS_HIS_LEGS":
+                action = function() { G.her.setArmPosition(2); }
+            case"ARMS_HAND_JOB":
+                action = function() { G.her.setArmPosition(3); }
+            case"ARMS_LOOSE":
+                action = function() { G.her.setArmPosition(4); }
+            case"LEFT_ARM_BACK":
+                action = function() { G.her.setRightArmPosition(0); }
+            case"LEFT_ARM_LEGS":
+                action = function() { G.her.setRightArmPosition(1); }
+            case"LEFT_ARM_HIS_LEGS":
+                action = function() { G.her.setRightArmPosition(2); }
+            case"LEFT_ARM_HAND_JOB":
+                action = function() { G.her.setRightArmPosition(3); }
+            case"LEFT_ARM_LOOSE":
+                action = function() { G.her.setRightArmPosition(4); }
+            case"RIGHT_ARM_BACK":
+                action = function() { G.her.setRightArmPosition(0); }
+            case"RIGHT_ARM_LEGS":
+                action = function() { G.her.setRightArmPosition(1); }
+            case"RIGHT_ARM_HIS_LEGS":
+                action = function() { G.her.setRightArmPosition(2); }
+            case"RIGHT_ARM_HAND_JOB":
+                action = function() { G.her.setRightArmPosition(3); }
+            case"RIGHT_ARM_LOOSE":
+                action = function() { G.her.setRightArmPosition(4); }
+            case"HOLD":
+                action = G.her.activeHold; // ???
+            case"RELEASE":
+                action = G.her.setHandsFree; // ???
+            case"SHOCK":
+                action = function() { G.her.shock(50); }; // ???
+            case"WINCE":
+                action = G.her.wince;
+            case"CLOSE_EYES":
+                action = G.her.closeEye;
+            case"OPEN_EYES":
+                action = G.her.openEye;
+            case"BLINK":
+                action = G.her.blink;
+            case"LOOK_UP":
+                action = G.her.lookUp;
+            case"LOOK_DOWN":
+                action = G.her.lookDown;
+            case"TAP_HANDS":
+                action = G.her.tapHands;
+            case"NORMAL_MOOD":
+                action = function() { G.her.setMood(Her.NORMAL_MOOD); };
+            case"HAPPY_MOOD":
+                action = function() { G.her.setMood(Her.HAPPY_MOOD); };
+            case"ANGRY_MOOD":
+                action = function() { G.her.setMood(Her.ANGRY_MOOD); };
+            case"AHEGAO_MOOD":
+                action = function() { G.her.setMood(Her.AHEGAO_MOOD); };
+            case"NORMAL_STYLE":
+                action = function() { G.animationControl.setAnimation(AnimationControl.DEFAULT); };
+            case"FACE_FUCK_STYLE":
+                action = function() { G.animationControl.setAnimation(AnimationControl.FACE_FUCK); };
+            case"EJACULATE":
+                action = G.him.ejaculate;
+            case"ADD_TEARS":
+                action = G.her.tears.addTears;
+            default:
+        }
+
+        if (action == null) {
+            this.queuedPhrase = this.words[this.sayingWord].action;
+            this.states[QUEUED].maxBuild();
+            this.nextWord();
+        } else {
+            this.pauseSpeakingForAction(extraDelay);
+            this.nextWord();
+            action();
+        }
+    }
+
+    public function pauseSpeakingForAction(extraDelay:UInt = 0) {
 		G.her.setSpeaking(false);
 		if (this.speaking && this.sayingSpeakingStyle) {
 			this.sayingChar = -1;
-			this.continueDelay = Std.int(Math.ffloor(Math.random() * 5) + 3 + param1);
-			this.interruptTimer = Std.int(Math.ffloor(Math.random() * 50) + 60 + param1);
+			this.continueDelay = Std.int(Math.ffloor(Math.random() * 5) + 3 + extraDelay);
+			this.interruptTimer = Std.int(Math.ffloor(Math.random() * 50) + 60 + extraDelay);
 			G.soundControl.pauseDialogue();
 			this.speaking = false;
 			this.clearDelay = 0;
@@ -710,7 +769,7 @@ class Dialogue extends MovieClip
 				gotoAndStop("speaking");
 		}
 		this.waitingToContinue = false;
-		if (ASCompat.stringAsBool(param1.nextLine)) {
+		if (param1.nextLine != null) {
 			this.queuedPhrase = param1.nextLine;
 			this.states[QUEUED].maxBuild();
 		}
@@ -729,13 +788,12 @@ class Dialogue extends MovieClip
 		this.fade(true);
 		this.sayingWord = 0;
 		this.sayingChar = 0;
-		this.words = new Array<ASAny>();
+		this.words = new Array<Word>();
 		_loc2_ = (~/([^ \t])\[/gi).replace(_loc2_, "$1 [");
 		_loc2_ = (~/\]([^ \t])/gi).replace(_loc2_, "] $1");
-		var _loc5_:Array<ASAny> = (cast _loc2_.split(" "));
-		for (_tmp_ in _loc5_) {
-			_loc6_ = _tmp_;
-			this.words.push(new Word(_loc6_));
+		var _loc5_:Array<String> = _loc2_.split(" ");
+		for (word in _loc5_) {
+			this.words.push(new Word(word));
 		}
 		(~/\[.*?\]/gi).replace(_loc2_, "");
 		if (_loc4_ != null) {
@@ -800,7 +858,7 @@ class Dialogue extends MovieClip
 	}
 
 	public function partnerPosessive():String {
-		if (ASCompat.stringAsBool(G.customName)) {
+		if (G.customName != null) {
 			if (G.customName.charAt(G.customName.length - 1) == "s") {
 				return G.customName + "\'";
 			}
@@ -810,11 +868,11 @@ class Dialogue extends MovieClip
 	}
 
 	public function herName():String {
-		return !!ASCompat.stringAsBool(G.characterControl.currentName) ? G.characterControl.currentName : "";
+		return G.characterControl.currentName != null ? G.characterControl.currentName : "";
 	}
 
 	public function herPosessive():String {
-		if (ASCompat.stringAsBool(G.characterControl.currentName)) {
+		if (G.characterControl.currentName != null) {
 			if (G.characterControl.currentName.charAt(G.characterControl.currentName.length - 1) == "s") {
 				return G.characterControl.currentName + "\'";
 			}
@@ -824,11 +882,11 @@ class Dialogue extends MovieClip
 	}
 
 	public function finishes():String {
-		var _loc1_:Array<ASAny> = this.library.getFinishes(G.totalFinishes);
+		var _loc1_:Array<DialogueLine> = this.library.getFinishes(G.totalFinishes);
 		return _loc1_.length > 0 ? _loc1_[Math.floor(Math.random() * _loc1_.length)].phrase : "";
 	}
 
-	public function chooseRandomPhrase(param1:Array<ASAny>):DialogueLine {
+	public function chooseRandomPhrase(param1:Array<DialogueLine>):DialogueLine {
 		return param1.length > 0 ? param1[Math.floor(Math.random() * param1.length)] : new DialogueLine("");
 	}
 

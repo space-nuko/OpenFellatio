@@ -28,8 +28,8 @@ class Tears extends openfl.display.MovieClip {
 	public var oldDataBuffer:BitmapData;
 	public var alphaBlendMult:UInt = 255;
 	public var rgbBlendMult:UInt = 256;
-	public var tearList:Array<ASAny>;
-	public var tearSpotList:Array<ASAny>;
+	public var tearList:Array<TearPoint>;
+	public var tearSpotList:Array<TearSpot>;
 	public var tearGraphic:Tear;
 	public var mascaraGraphic:MascaraSpot;
 	public var maxTears:UInt = 8;
@@ -51,7 +51,7 @@ class Tears extends openfl.display.MovieClip {
 	public var smudgeBrush:Vector<Point> = new Vector<Point>();
 
 	public function new() {
-		var library = swf.exporters.animate.AnimateLibrary.get("FYA8BqNO2PenTmHMYgDK");
+		var library = swf.exporters.animate.AnimateLibrary.get("Ld39TJPQZsVJfqCLrG3m");
 		var symbol = library.symbols.get(1240);
 		symbol.__init(library);
 
@@ -77,8 +77,8 @@ class Tears extends openfl.display.MovieClip {
 		this.mascaraGraphic = new MascaraSpot();
 		this.eyeABVec = new Point(this.eyeB.x - this.eyeA.x, this.eyeB.y - this.eyeA.y);
 		this.eyeBCVec = new Point(this.eyeC.x - this.eyeB.x, this.eyeC.y - this.eyeB.y);
-		this.tearList = new Array<ASAny>();
-		this.tearSpotList = new Array<ASAny>();
+		this.tearList = new Array<TearPoint>();
+		this.tearSpotList = new Array<TearSpot>();
 
 		var i = 0;
 		while (i < 2) {
@@ -99,7 +99,7 @@ class Tears extends openfl.display.MovieClip {
 		param1.addChild(this.lowerEyelidLayer);
 	}
 
-	public function setMascaraRGB(param1:ASAny) {
+	public function setMascaraRGB(param1:AlphaRGBObject) {
 		this.mascaraRGB = param1;
 	}
 
@@ -111,10 +111,8 @@ class Tears extends openfl.display.MovieClip {
 	}
 
 	public function clearTearSpots() {
-		var _loc1_:ASAny = /*undefined*/ null;
-		for (_tmp_ in this.tearSpotList) {
-			_loc1_ = _tmp_;
-			this.tearSpotsLayer.removeChild(_loc1_);
+		for (tearSpot in this.tearSpotList) {
+			this.tearSpotsLayer.removeChild(tearSpot);
 		}
 		ASCompat.arraySpliceAll(this.tearSpotList, 0);
 	}
@@ -184,10 +182,10 @@ class Tears extends openfl.display.MovieClip {
 	}
 
 	public function releaseTear(param1:UInt) {
-		var _loc2_ = Math.random() + 1.5;
-		var _loc3_ = new TearPoint(this.tearSpotList[param1].x, this.tearSpotList[param1].y, _loc2_);
-		_loc3_.scaling = this.tearSpotList[param1].scaleX;
-		this.tearList.push(_loc3_);
+		var multiplier = Math.random() + 1.5;
+		var tearPoint = new TearPoint(this.tearSpotList[param1].x, this.tearSpotList[param1].y, multiplier);
+		tearPoint.scaling = this.tearSpotList[param1].scaleX;
+		this.tearList.push(tearPoint);
 		this.tearSpotsLayer.removeChild(this.tearSpotList[param1]);
 		this.tearSpotList.splice(param1, 1);
 	}

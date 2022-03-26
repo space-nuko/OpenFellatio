@@ -37,7 +37,7 @@ class DialogueEditorLine extends openfl.display.MovieClip {
 	@:keep @:noCompletion @:dox(hide) public var hitbox(default, null):openfl.display.MovieClip;
 
 	public function new(param1:DialogueLine, param2:String, param3:ASFunction, param4:ASFunction, param5:Bool = false) {
-		var library = swf.exporters.animate.AnimateLibrary.get("FYA8BqNO2PenTmHMYgDK");
+		var library = swf.exporters.animate.AnimateLibrary.get("Ld39TJPQZsVJfqCLrG3m");
 		var symbol = library.symbols.get(2946);
 		symbol.__init(library);
 
@@ -252,7 +252,7 @@ class DialogueEditorLine extends openfl.display.MovieClip {
 
 	function set_mood(param1:String):String {
 		this._mood = param1;
-		if (!ASCompat.stringAsBool(this._mood)) {
+		if (this._mood == null) {
 			this.moodIcon.gotoAndStop("none");
 		} else {
 			this.moodIcon.gotoAndStop(this._mood);
@@ -275,26 +275,26 @@ class DialogueEditorLine extends openfl.display.MovieClip {
 	}
 
 	public function getDialogueLine():DialogueLine {
-		var _loc1_:ASObject = {};
+		var settings = new DialogueLine.Settings();
 		if (this._style != null) {
-			_loc1_["style"] = this._style;
+			settings.style = this._style;
 		}
 		if (this._mood != null) {
-			_loc1_["mood"] = this._mood;
+			settings.mood = this._mood;
 		}
 		if (this._nextLine != null) {
-			_loc1_["next"] = this._nextLine;
+			settings.next = this._nextLine;
 		}
 		if (this._held != null) {
-			_loc1_["held"] = this._held;
+			settings.held = this._held;
 		}
-		if (this._sourceLine.settings["set"]) {
-			_loc1_["set"] = this._sourceLine.settings["set"];
+		if (this._sourceLine.settings.set != null) {
+			settings.set = this._sourceLine.settings.set;
 		}
-		if (this._sourceLine.settings["check"]) {
-			_loc1_["check"] = this._sourceLine.settings["check"];
+		if (this._sourceLine.settings.check != null) {
+			settings.check = this._sourceLine.settings.check;
 		}
-		return new DialogueLine(this.phrase, _loc1_);
+		return new DialogueLine(this.phrase, settings);
 	}
 
 	public function select(param1:Bool = true) {

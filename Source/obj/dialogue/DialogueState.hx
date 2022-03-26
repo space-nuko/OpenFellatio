@@ -3,15 +3,13 @@ class DialogueState {
 	public var _buildLevel:Float = 0;
 	public var _maxBuild:Float = 0;
 	public var _priority:UInt = 0;
-	public var _prevPhrases:ASDictionary<ASAny, ASAny>;
+	public var _prevPhrases:ASDictionary<UInt, Bool> = new ASDictionary();
 	public var _prevPhrasesLength:UInt = 0;
 	public var _lastUsed:UInt = 0;
 	public var _defaultReduceSpeed:Float = 1;
 	public var _noBuildDelay:UInt = 0;
 
 	public function new(param1:Float, param2:UInt, param3:Float = 1) {
-		this._prevPhrases = new ASDictionary<ASAny, ASAny>();
-		// super();
 		this._maxBuild = param1;
 		this._priority = param2;
 		this._defaultReduceSpeed = param3;
@@ -45,16 +43,16 @@ class DialogueState {
 		this._buildLevel = this._maxBuild;
 	}
 
-	public function randomPhrase(param1:Array<ASAny>):UInt {
+	public function randomPhrase(param1:Array<DialogueLine>):UInt {
 		var _loc5_:UInt = 0;
 		var _loc6_:UInt = 0;
 		var _loc2_:UInt = param1.length;
 		if (this._prevPhrasesLength >= _loc2_) {
-			this._prevPhrases = new ASDictionary<ASAny, ASAny>();
+			this._prevPhrases = new ASDictionary<UInt, Bool>();
 			this._prevPhrases[this._lastUsed] = true;
 			this._prevPhrasesLength = 1;
 		}
-		var _loc3_ = new Array<ASAny>();
+		var _loc3_ = new Array<UInt>();
 		var _loc4_:UInt = 0;
 		while (_loc4_ < _loc2_) {
 			if (!this._prevPhrases[_loc4_]) {
@@ -75,7 +73,7 @@ class DialogueState {
 	}
 
 	public function clearPrevPhrases() {
-		this._prevPhrases = new ASDictionary<ASAny, ASAny>();
+		this._prevPhrases = new ASDictionary<UInt, Bool>();
 		this._prevPhrasesLength = 0;
 	}
 

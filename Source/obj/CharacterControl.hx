@@ -36,13 +36,13 @@ import obj.her.SkinPalette;
 import obj.Maths;
 
 class CharacterControl {
-	public static var noseTypeList:Array<ASAny> = ["Normal", "Pointed", "Wedge"];
-	public static var earTypeList:Array<ASAny> = ["Normal", "Elf", "Small"];
-	public static var eyebrowsTypeList:Array<ASAny> = ["Normal", "Crescent", "Lines"];
+	public static var noseTypeList:Array<String> = ["Normal", "Pointed", "Wedge"];
+	public static var earTypeList:Array<String> = ["Normal", "Elf", "Small"];
+	public static var eyebrowsTypeList:Array<String> = ["Normal", "Crescent", "Lines"];
 
-	public var characters:Array<ASAny>;
+	public var characters:Array<Character>;
 	public var currentChar:UInt = 0;
-	public var defaultCharOrder:Array<ASAny> = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 16, 17, 15, 18, 19, 20, 21];
+	public var defaultCharOrder:Array<UInt> = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 16, 17, 15, 18, 19, 20, 21];
 	public var currentName:String = "";
 	public var currentHair:UInt = 0;
 	public var currentIris:UInt = 0;
@@ -101,8 +101,8 @@ class CharacterControl {
 	public var browOffsets:Array<UInt> = [0, 199, 399, 599];
 	public var lipOffsets:Array<UInt> = [2, 82, 162, 242];
 	public var currentSkinType:String;
-	public var currentElements:Array<CostumeElement>;
-	public var currentElementsStatus:Array<ASAny>;
+	public var currentElements:Array<CostumeElement> = [];
+	public var currentElementsStatus:Array<String> = [];
 	public var customHairLoaded:Bool = false;
 	public var customBGLoaded:Bool = false;
 	public var componentsRegistered:Bool = false;
@@ -156,7 +156,7 @@ class CharacterControl {
 		this.hisSkinHSL = this.blankHSL;
 		this.currentBreastOffset = this.breastOffset[0];
 		this.currentSkinType = G.dataName(this.skinNameList[0]);
-		this.characters = new Array<ASAny>();
+		this.characters = new Array<Character>();
 		this.characters[0] = new SDChan();
 		// this.characters[1] = new SDChan2();
 		// this.characters[2] = new Asuka();
@@ -220,7 +220,7 @@ class CharacterControl {
 		this.headwearControl.registerListener(this.waitToSetHeadwearPosition);
 	}
 
-	public static function findName(param1:String, param2:Array<ASAny>, param3:ASFunction) {
+	public static function findName(param1:String, param2:Array<String>, param3:ASFunction) {
 		var _loc4_:UInt = param2.length;
 		var _loc5_:UInt = 0;
 		while (_loc5_ < _loc4_) {
@@ -238,15 +238,12 @@ class CharacterControl {
 		}
 	}
 
-	public static function tryToSetFrameLabel(param1:MovieClip, param2:String) {
-		var _loc3_:Array<ASAny> = null;
-		var _loc4_:FrameLabel = null;
+	public static function tryToSetFrameLabel(param1:MovieClip, labelName:String) {
 		if (param1 != null) {
-			_loc3_ = param1.currentLabels;
-			for (_tmp_ in _loc3_) {
-				_loc4_ = _tmp_;
-				if (_loc4_.name == param2) {
-					param1.gotoAndStop(param2);
+			var labels = param1.currentLabels;
+			for (label in labels) {
+				if (label.name == labelName) {
+					param1.gotoAndStop(labelName);
 					return;
 				}
 			}
@@ -390,7 +387,7 @@ class CharacterControl {
 		if (!G.inGameMenu.onlyLoadingCostume) {
 			this.breastSize = chara.breastSize;
 			this.currentName = chara.charShortName;
-			if (ASCompat.stringAsBool(chara.dialogue)) {
+			if (chara.dialogue != null) {
 				G.dialogueControl.loadCustomDialogue(Dialogue.DIALOGUE_NAME_KEY + ":\"" + chara.charShortName + "\"\n" + chara.dialogue, param1);
 			} else {
 				G.dialogueControl.resetCustomDialogue(param1);
@@ -675,7 +672,7 @@ class CharacterControl {
 	}
 
 	public function updateCurrentElementsStatus() {
-		this.currentElementsStatus = new Array<ASAny>();
+		this.currentElementsStatus = new Array<String>();
 		var _loc1_:UInt = this.currentElements.length;
 		var _loc2_:UInt = 0;
 		while (_loc2_ < _loc1_) {
@@ -684,7 +681,7 @@ class CharacterControl {
 		}
 	}
 
-	public function setCurrentElements(param1:Array<ASAny>) {
+	public function setCurrentElements(param1:Array<String>) {
 		var _loc2_:UInt = 0;
 		var _loc3_:UInt = 0;
 		if (!this.customHairLoaded) {
@@ -714,14 +711,14 @@ class CharacterControl {
 		this.updateCurrentElementsStatus();
 	}
 
-	public function setEyebrowFill(param1:ASObject, param2:String = "rgbFill") {
+	public function setEyebrowFill(param1:AlphaRGBObject, param2:String = "rgbFill") {
 		var color = new ColorTransform(1, 1, 1, param1.a, param1.r, param1.g, param1.b);
 		G.her.rightEyebrow.rightEyebrowFill.transform.colorTransform = color;
 		G.her.leftEyebrow.leftEyebrowFill.transform.colorTransform = color;
 		this.eyebrowFillRGB = param1;
 	}
 
-	public function setEyebrowLine(param1:ASObject, param2:String = "rgbFill") {
+	public function setEyebrowLine(param1:AlphaRGBObject, param2:String = "rgbFill") {
 		var color = new ColorTransform(1, 1, 1, param1.a, param1.r, param1.g, param1.b);
 		G.her.rightEyebrow.rightEyebrowLine.transform.colorTransform = color;
 		G.her.leftEyebrow.leftEyebrowLine.transform.colorTransform = color;
@@ -790,25 +787,25 @@ class CharacterControl {
 		}
 	}
 
-	public function setEyeShadow(param1:ASObject, param2:String = "rgbFill") {
+	public function setEyeShadow(param1:AlphaRGBObject, param2:String = "rgbFill") {
 		var color = new ColorTransform(1, 1, 1, param1.a, param1.r, param1.g, param1.b);
 		G.her.eye.upperEyelid.eyeshadow.transform.colorTransform = color;
 		this.eyeShadowRGB = param1;
 	}
 
-	public function setSclera(param1:ASObject, param2:String = "rgbFill") {
+	public function setSclera(param1:AlphaRGBObject, param2:String = "rgbFill") {
 		var color = new ColorTransform(1, 1, 1, param1.a, param1.r, param1.g, param1.b);
 		G.her.eye.ball.sclera.overlay.transform.colorTransform = color;
 		this.scleraRGB = param1;
 	}
 
-	public function setBlush(param1:ASObject, param2:String = "rgbFill") {
+	public function setBlush(param1:AlphaRGBObject, param2:String = "rgbFill") {
 		var color = new ColorTransform(1, 1, 1, param1.a, param1.r, param1.g, param1.b);
 		G.her.blush.transform.colorTransform = color;
 		this.blushRGB = param1;
 	}
 
-	public function setFreckles(param1:ASObject, param2:String = "rgbFill") {
+	public function setFreckles(param1:AlphaRGBObject, param2:String = "rgbFill") {
 		var color = new ColorTransform(1, 1, 1, param1.a, param1.r, param1.g, param1.b);
 		G.her.freckles.transform.colorTransform = color;
 		this.frecklesRGB = param1;
@@ -822,7 +819,7 @@ class CharacterControl {
 		}
 	}
 
-	public function setMascara(param1:ASObject, param2:String = "rgbFill") {
+	public function setMascara(param1:AlphaRGBObject, param2:String = "rgbFill") {
 		var _loc3_ = new ColorTransform(1, 1, 1, param1.a, param1.r, param1.g, param1.b);
 		G.her.eye.upperEyelid.mascara.transform.colorTransform = _loc3_;
 		G.her.eye.lowerEyelid.mascara.transform.colorTransform = _loc3_;
@@ -951,7 +948,7 @@ class CharacterControl {
 		G.her.collarContainer.collar.gotoAndStop(this.collarNameList[param1]);
 	}
 
-	public function setCollarFill(param1:ASObject, param2:String = "rgbFill") {
+	public function setCollarFill(param1:AlphaRGBObject, param2:String = "rgbFill") {
 		var _loc3_ = new ColorTransform(1, 1, 1, param1.a, param1.r, param1.g, param1.b);
 		tryToSetFill(G.her.collarContainer.collar, param2, _loc3_);
 	}
@@ -967,7 +964,7 @@ class CharacterControl {
 		}
 	}
 
-	public function setGagFill(param1:ASObject, param2:String = "rgbFill") {
+	public function setGagFill(param1:AlphaRGBObject, param2:String = "rgbFill") {
 		var _loc3_ = new ColorTransform(1, 1, 1, param1.a, param1.r, param1.g, param1.b);
 		tryToSetFill(G.her.gagFront, param2, _loc3_);
 		tryToSetFill(G.her.gagBack, param2, _loc3_);
@@ -979,7 +976,7 @@ class CharacterControl {
 		G.her.leftArmContainer.upperArmCostume.foreArmCostume.cuff.gotoAndStop(this.cuffsNameList[param1]);
 	}
 
-	public function setCuffsFill(param1:ASObject, param2:String = "rgbFill") {
+	public function setCuffsFill(param1:AlphaRGBObject, param2:String = "rgbFill") {
 		var _loc3_ = new ColorTransform(1, 1, 1, param1.a, param1.r, param1.g, param1.b);
 		tryToSetFill(G.her.torso.cuffs, param2, _loc3_);
 		tryToSetFill(G.her.rightForeArmContainer.upperArmCostume.foreArmCostume.cuff, param2, _loc3_);
@@ -991,7 +988,7 @@ class CharacterControl {
 		G.her.leftLegContainer.leg.footwear.gotoAndStop(this.footwearNameList[param1]);
 	}
 
-	public function setFootwearFill(param1:ASObject, param2:String = "rgbFill") {
+	public function setFootwearFill(param1:AlphaRGBObject, param2:String = "rgbFill") {
 		var _loc3_ = new ColorTransform(1, 1, 1, param1.a, param1.r, param1.g, param1.b);
 		tryToSetFill(G.her.torso.rightCalfContainer.footwear, param2, _loc3_);
 		tryToSetFill(G.her.leftLegContainer.leg.footwear, param2, _loc3_);
@@ -1003,7 +1000,7 @@ class CharacterControl {
 		G.strandControl.checkElementAnchors(G.her.eyewear);
 	}
 
-	public function setEyewearFill(param1:ASObject, param2:String = "rgbFill") {
+	public function setEyewearFill(param1:AlphaRGBObject, param2:String = "rgbFill") {
 		var _loc3_ = new ColorTransform(1, 1, 1, param1.a, param1.r, param1.g, param1.b);
 		tryToSetFill(G.her.eyewear, param2, _loc3_);
 	}
@@ -1016,7 +1013,7 @@ class CharacterControl {
 		G.her.torsoBackCostume.backsideCostume.panties.gotoAndStop(this.pantiesNameList[this.pantiesControl.selection]);
 	}
 
-	public function setPantiesFill(param1:ASObject, param2:String = "rgbFill") {
+	public function setPantiesFill(param1:AlphaRGBObject, param2:String = "rgbFill") {
 		var _loc3_ = new ColorTransform(1, 1, 1, param1.a, param1.r, param1.g, param1.b);
 		tryToSetFill(G.her.torso.rightThighCostume.panties, param2, _loc3_);
 		tryToSetFill(G.her.leftLegContainer.leg.leftThighCostume.panties, param2, _loc3_);
@@ -1054,7 +1051,7 @@ class CharacterControl {
 		this.setBreastCostumeSize();
 	}
 
-	public function setTopFill(param1:ASObject, param2:String = "rgbFill") {
+	public function setTopFill(param1:AlphaRGBObject, param2:String = "rgbFill") {
 		var _loc3_ = new ColorTransform(1, 1, 1, param1.a, param1.r, param1.g, param1.b);
 		var _loc4_ = new ColorTransform(1, 1, 1, 1, param1.r, param1.g, param1.b);
 		var _loc5_ = new ColorMatrixFilter([1, 0, 0, 0, 1, 0, 1, 0, 0, 1, 0, 0, 1, 0, 1, 0, 0, 0, param1.a, 0]);
@@ -1073,7 +1070,7 @@ class CharacterControl {
 		tryToSetFill(G.her.torsoBackCostume.breastCostume.top, "outline", _loc6_);
 	}
 
-	public function setBraFill(param1:ASObject, param2:String = "rgbFill") {
+	public function setBraFill(param1:AlphaRGBObject, param2:String = "rgbFill") {
 		var _loc3_ = new ColorTransform(1, 1, 1, param1.a, param1.r, param1.g, param1.b);
 		tryToSetFill(G.her.torso.breastCostume.bra, param2, _loc3_);
 		tryToSetFill(G.her.torso.braStrap, param2, _loc3_);
@@ -1100,7 +1097,7 @@ class CharacterControl {
 		tryToSetFrameLabel(G.her.leftArmContainer.upperArmCostume.glove, _loc3_);
 	}
 
-	public function setArmwearFill(param1:ASObject, param2:String = "rgbFill") {
+	public function setArmwearFill(param1:AlphaRGBObject, param2:String = "rgbFill") {
 		var _loc3_ = new ColorTransform(1, 1, 1, param1.a, param1.r, param1.g, param1.b);
 		tryToSetFill(G.her.torso.leftGlove, param2, _loc3_);
 		tryToSetFill(G.her.torso.rightGlove, param2, _loc3_);
@@ -1124,7 +1121,7 @@ class CharacterControl {
 		tryToSetFrameLabel(G.her.torsoBackCostume.backsideCostume.bottoms, this.bottomsControl.selectedName);
 	}
 
-	public function setBottomsFill(param1:ASObject, param2:String = "rgbFill") {
+	public function setBottomsFill(param1:AlphaRGBObject, param2:String = "rgbFill") {
 		var _loc3_ = new ColorTransform(1, 1, 1, param1.a, param1.r, param1.g, param1.b);
 		tryToSetFill(G.her.torso.rightThighBottoms, param2, _loc3_);
 		tryToSetFill(G.her.torso.rightThighBottomsOver, param2, _loc3_);
@@ -1136,11 +1133,11 @@ class CharacterControl {
 		tryToSetFill(G.her.torsoBackCostume.backsideCostume.bottoms, param2, _loc3_);
 	}
 
-	public function setLegwearFillA(param1:ASObject, param2:String = "rgbFill") {
+	public function setLegwearFillA(param1:AlphaRGBObject, param2:String = "rgbFill") {
 		this.setLegwearFill(this.legwearControl, false, param1, param2);
 	}
 
-	public function setLegwearFillB(param1:ASObject, param2:String = "rgbFill") {
+	public function setLegwearFillB(param1:AlphaRGBObject, param2:String = "rgbFill") {
 		this.setLegwearFill(this.legwearBControl, true, param1, param2);
 	}
 
@@ -1187,7 +1184,7 @@ class CharacterControl {
 		tryToSetFrameLabel(backsideStocking, this.legwearNameList[param1.selection]);
 	}
 
-	public function setLegwearFill(param1:CharacterElementHelper, isB:Bool, param3:ASObject, param4:String = "rgbFill") {
+	public function setLegwearFill(param1:CharacterElementHelper, isB:Bool, param3:AlphaRGBObject, param4:String = "rgbFill") {
         var rightThighStocking:obj.Her.HerRightThighStocking;
         var rightCalfStocking:MovieClip;
         var leftStocking:MovieClip;
@@ -1259,8 +1256,9 @@ class CharacterControl {
 			_loc5_ = 0;
 			_loc6_ = false;
 			_loc7_ = 10;
-			if ((G.hairCostumeOver.headwear : ASAny)["landingPoint"]) {
-				_loc1_ = new Point((G.hairCostumeOver.headwear : ASAny)["landingPoint"].x, (G.hairCostumeOver.headwear : ASAny)["landingPoint"].y);
+            var landingPoint = G.hairCostumeOver.headwear.landingPoint;
+			if (landingPoint != null) {
+				_loc1_ = new Point(landingPoint.x, landingPoint.y);
 				do {
 					_loc2_ = G.hairCostumeOver.headwear.localToGlobal(_loc1_);
 					_loc3_ = _loc4_;
@@ -1286,7 +1284,7 @@ class CharacterControl {
 		}
 	}
 
-	public function applyHairHSL(param1:ASObject) {
+	public function applyHairHSL(param1:ColorHsl) {
 		var _loc2_ = new ColorMatrixFilter(Maths.getCMFMatrix(param1.h, param1.s, param1.l, param1.c));
 		G.her.hairMidContainer.filters = [_loc2_];
 		G.her.hairBackContainer.filters = [_loc2_];
@@ -1303,7 +1301,7 @@ class CharacterControl {
 		this.hairHSL = this.blankHSL;
 	}
 
-	public function applySkinHSL(param1:ASObject) {
+	public function applySkinHSL(param1:ColorHsl) {
 		var _loc2_ = new ColorMatrixFilter(Maths.getCMFMatrix(param1.h, param1.s, param1.l, param1.c));
 		G.her.head.filters = [_loc2_];
 		G.her.ear.filters = [_loc2_];
@@ -1356,7 +1354,7 @@ class CharacterControl {
 		}
 	}
 
-	public function applyHisSkinHSL(param1:ASObject) {
+	public function applyHisSkinHSL(param1:ColorHsl) {
 		var _loc2_ = new ColorMatrixFilter(Maths.getCMFMatrix(param1.h, param1.s, param1.l, param1.c));
 		G.him.penis.filters = !!G.him.hslShiftPenis ? [_loc2_] : [];
 		G.him.armContainer.filters = [_loc2_];
@@ -1387,22 +1385,21 @@ class CharacterControl {
 		}
 	}
 
-	public function getCharacterList():Array<ASAny> {
-		var _loc1_ = new Array<ASAny>();
-		var _loc2_:UInt = this.characters.length;
-		var _loc3_:UInt = 0;
-		while (_loc3_ < _loc2_) {
-			_loc1_.push(this.characters[_loc3_].charShortName);
-			_loc3_++;
+	public function getCharacterList():Array<String> {
+		var charaNames = new Array<String>();
+		var i = 0;
+		while (i < this.characters.length) {
+			charaNames.push(this.characters[i].charShortName);
+			i++;
 		}
-		return _loc1_;
+		return charaNames;
 	}
 
-	public function getIrisList():Array<ASAny> {
+	public function getIrisList():Array<String> {
 		return this.irisTypeList;
 	}
 
-	public function getSkinList():Array<ASAny> {
+	public function getSkinList():Array<String> {
 		return this.skinNameList;
 	}
 

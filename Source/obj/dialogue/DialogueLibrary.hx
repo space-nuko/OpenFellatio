@@ -22,28 +22,25 @@ class DialogueLibrary {
 
 	public var OTHER_FINISH:String = "Other";
 
-	public var initialSettingsObject:ASObject;
+	// public var initialSettingsObject:ASObject;
 	public var customAudio:ASDictionary<String, AudioMod>;
-	public var customClears:ASDictionary<String, ASAny>;
+	public var customClears:ASDictionary<String, Bool>;
 	public var allCleared:Bool = false;
 	public var finishesCleared:Bool = false;
 	public var dialogueTypes:Array<String>;
 	public var dialogueTypesPattern:EReg;
 
 	public function new() {
-		var _loc1_:String = null;
-		// super();
 		this.prepareLibraries();
 		this.prepareTypeArray();
-		for (_tmp_ in this.dialogueTypes) {
-			_loc1_ = _tmp_;
-			this.checkMissingDialogue(this.normalLibrary, _loc1_);
-			this.checkMissingDialogue(this.happyLibrary, _loc1_);
-			this.checkMissingDialogue(this.angryLibrary, _loc1_);
-			this.checkMissingDialogue(this.ahegaoLibrary, _loc1_);
+		for (dialogueType in this.dialogueTypes) {
+			this.checkMissingDialogue(this.normalLibrary, dialogueType);
+			this.checkMissingDialogue(this.happyLibrary, dialogueType);
+			this.checkMissingDialogue(this.angryLibrary, dialogueType);
+			this.checkMissingDialogue(this.ahegaoLibrary, dialogueType);
 		}
 		this.customLibrary = new DialogueLib();
-		this.customClears = new ASDictionary<String, ASAny>();
+		this.customClears = new ASDictionary<String, Bool>();
 		this.customAudio = new ASDictionary<String, AudioMod>();
 	}
 
@@ -64,13 +61,13 @@ class DialogueLibrary {
 		G.inGameMenu.setDialogueLibraryName(this.dialogueLibraryName);
 	}
 
-	public function getMoodLibrary():ASDictionary<ASAny, ASAny> {
+	public function getMoodLibrary():DialogueLib {
 		switch (G.her.mood) {
-			case(_ == Her.ANGRY_MOOD => true):
+			case Her.ANGRY_MOOD:
 				return this.angryLibrary;
-			case(_ == Her.HAPPY_MOOD => true):
+			case Her.HAPPY_MOOD:
 				return this.happyLibrary;
-			case(_ == Her.AHEGAO_MOOD => true):
+			case Her.AHEGAO_MOOD:
 				return this.ahegaoLibrary;
 
 			default:
@@ -110,10 +107,12 @@ class DialogueLibrary {
 	}
 
 	public function getPhrases(param1:String):Array<DialogueLine> {
-		if (if (this.customClears[param1]) this.customClears[param1] else this.allCleared || !this.getMoodLibrary()[param1]) {
+		if (this.customClears.exists(param1) || this.allCleared || !this.getMoodLibrary().exists(param1)) {
 			return if (this.customLibrary.exists(param1)) this.customLibrary[param1] else [];
 		}
-		return ASCompat.thisOrDefault(this.getMoodLibrary()[param1], []).concat(if (this.customLibrary.exists(param1)) this.customLibrary[param1] else []);
+        var mood = this.getMoodLibrary()[param1];
+        var custom = if (this.customLibrary.exists(param1)) this.customLibrary[param1] else [];
+		return ASCompat.thisOrDefault(mood, []).concat(custom);
 	}
 
 	public function getFinishes(finishes:UInt):Array<DialogueLine> {
@@ -158,7 +157,7 @@ class DialogueLibrary {
 
 	public function resetCustomDialogue() {
 		this.customLibrary = new DialogueLib();
-		this.customClears = new ASDictionary<String, ASAny>();
+		this.customClears = new ASDictionary<String, Bool>();
 		this.customFinishes = new DialogueLib();
 		this.customAudio = new ASDictionary<String, AudioMod>();
 		this.allCleared = false;
@@ -179,20 +178,18 @@ class DialogueLibrary {
 		}
 	}
 
-	public function loadDialogueMod(param1:ASAny) {
-		if (param1.hasOwnProperty("lineType") && param1.hasOwnProperty("dialogueLine")) {
-			var lineType = param1.lineType;
-			var dialogueLine = param1.dialogueLine;
-			if (this.customLibrary[lineType] == null) {
-				this.customLibrary[lineType] = new Array<DialogueLine>();
-			}
-			this.customLibrary[lineType].push(new DialogueLine(dialogueLine));
-			if (param1.hasOwnProperty("audio") && param1.hasOwnProperty("volume")) {
-				var audio = new AudioMod(param1.audio, param1.volume);
-				this.customAudio[dialogueLine] = audio;
-				if (lineType == "cough") {
-					G.soundControl.loadAudioMod("cough", audio);
-				}
+	public function loadDialogueMod(param1:DialogueMod) {
+		var lineType = param1.lineType;
+		var dialogueLine = param1.dialogueLine;
+		if (!this.customLibrary.exists(lineType)) {
+			this.customLibrary[lineType] = new Array<DialogueLine>();
+		}
+		this.customLibrary[lineType].push(new DialogueLine(dialogueLine));
+		if (param1.audio != null && !Math.isNaN(param1.volume)) {
+			var audio = new AudioMod(param1.audio, param1.volume);
+			this.customAudio[dialogueLine] = audio;
+			if (lineType == "cough") {
+				G.soundControl.loadAudioMod("cough", audio);
 			}
 		}
 	}
@@ -269,11 +266,9 @@ class DialogueLibrary {
 		throw new flash.errors.IllegalOperationError("Not decompiled due to error");
 	}
 
-	public function appendLibrary(param1:String, param2:Array<ASAny>, param3:String):String {
-		var _loc4_:DialogueLine = null;
-		for (_tmp_ in param2) {
-			_loc4_ = _tmp_;
-			param1 += param3 + ":\"" + _loc4_.phrase + "\"\n";
+	public function appendLibrary(param1:String, param2:Array<DialogueLine>, param3:String):String {
+		for (line in param2) {
+			param1 += param3 + ":\"" + line.phrase + "\"\n";
 		}
 		return param1;
 	}

@@ -20,6 +20,10 @@ import obj.dialogue.DialogueLibrary;
 class InGameMenu extends MovieClip {
 	public function new() {
         super();
+
+        // TODO
+
+        G.her.setMenu(null, null);
     }
 
 	public function updateHimMenuContent() {}
@@ -398,7 +402,7 @@ class InGameMenu extends MovieClip {
 
 	public function rgbPickerCloseClicked(param1:MouseEvent) {}
 
-	public function openRGBPicker(param1:Float, param2:Float, param3:Array<ASAny>, param4:ASObject, param5:ASFunction, param6:Bool = true,
+	public function openRGBPicker(param1:Float, param2:Float, param3:Array<ASAny>, param4:AlphaRGBObject, param5:ASFunction, param6:Bool = true,
 		param7:String = "rgbFill") {}
 
 	public function closeRGBPicker() {}
@@ -409,17 +413,17 @@ class InGameMenu extends MovieClip {
 
 	public function rgbPickerLabelChanged(param1:Event) {}
 
-	public function setRGBPicker(param1:ASObject) {}
+	public function setRGBPicker(param1:AlphaRGBObject) {}
 
 	public function setRGBPickerFromLabels() {}
 
-	public function updateRGBPicker(param1:ASObject) {}
+	public function updateRGBPicker(param1:AlphaRGBObject) {}
 
 	public function updateRGBReference() {}
 
 	public function hslPickerCloseClicked(param1:MouseEvent) {}
 
-	public function openHSLPicker(param1:Float, param2:Float, param3:ASObject) {}
+	public function openHSLPicker(param1:Float, param2:Float, param3:ColorHsl) {}
 
 	public function closeHSLPicker() {}
 
@@ -433,7 +437,7 @@ class InGameMenu extends MovieClip {
 
 	public function setHSLPickerFromLabels() {}
 
-	public function updateHSLPicker(param1:ASObject) {}
+	public function updateHSLPicker(param1:ColorHsl) {}
 
 	public function cbStrandShadersClicked(param1:MouseEvent) {}
 

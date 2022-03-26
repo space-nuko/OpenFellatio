@@ -42,7 +42,7 @@ abstract class Character {
 	public var blush:AlphaRGBObject;
 	public var freckles:AlphaRGBObject;
 	public var freckleAmount:Float = 0;
-	public var mascara:ASObject;
+	public var mascara:AlphaRGBObject;
 	public var bg:UInt = 3;
 	public var gag:String = "none";
 	public var armwearFill:AlphaRGBObject;

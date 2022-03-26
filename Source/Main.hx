@@ -76,9 +76,6 @@ class Main extends Sprite {
 	public function new() {
 		super();
 
-		var fps_mem = new com.kircode.debug.FPS_Mem(10, 10, 0x0000FF);
-		addChild(fps_mem);
-
 		Assets.loadLibrary("sdt2").onComplete(onLoaded);
 	}
 
@@ -301,6 +298,9 @@ class Main extends Sprite {
          // G.dialogueEditor = new DialogueEditor();
          // G.container.addChild(G.dialogueEditor);
 
+         var fps_mem = new com.kircode.debug.FPS_Mem(10, 10, 0x0000FF);
+         G.container.addChild(fps_mem);
+
          this.addEventListener(Event.ENTER_FRAME,this.tick);
          this.addEventListener(MouseEvent.MOUSE_DOWN,this.mousePressed);
          this.addEventListener(MouseEvent.MOUSE_UP,this.mouseReleased);
@@ -313,6 +313,8 @@ class Main extends Sprite {
 
          // this.mainMenu.buttonPlay.addEventListener(MouseEvent.CLICK,this.playClicked);
          // this.mainMenu.buttonOptions.addEventListener(MouseEvent.CLICK,this.optionsClicked);
+
+         G.newSaveData();
 
          if(G.saveData.saveExists())
          {
@@ -352,9 +354,7 @@ class Main extends Sprite {
 
       public function tick(param1:Event)
       {
-         var _loc2_= Math.NaN;
-         var _loc3_:ASAny = false;
-         var _loc4_= false;
+         var cursorX: Float = 0;
          // if(this.fadingBG)
          // {
          //    this.menuBG.alpha -= 0.025;
@@ -371,17 +371,17 @@ class Main extends Sprite {
             {
                if(!G.controlLocked)
                {
-                  _loc3_ = G.animationControl.currentAnimationName == AnimationControl.FACE_FUCK;
-                  if(_loc4_ = (G.mirrored || G.invertControls) && !(G.mirrored && G.invertControls))
+                  var isFF = G.animationControl.currentAnimationName == AnimationControl.FACE_FUCK;
+                  if((G.mirrored || G.invertControls) && !(G.mirrored && G.invertControls))
                   {
-                     _loc2_ = G.screenSize.x - this.currentMousePos.x;
+                     cursorX = G.screenSize.x - this.currentMousePos.x;
                   }
                   else
                   {
-                     _loc2_ = this.currentMousePos.x;
+                     cursorX = this.currentMousePos.x;
                   }
-                  _loc2_ = (_loc2_ - 100) / 500;
-                  G.currentMousePos.x = Math.min(1.2,_loc2_);
+                  cursorX = (cursorX - 100) / 500;
+                  G.currentMousePos.x = Math.min(1.2,cursorX);
                   G.currentMousePos.y = Math.max(-1,Math.min(1,(this.currentMousePos.y - 100) / 200 - 1));
                   if(G.autoModeOn)
                   {
