@@ -222,7 +222,7 @@ class DialogueLibrary {
 		 * Tip: You can try enabling "Automatic deobfuscation" in Settings
 		 * Error type: NullPointerException (null)
 		 */
-		throw new flash.errors.IllegalOperationError("Not decompiled due to error");
+        // TODO
 	}
 
 	public function customLibraryPopulator():String {
@@ -232,7 +232,8 @@ class DialogueLibrary {
 		 * Tip: You can try enabling "Automatic deobfuscation" in Settings
 		 * Error type: NullPointerException (null)
 		 */
-		throw new flash.errors.IllegalOperationError("Not decompiled due to error");
+        // TODO
+        return "";
 	}
 
 	public function customFinishPopulator():String {
@@ -253,6 +254,7 @@ class DialogueLibrary {
 		// 		this.customFinishes[this.OTHER_FINISH].push(new DialogueLine((/*TODO*/ arguments : ASAny)[2]));
 		// 	}
 		// }
+        // TODO
 		return "";
 	}
 
@@ -263,7 +265,8 @@ class DialogueLibrary {
 		 * Tip: You can try enabling "Automatic deobfuscation" in Settings
 		 * Error type: NullPointerException (null)
 		 */
-		throw new flash.errors.IllegalOperationError("Not decompiled due to error");
+        // TODO
+        return "";
 	}
 
 	public function appendLibrary(param1:String, param2:Array<DialogueLine>, param3:String):String {

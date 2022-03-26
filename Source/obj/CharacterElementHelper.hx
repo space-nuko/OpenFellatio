@@ -55,7 +55,10 @@ class CharacterElementHelper {
         }
 
         if (selectFunction == null) {
-            selectFunction = function() { return; }
+            selectFunction = function(i) { return; }
+        }
+        if (findFunction == null) {
+            findFunction = function(s) { return; }
         }
         if (fillFunction == null) {
             fillFunction = defaultFillFunction;

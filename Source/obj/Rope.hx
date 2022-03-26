@@ -93,7 +93,7 @@ package obj;
                }
                _loc14_++;
             }
-            ASCompat.ASArray.sortOn(this.segments, "y",ASCompat.ASArray.NUMERIC);
+            this.segments.sort(function(a, b) { return Std.int(a.y - b.y); });
             this.ropeLength = this.segments.length;
             _loc15_ = 0;
             while(_loc15_ < this.ropeLength)
