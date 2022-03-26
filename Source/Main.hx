@@ -314,6 +314,10 @@ class Main extends Sprite {
          // this.mainMenu.buttonPlay.addEventListener(MouseEvent.CLICK,this.playClicked);
          // this.mainMenu.buttonOptions.addEventListener(MouseEvent.CLICK,this.optionsClicked);
 
+         // TEMP
+         stopAllClips(this);
+         G.strandControl.maxStrands = 1;
+
          G.newSaveData();
 
          if(G.saveData.saveExists())
@@ -652,4 +656,26 @@ class Main extends Sprite {
       //    param1.target.stop();
       //    param1.target.removeEventListener(TimerEvent.TIMER_COMPLETE,this.loadDelayDone);
       // }
+
+    // TODO: Temporary until UI is reimplemented
+	static function stopAllClips(target: DisplayObjectContainer) {
+        if (Std.isOfType(target, MovieClip)) {
+            var clip = cast(target, MovieClip);
+            try {
+                clip.gotoAndStop("None");
+            }
+            catch (e) {
+                clip.stop();
+            }
+        }
+        var length = target.numChildren;
+        var i = 0;
+		while (i < length) {
+            var value = target.getChildAt(i);
+			if (Std.isOfType(value, DisplayObjectContainer)) {
+				stopAllClips(cast(value, DisplayObjectContainer));
+			}
+            i += 1;
+		}
+	}
 }

@@ -50,7 +50,7 @@ class Tongue extends openfl.display.MovieClip {
 	public function new() {
 		super();
 
-		var library = swf.exporters.animate.AnimateLibrary.get("Ld39TJPQZsVJfqCLrG3m");
+		var library = swf.exporters.animate.AnimateLibrary.get("a8olP6aXvP6aAaPJMwlV");
 		var symbol = library.symbols.get(975);
 		symbol.__initObject(library, this);
 
@@ -163,7 +163,7 @@ class Tongue extends openfl.display.MovieClip {
 	}
 
 	public function getPush():Float {
-		if (this.solidAction[this.currentAction]) {
+		if (this.currentAction != null && this.solidAction[this.currentAction]) {
 			return this.pushPower[this.currentAction];
 		}
 		return 0;
@@ -174,7 +174,7 @@ class Tongue extends openfl.display.MovieClip {
 	}
 
 	public function block():Bool {
-		if (this.solidAction[this.currentAction] && this.startedOff) {
+		if (this.currentAction != null && this.solidAction[this.currentAction] && this.startedOff) {
 			return true;
 		}
 		return false;
@@ -224,7 +224,7 @@ class Tongue extends openfl.display.MovieClip {
 			this.moveTongueIn();
 		} else if (this.playingAction) {
 			++this.actionTime;
-			if (this.solidAction[this.currentAction]) {
+			if (this.currentAction != null && this.solidAction[this.currentAction]) {
 				this.tiltOffset -= 0.5 * (1 - Math.cos(this.actionTime * this.tiltSpeeds[this.currentAction]));
 			}
 			if (this.currentFrameLabel == "InDone" || this.currentFrameLabel == "OutDone") {
@@ -305,7 +305,7 @@ class Tongue extends openfl.display.MovieClip {
 			} else {
 				this.wiggleSpeed = Math.max(-1.2, Math.min(1.2, this.wiggleSpeed));
 			}
-			this.gotoAndStop(Math.max(_loc2_, Math.min(this.tongueOutEndFrame, this.currentFrame + Math.fround(this.wiggleSpeed))));
+			this.gotoAndStop(Maths.clamp(Std.int(this.currentFrame + Math.fround(this.wiggleSpeed)), _loc2_, this.tongueOutEndFrame));
 		}
 	}
 

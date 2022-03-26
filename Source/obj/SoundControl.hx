@@ -694,8 +694,8 @@ class SoundControl {
 	}
 
 	public function delayedCoughFinish(param1:TimerEvent) {
-		param1.target.stop();
-		param1.target.removeEventListener(TimerEvent.TIMER_COMPLETE, this.delayedCoughFinish);
+		cast(param1.target, Timer).stop();
+		cast(param1.target, Timer).removeEventListener(TimerEvent.TIMER_COMPLETE, this.delayedCoughFinish);
 		if (this.openCoughing) {
 			this.openCoughing = false;
 			if (this.breathing) {
@@ -709,7 +709,7 @@ class SoundControl {
 	}
 
 	public function breathFinished(param1:Event) {
-		param1.target.removeEventListener(Event.SOUND_COMPLETE, this.breathFinished);
+		cast(param1.target, SoundChannel).removeEventListener(Event.SOUND_COMPLETE, this.breathFinished);
 		if (this.breathing) {
 			if (this.queuedCoughs > 0 && this.consecutiveCoughs < this.maxConsecutiveCoughs) {
 				this.playOpenCough();
@@ -756,7 +756,7 @@ class SoundControl {
 	}
 
 	public function dialogueFinished(param1:Event) {
-		param1.target.removeEventListener(Event.SOUND_COMPLETE, this.dialogueFinished);
+		cast(param1.target, SoundChannel).removeEventListener(Event.SOUND_COMPLETE, this.dialogueFinished);
 		this.dialogueSound = null;
 		this.dialogueChannel = null;
 		this.playingDialogue = false;
