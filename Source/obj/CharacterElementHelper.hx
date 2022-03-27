@@ -1,5 +1,6 @@
 package obj;
 
+import haxe.Exception;
 import openfl.display.DisplayObject;
 import openfl.display.DisplayObjectContainer;
 import openfl.display.FrameLabel;
@@ -55,15 +56,14 @@ class CharacterElementHelper {
         }
 
         if (selectFunction == null) {
-            selectFunction = function(i) { return; }
+            selectFunction = defaultSelectFunction;
         }
         if (findFunction == null) {
-            findFunction = function(s) { return; }
+            findFunction = defaultFindFunction;
         }
         if (fillFunction == null) {
             fillFunction = defaultFillFunction;
         }
-
     }
 
 	public function hideAll() {
@@ -76,6 +76,28 @@ class CharacterElementHelper {
 		for (comp in this.components) {
 			comp.visible = true;
 		}
+	}
+
+	public function defaultSelectFunction(index: UInt) {
+        var name = elementNameList[index];
+		for (comp in this.components) {
+            try {
+                CharacterControl.tryToSetFrameLabel(comp, name);
+            }
+            catch (e) {
+                trace("Could not find component frame: " + comp.name + " -> " + name);
+            }
+		}
+	}
+
+	public function defaultFindFunction(name:String) {
+        var index = elementNameList.indexOf(name);
+        if (index == -1) {
+            trace("Could not find component name index: " + name);
+            trace(elementNameList);
+            return;
+        }
+        select(index);
 	}
 
 	public function defaultFillFunction(param1:AlphaRGBObject, param2:String = "rgbFill") {

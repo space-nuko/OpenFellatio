@@ -50,7 +50,7 @@ class Sweat extends openfl.display.Sprite {
 	public var rightPush:Float = 0;
 
 	public function new(param1:DisplayObjectContainer, param2:Point, param3:Point, param4:Null<Array<DisplayObjectContainer>> = null) {
-		var library = swf.exporters.animate.AnimateLibrary.get("a8olP6aXvP6aAaPJMwlV");
+		var library = swf.exporters.animate.AnimateLibrary.get("sdthx-lib");
 		var symbol = library.symbols.get(37);
 		symbol.__init(library);
 

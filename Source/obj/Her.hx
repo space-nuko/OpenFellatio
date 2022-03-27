@@ -243,7 +243,7 @@ class LeftHandOver extends MovieClip {
 	public function new() {
 		super();
 
-		var library = swf.exporters.animate.AnimateLibrary.get("a8olP6aXvP6aAaPJMwlV");
+		var library = swf.exporters.animate.AnimateLibrary.get("sdthx-lib");
 		var symbol = library.symbols.get(2051);
 		symbol.__initObject(library, this);
 	}
@@ -307,7 +307,7 @@ class HerLeftArmContainer extends MovieClip {
 	public function new() {
 		super();
 
-		var library = swf.exporters.animate.AnimateLibrary.get("a8olP6aXvP6aAaPJMwlV");
+		var library = swf.exporters.animate.AnimateLibrary.get("sdthx-lib");
 		var symbol = library.symbols.get(581);
 		symbol.__initObject(library, this);
 	}
@@ -329,30 +329,21 @@ class HerRightForeArm extends BasicTannable {
 	@:keep public var hand(default, null):HerRightHand;
 }
 
-@:access(swf.exporters.animate)
 @:rtti
 class RightUpperForeArm extends MovieClip {
 	@:keep public var foreArm(default, null):HerRightForeArm;
-
-	public function new() {
-		super();
-
-		var library = swf.exporters.animate.AnimateLibrary.get("a8olP6aXvP6aAaPJMwlV");
-		var symbol = library.symbols.get(2022);
-		symbol.__initObject(library, this);
-	}
 }
 
 @:access(swf.exporters.animate)
 @:rtti
 class HerRightForeArmContainer extends MovieClip {
-	@:keep public var upperArmCostume(default, null):RightUpperForeArmCostume;
 	@:keep public var upperArm(default, null):RightUpperForeArm;
+	@:keep public var upperArmCostume(default, null):RightUpperForeArmCostume;
 
 	public function new() {
 		super();
 
-		var library = swf.exporters.animate.AnimateLibrary.get("a8olP6aXvP6aAaPJMwlV");
+		var library = swf.exporters.animate.AnimateLibrary.get("sdthx-lib");
 		var symbol = library.symbols.get(2036);
 		symbol.__initObject(library, this);
 	}
@@ -368,7 +359,7 @@ class HerRightArmContainer extends MovieClip {
 	public function new() {
 		super();
 
-		var library = swf.exporters.animate.AnimateLibrary.get("a8olP6aXvP6aAaPJMwlV");
+		var library = swf.exporters.animate.AnimateLibrary.get("sdthx-lib");
 		var symbol = library.symbols.get(1998);
 		symbol.__initObject(library, this);
 	}
@@ -383,7 +374,7 @@ class HerRightArmEraseContainer extends MovieClip {
 	public function new() {
 		super();
 
-		var library = swf.exporters.animate.AnimateLibrary.get("a8olP6aXvP6aAaPJMwlV");
+		var library = swf.exporters.animate.AnimateLibrary.get("sdthx-lib");
 		var symbol = library.symbols.get(98);
 		symbol.__initObject(library, this);
 	}
@@ -475,7 +466,7 @@ class HairBackContainer extends MovieClip {
 	public function new() {
 		super();
 
-		var library = swf.exporters.animate.AnimateLibrary.get("a8olP6aXvP6aAaPJMwlV");
+		var library = swf.exporters.animate.AnimateLibrary.get("sdthx-lib");
 		var symbol = library.symbols.get(598);
 		symbol.__initObject(library, this);
 	}
@@ -990,7 +981,7 @@ class Her extends MovieClip {
     public function new() {
         super();
 
-        var library = swf.exporters.animate.AnimateLibrary.get("a8olP6aXvP6aAaPJMwlV");
+        var library = swf.exporters.animate.AnimateLibrary.get("sdthx-lib");
         var symbol = library.symbols.get(1982);
         symbol.__initObject(library, this);
 

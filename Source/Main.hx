@@ -8,6 +8,8 @@ import openfl.display.DisplayObjectContainer;
 import openfl.display.MovieClip;
 import openfl.display.Shader;
 import openfl.display.Sprite;
+import openfl.display.StageAlign;
+import openfl.display.StageScaleMode;
 import openfl.events.Event;
 import openfl.events.KeyboardEvent;
 import openfl.events.MouseEvent;
@@ -81,6 +83,10 @@ class Main extends Sprite {
 
 	public function onLoaded(library: AssetLibrary) {
 		trace("SWF library loaded");
+
+        stage.scaleMode = StageScaleMode.NO_BORDER;
+        stage.frameRate = 180;
+        stage.addEventListener(Event.RESIZE, resizeDisplay);
 
 		initGame();
 
@@ -314,10 +320,6 @@ class Main extends Sprite {
          // this.mainMenu.buttonPlay.addEventListener(MouseEvent.CLICK,this.playClicked);
          // this.mainMenu.buttonOptions.addEventListener(MouseEvent.CLICK,this.optionsClicked);
 
-         // TEMP
-         stopAllClips(this);
-         G.strandControl.maxStrands = 1;
-
          G.newSaveData();
 
          if(G.saveData.saveExists())
@@ -341,6 +343,25 @@ class Main extends Sprite {
          G.her.initialise();
 
          // ----------------------------------------
+
+         // TEMP
+         G.strandControl.maxStrands = 1;
+         G.her.tan.setTan(1);
+         G.breathing = false;
+         G.her.setLeftArmFree(true);
+         G.her.setLeftArmFree(false);
+         G.her.setRightArmFree(true);
+         G.her.setRightArmFree(false);
+         G.her.setArmPosition(0, true);
+         G.her.setLeftArmFree(true);
+         G.her.setLeftArmFree(false);
+         G.her.setRightArmFree(true);
+         G.her.setRightArmFree(false);
+
+#if js
+         untyped js.Browser.console.log($hxClasses);
+         js.Browser.console.log(this);
+#end
 
          startGame();
       }
@@ -656,6 +677,17 @@ class Main extends Sprite {
       //    param1.target.stop();
       //    param1.target.removeEventListener(TimerEvent.TIMER_COMPLETE,this.loadDelayDone);
       // }
+
+    private function resizeDisplay(event:Event) {
+        var width = stage.stageWidth;
+        var height = stage.stageHeight;
+
+
+
+        // G.container.width = width;
+        // G.container.height = height;
+        // G.container.scaleX = G.container.scaleY;
+    }
 
     // TODO: Temporary until UI is reimplemented
 	static function stopAllClips(target: DisplayObjectContainer) {

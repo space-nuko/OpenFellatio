@@ -12,7 +12,7 @@ class Freckles extends openfl.display.MovieClip {
 	public var freckles:Vector<Freckle> = new Vector<Freckle>();
 
 	public function new() {
-		var library = swf.exporters.animate.AnimateLibrary.get("a8olP6aXvP6aAaPJMwlV");
+		var library = swf.exporters.animate.AnimateLibrary.get("sdthx-lib");
 		var symbol = library.symbols.get(1143);
 		symbol.__init(library);
 

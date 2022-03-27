@@ -223,11 +223,14 @@ class Him extends MovieClip
 
 	public function new()
 	{
-		var library = swf.exporters.animate.AnimateLibrary.get("a8olP6aXvP6aAaPJMwlV");
+        trace(Reflect.field(this, "__rtti"));
+        var library = swf.exporters.animate.AnimateLibrary.get("sdthx-lib");
 		var symbol = library.symbols.get(448);
 		symbol.__init(library);
+        trace(Reflect.field(this, "__rtti"));
 
 		super();
+        trace(Reflect.field(this, "__rtti"));
 
         this.x = 420;
         this.y = 135;
@@ -895,7 +898,7 @@ class Him extends MovieClip
 				} else {
 					this.ejaculating = false;
 					G.dialogueControl.doneEjaculating();
-					// G.automaticControl.doneEjaculating();
+					G.automaticControl.doneEjaculating();
 				}
 			}
 		} else if (this.playingCumSound) {
@@ -934,7 +937,7 @@ class Him extends MovieClip
 			} while (_loc3_ < _loc4_);
 
 			this.nextSpurt();
-			// G.automaticControl.ejaculate();
+			G.automaticControl.ejaculate();
 			this.ejaculating = true;
 		}
 	}

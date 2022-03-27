@@ -1,5 +1,6 @@
 package obj.her;
 
+import openfl.display.Sprite;
 import openfl.display.MovieClip;
 import openfl.events.Event;
 import openfl.geom.Point;
@@ -49,10 +50,6 @@ class Tongue extends openfl.display.MovieClip {
 
 	public function new() {
 		super();
-
-		var library = swf.exporters.animate.AnimateLibrary.get("a8olP6aXvP6aAaPJMwlV");
-		var symbol = library.symbols.get(975);
-		symbol.__initObject(library, this);
 
 		this.nextActionTime = Std.int(Math.ffloor(Math.random() * 60) + 15);
 		this.nearTime = Std.int(Math.fceil(Math.random() * 20) + 10);

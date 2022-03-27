@@ -744,7 +744,7 @@ class AutomaticControl {
 	public function offHoldWithTongue():Point {
 		this.currentPos.x = Math.max(-0.2, this.sinWave(0.1, 0.05, this.currentPenisTipPos - 0.3));
 		this.currentPos.y = this.offTilt;
-		// G.her.tongueContainer.tongue.encourage();
+		G.her.tongueContainer.tongue.encourage();
 		return this.currentPos;
 	}
 
@@ -752,7 +752,7 @@ class AutomaticControl {
 		var _loc1_:Float = G.her.getPenisMouthDist() + 10;
 		this.currentPos.x -= _loc1_ * 0.001;
 		this.currentPos.y = this.offTilt;
-		// G.her.tongueContainer.tongue.encourage();
+		G.her.tongueContainer.tongue.encourage();
 		return this.currentPos;
 	}
 
@@ -767,7 +767,7 @@ class AutomaticControl {
 				this.currentPos.x = this.sinWave(0.073, this.fullLength - 0.3, this.currentPenisTipPos + 0.3);
 				this.currentPos.y = this.sinWave(0.04, 0.6, -0.2);
 			}
-			// G.her.tongueContainer.tongue.encourage();
+			G.her.tongueContainer.tongue.encourage();
 		} else {
 			this.currentPos.x = Math.max(this.currentPenisTipPos - 0.2, this.lastPos.x - 0.03);
 			this.currentPos.y = this.offTilt;
@@ -786,7 +786,7 @@ class AutomaticControl {
 		this.nextModeTimer = 0;
 		this.singleActionTime = 25;
 		G.her.waggleEyebrows();
-		// G.her.tongueContainer.tongue.encourage(50);
+		G.her.tongueContainer.tongue.encourage(50);
 	}
 
 	public function oneDeep() {

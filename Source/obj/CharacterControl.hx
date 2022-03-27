@@ -61,6 +61,7 @@ class CharacterControl {
 	public var mascaraRGB:AlphaRGBObject = new AlphaRGBObject(0, 0, 0, 0);
 	public var nailPolishRGB:AlphaRGBObject = new AlphaRGBObject(0, 0, 0, 0);
 	public var breastSize:UInt = 0;
+
 	public var collarControl:CharacterElementHelper;
 	public var gagControl:CharacterElementHelper;
 	public var cuffsControl:CharacterElementHelper;
@@ -79,6 +80,7 @@ class CharacterControl {
 	public var bellyPiercingControl:CharacterElementHelper;
 	public var earringControl:CharacterElementHelper;
 	public var headwearControl:CharacterElementHelper;
+
 	public var blankHSL:ColorHsl = new ColorHsl(0, 1, 1, 1);
 	public var hairHSL:ColorHsl;
 	public var skinHSL:ColorHsl;
@@ -96,16 +98,20 @@ class CharacterControl {
 		new AlphaRGBObject(0, 241, 182, 138),
 		new AlphaRGBObject(0, 118, 79, 52),
 	];
+
 	public var breastOffset:Array<UInt> = [2, 152, 302, 452, 602];
 	public var currentBreastOffset:Float = Math.NaN;
 	public var browOffsets:Array<UInt> = [0, 199, 399, 599];
 	public var lipOffsets:Array<UInt> = [2, 82, 162, 242];
+
 	public var currentSkinType:String;
 	public var currentElements:Array<CostumeElement> = [];
 	public var currentElementsStatus:Array<String> = [];
+
 	public var customHairLoaded:Bool = false;
 	public var customBGLoaded:Bool = false;
 	public var componentsRegistered:Bool = false;
+
 	public var braChangeListeners:Array<ASFunction> = [];
 	public var breastSizeChangeListeners:Array<ASFunction> = [];
 	public var waitingToSetHeadwearPosition:Bool = false;
@@ -596,29 +602,29 @@ class CharacterControl {
 		G.her.head.face.lipShading.alpha = _loc1_.lipAlpha;
 	}
 
-	public function setArmSkin(param1:Bool = false) {
-		this.setArmFrame(G.her.rightArmContainer.upperArm, G.her.isRightArmFree(), param1);
-		this.setArmFrame(G.her.rightForeArmContainer.upperArm.foreArm, G.her.isRightArmFree(), param1);
-		this.setArmFrame(G.her.rightForeArmContainer.upperArm.foreArm.hand, G.her.isRightArmFree(), param1, G.rightHandJobMode);
+	public function setArmSkin(force:Bool = false) {
+		this.setArmFrame(G.her.rightArmContainer.upperArm, G.her.isRightArmFree(), force);
+		this.setArmFrame(G.her.rightForeArmContainer.upperArm.foreArm, G.her.isRightArmFree(), force);
+		this.setArmFrame(G.her.rightForeArmContainer.upperArm.foreArm.hand, G.her.isRightArmFree(), force, G.rightHandJobMode);
 		if (G.her.rightForeArmContainer.upperArm.foreArm.hand.grip != null) {
 			G.her.rightForeArmContainer.upperArm.foreArm.hand.grip.visible = true;
 			G.her.rightForeArmContainer.upperArm.foreArm.hand.grip.gotoAndStop(this.currentSkinType);
 		}
-		this.setArmFrame(G.her.leftArmContainer.upperArm, G.her.isLeftArmFree(), param1);
-		this.setArmFrame(G.her.leftArmContainer.upperArm.foreArm, G.her.isLeftArmFree(), param1);
-		this.setArmFrame(G.her.leftArmContainer.upperArm.foreArm.hand, G.her.isLeftArmFree(), param1, G.leftHandJobMode);
+		this.setArmFrame(G.her.leftArmContainer.upperArm, G.her.isLeftArmFree(), force);
+		this.setArmFrame(G.her.leftArmContainer.upperArm.foreArm, G.her.isLeftArmFree(), force);
+		this.setArmFrame(G.her.leftArmContainer.upperArm.foreArm.hand, G.her.isLeftArmFree(), force, G.leftHandJobMode);
 		this.armwearControl.resetElement();
 	}
 
-	public function setArmFrame(param1:MovieClip, param2:Bool, param3:Bool = false, param4:Bool = false) {
+	public function setArmFrame(param1:MovieClip, isArmFree:Bool, force:Bool = false, isArmHandJob:Bool = false) {
 		var label = if (param1.currentFrameLabel != null) param1.currentFrameLabel else this.currentSkinType;
-		if (label != "None" || param3) {
+		if (label != "None" || force) {
 			label = this.currentSkinType;
 		}
-		if (param4) {
+		if (isArmHandJob) {
 			label += "Grip";
 		} else {
-			label += !!param2 ? "Free" : "";
+			label += isArmFree ? "Free" : "";
 		}
 		param1.gotoAndStop(label);
 	}
@@ -1081,8 +1087,8 @@ class CharacterControl {
 
 	public function setArmwear(param1:UInt) {
 		var _loc2_:String = this.armwearNameList[param1];
-		tryToSetFrameLabel(G.her.rightForeArmContainer.upperArmCostume.foreArmCostume.handCostume, !!G.rightHandJobMode ? "Grip" : "Free");
-		tryToSetFrameLabel(G.her.leftArmContainer.upperArmCostume.foreArmCostume.handCostume, !!G.leftHandJobMode ? "Grip" : "Free");
+		tryToSetFrameLabel(G.her.rightForeArmContainer.upperArmCostume.foreArmCostume.handCostume, G.rightHandJobMode ? "Grip" : "Free");
+		tryToSetFrameLabel(G.her.leftArmContainer.upperArmCostume.foreArmCostume.handCostume, G.leftHandJobMode ? "Grip" : "Free");
 		tryToSetFrameLabel(G.her.rightForeArmContainer.upperArmCostume.foreArmCostume.glove, _loc2_);
 		tryToSetFrameLabel(G.her.leftArmContainer.upperArmCostume.foreArmCostume.glove, _loc2_);
 		tryToSetFrameLabel(G.her.rightForeArmContainer.upperArmCostume.foreArmCostume.handCostume.glove, _loc2_);
@@ -1090,8 +1096,8 @@ class CharacterControl {
 		tryToSetFrameLabel(G.her.torso.leftGlove, _loc2_);
 		tryToSetFrameLabel(G.her.torso.rightGlove, _loc2_);
 		tryToSetFrameLabel(G.her.leftHandOver.hand.glove, _loc2_);
-		var _loc3_:String = _loc2_ + (!!G.her.isLeftArmFree() ? "Free" : "");
-		var _loc4_:String = _loc2_ + (!!G.her.isRightArmFree() ? "Free" : "");
+		var _loc3_:String = _loc2_ + (G.her.isLeftArmFree() ? "Free" : "");
+		var _loc4_:String = _loc2_ + (G.her.isRightArmFree() ? "Free" : "");
 		tryToSetFrameLabel(G.her.rightArmContainer.upperArmCostume.glove, _loc4_);
 		tryToSetFrameLabel(G.her.rightArmEraseContainer.upperArmCostume.glove, _loc4_);
 		tryToSetFrameLabel(G.her.leftArmContainer.upperArmCostume.glove, _loc3_);

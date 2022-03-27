@@ -107,10 +107,10 @@ class HerPenisControl {
 	}
 
 	public function updateCostumeVisibility() {
-		// G.her.torso.chestCostume.bottoms.penisCostumeContainer.visible = this.currentPenisID != 0;
-		// G.her.torso.rightThighStocking.stocking.hipLayer.chestStocking.penisCostumeContainer.visible = this.currentPenisID != 0;
-		// G.her.torso.rightThighStockingB.stocking.hipLayer.chestStocking.penisCostumeContainer.visible = this.currentPenisID != 0;
-		// G.her.torso.chestUnderCostume.panties.penisCostumeContainer.visible = this.currentPenisID != 0;
+		G.her.torso.chestCostume.bottoms.penisCostumeContainer.visible = this.currentPenisID != 0;
+		G.her.torso.rightThighStocking.stocking.hipLayer.chestStocking.penisCostumeContainer.visible = this.currentPenisID != 0;
+		G.her.torso.rightThighStockingB.stocking.hipLayer.chestStocking.penisCostumeContainer.visible = this.currentPenisID != 0;
+		G.her.torso.chestUnderCostume.panties.penisCostumeContainer.visible = this.currentPenisID != 0;
 	}
 
 	public function update() {
@@ -128,10 +128,10 @@ class HerPenisControl {
 				this.lastTorsoAngle = this.torsoAngle;
 			} else {
 				this.penisContainer.rotation = HerPenisControl.MIN_PENIS_ANGLE - 1 * G.her.breathingAnimationAmount;
-				// this.updatePenisCostumeRotation(G.her.torso.chestCostume.bottoms.penisCostumeContainer);
-				// this.updatePenisCostumeRotation(G.her.torso.rightThighStocking.stocking.hipLayer.chestStocking.penisCostumeContainer);
-				// this.updatePenisCostumeRotation(G.her.torso.rightThighStockingB.stocking.hipLayer.chestStocking.penisCostumeContainer);
-				// this.updatePenisCostumeRotation(G.her.torso.chestUnderCostume.panties.penisCostumeContainer);
+				this.updatePenisCostumeRotation(G.her.torso.chestCostume.bottoms.penisCostumeContainer);
+				this.updatePenisCostumeRotation(G.her.torso.rightThighStocking.stocking.hipLayer.chestStocking.penisCostumeContainer);
+				this.updatePenisCostumeRotation(G.her.torso.rightThighStockingB.stocking.hipLayer.chestStocking.penisCostumeContainer);
+				this.updatePenisCostumeRotation(G.her.torso.chestUnderCostume.panties.penisCostumeContainer);
 			}
 		}
 	}

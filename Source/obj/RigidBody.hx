@@ -6,6 +6,7 @@ import openfl.events.Event;
 import openfl.geom.Point;
 import G;
 
+@:rtti
 class RigidBody extends MovieClip {
 	public var rgbFill:MovieClip;
 

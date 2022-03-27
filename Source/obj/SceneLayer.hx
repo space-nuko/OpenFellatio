@@ -87,7 +87,9 @@ class SceneLayer extends Sprite {
 			this.updateExternalLayerPositions();
 		}
 		if (this.zooming) {
-			_loc2_ = this.currentZoom + (this.targetZoom - this.currentZoom) / 4;
+            // TEMP: improves performance
+			// _loc2_ = this.currentZoom + (this.targetZoom - this.currentZoom) / 4;
+			_loc2_ = this.targetZoom;
 			if (Math.abs(_loc2_ - this.targetZoom) < 0.0001) {
 				_loc2_ = this.targetZoom;
 				this.zooming = false;

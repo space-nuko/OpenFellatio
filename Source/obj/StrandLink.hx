@@ -102,13 +102,13 @@ class StrandLink extends Point {
 		this.isJustAnchored = true;
 		this.sourceLink = param2;
 		this.freed = false;
-		// if(this.anchorObject.container == G.her.tongueContainer.tongue.tipPoint)
-		// {
-		//    this.onTongue = true;
-		//    this.speed.x *= 0.5;
-		//    this.speed.y *= 0.5;
-		//    this.anchorSlideCounter += int(this.anchorSlideMax - this.anchorSlideCounter) * 0.5;
-		// }
+		if(this.anchorObject.container == G.her.tongueContainer.tongue.tipPoint)
+		{
+		   this.onTongue = true;
+		   this.speed.x *= 0.5;
+		   this.speed.y *= 0.5;
+		   this.anchorSlideCounter += Std.int((this.anchorSlideMax - this.anchorSlideCounter) * 0.5);
+		}
 		if (this.anchorObject.container == G.sceneLayer) {
 			if (this.neighbour1 != null) {
 				this.neighbour1.neighbourHitFloor();
@@ -169,38 +169,38 @@ class StrandLink extends Point {
 	}
 
 	public function recheckAnchor() {
-		// if(this.anchorObject.hitTarget != G.sceneLayer)
-		// {
-		//    if(!this.anchorObject.hitTarget.hitTestPoint(this.globalAnchor.x,this.globalAnchor.y,true))
-		//    {
-		//       if(this.anchorObject.hitTarget == G.her.head.face)
-		//       {
-		//          if(G.her.head.jaw.hitTestPoint(this.globalAnchor.x,this.globalAnchor.y,true))
-		//          {
-		//             this.anchorObject.localPoint = G.her.head.jaw.globalToLocal(this.globalAnchor);
-		//             this.anchorObject.setContainer(G.her.head.jaw);
-		//             return;
-		//          }
-		//       }
-		//       if(this.anchorObject.hitTarget == G.her.head.jaw)
-		//       {
-		//          if(G.her.head.face.hitTestPoint(this.globalAnchor.x,this.globalAnchor.y,true))
-		//          {
-		//             this.anchorObject.localPoint = G.her.head.face.globalToLocal(this.globalAnchor);
-		//             this.anchorObject.setContainer(G.her.head.face);
-		//             return;
-		//          }
-		//       }
-		//       if(this.onEye)
-		//       {
-		//          if(!G.her.eye.hitBox.hitTestPoint(this.globalAnchor.x,this.globalAnchor.y,true))
-		//          {
-		//             G.her.eyeClearHit();
-		//          }
-		//       }
-		//       this.detachAnchor(false);
-		//    }
-		// }
+		if(this.anchorObject.hitTarget != G.sceneLayer)
+		{
+		   if(!this.anchorObject.hitTarget.hitTestPoint(this.globalAnchor.x,this.globalAnchor.y,true))
+		   {
+		      if(this.anchorObject.hitTarget == G.her.head.face)
+		      {
+		         if(G.her.head.jaw.hitTestPoint(this.globalAnchor.x,this.globalAnchor.y,true))
+		         {
+		            this.anchorObject.localPoint = G.her.head.jaw.globalToLocal(this.globalAnchor);
+		            this.anchorObject.setContainer(G.her.head.jaw);
+		            return;
+		         }
+		      }
+		      if(this.anchorObject.hitTarget == G.her.head.jaw)
+		      {
+		         if(G.her.head.face.hitTestPoint(this.globalAnchor.x,this.globalAnchor.y,true))
+		         {
+		            this.anchorObject.localPoint = G.her.head.face.globalToLocal(this.globalAnchor);
+		            this.anchorObject.setContainer(G.her.head.face);
+		            return;
+		         }
+		      }
+		      if(this.onEye)
+		      {
+		         if(!G.her.eye.hitBox.hitTestPoint(this.globalAnchor.x,this.globalAnchor.y,true))
+		         {
+		            G.her.eyeClearHit();
+		         }
+		      }
+		      this.detachAnchor(false);
+		   }
+		}
 	}
 
 	public function tryToAnchorTo(param1:AnchorProp):Bool {
