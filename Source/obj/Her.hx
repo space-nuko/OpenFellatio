@@ -212,7 +212,7 @@ class Torso extends MovieClip {
 
 @:rtti
 class LeftHandOverHand extends MovieClip {
-	@:keep public var grip(default, null):Null<BasicTannable>;
+	@:keep public var grip(default, null):BasicTannable; // ?
 	@:keep public var glove(default, null):MovieClip;
 	@:keep public var nailPolish(default, null):MovieClip;
 }
@@ -422,8 +422,8 @@ class HerLeftBreast extends BasicTannable {
 
 @:rtti
 class TorsoBack extends BasicTannable {
-	@:keep public var leftShoulder(default, null):MovieClip;
-	@:keep public var chestBack(default, null):MovieClip;
+	@:keep public var leftShoulder(default, null):BasicTannable;
+	@:keep public var chestBack(default, null):BasicTannable;
 	@:keep public var leftBreast(default, null):HerLeftBreast;
 	@:keep public var backside(default, null):BasicTannable;
 }

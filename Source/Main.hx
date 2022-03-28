@@ -1,48 +1,27 @@
 package;
 
-import openfl.display.Bitmap;
-import openfl.display.BitmapData;
+import com.kircode.debug.FPS_Mem;
+import obj.Her;
+import obj.SceneLayer;
+import obj.ScreenEffects;
+import obj.animation.AnimationControl;
+import openfl.Assets;
 import openfl.display.BlendMode;
-import openfl.display.DisplayObject;
-import openfl.display.DisplayObjectContainer;
 import openfl.display.MovieClip;
-import openfl.display.Shader;
 import openfl.display.Sprite;
-import openfl.display.StageAlign;
+import openfl.display.StageQuality;
 import openfl.display.StageScaleMode;
 import openfl.events.Event;
 import openfl.events.KeyboardEvent;
 import openfl.events.MouseEvent;
-import openfl.filters.BlurFilter;
+import openfl.filters.DropShadowFilter;
+import openfl.geom.Point;
 import openfl.ui.Keyboard;
 import openfl.ui.Mouse;
-import openfl.filters.ColorMatrixFilter;
-import openfl.filters.DropShadowFilter;
-import openfl.filters.ShaderFilter;
-import openfl.geom.Matrix;
-import openfl.geom.Point;
-import openfl.geom.Rectangle;
-import openfl.net.FileReference;
 import openfl.utils.AssetLibrary;
 // import openfl.utils.ByteArray;
-import openfl.Assets;
-import obj.AutomaticControl;
-import obj.CharacterControl;
-import obj.ClickPrompt;
 // import obj.CustomElementLoader;
-import obj.Her;
-import obj.Him;
-import obj.InGameMenu;
-import obj.SaveData;
-import obj.SceneLayer;
-import obj.ScreenEffects;
-import obj.SoundControl;
-import obj.StrandControl;
-import obj.animation.AnimationControl;
-import obj.dialogue.Dialogue;
-import obj.dialogue.DialogueEditor;
 // import obj.ui.IMouseWheelScrollable;
-import com.kircode.debug.FPS_Mem;
 
 class Main extends Sprite {
 	// public var preloaderBG:MenuBackground;
@@ -78,15 +57,18 @@ class Main extends Sprite {
 	public function new() {
 		super();
 
+        @:privateAccess openfl.Lib.current.stage.__renderer.__roundPixels = true;
+        @:privateAccess openfl.Lib.current.stage.__renderer.__allowSmoothing = true;
+        stage.quality = StageQuality.BEST;
+        stage.scaleMode = StageScaleMode.NO_BORDER;
+        stage.frameRate = 180;
+        stage.addEventListener(Event.RESIZE, resizeDisplay);
+
 		Assets.loadLibrary("sdt2").onComplete(onLoaded);
 	}
 
 	public function onLoaded(library: AssetLibrary) {
 		trace("SWF library loaded");
-
-        stage.scaleMode = StageScaleMode.NO_BORDER;
-        stage.frameRate = 180;
-        stage.addEventListener(Event.RESIZE, resizeDisplay);
 
 		initGame();
 
@@ -347,16 +329,24 @@ class Main extends Sprite {
          // TEMP
          G.strandControl.maxStrands = 1;
          G.her.tan.setTan(1);
-         G.breathing = false;
-         G.her.setLeftArmFree(true);
-         G.her.setLeftArmFree(false);
-         G.her.setRightArmFree(true);
-         G.her.setRightArmFree(false);
-         G.her.setArmPosition(0, true);
-         G.her.setLeftArmFree(true);
-         G.her.setLeftArmFree(false);
-         G.her.setRightArmFree(true);
-         G.her.setRightArmFree(false);
+
+         // Setup masking for her eye
+         // Uses GL masking this time
+         var eyeMask = new Sprite();
+         eyeMask.name = "eyeMask";
+         eyeMask.addChild(G.her.eye.ball.lowerEyelidMask);
+         eyeMask.addChild(G.her.eye.ball.upperEyelidMask);
+         G.her.eye.ball.addChild(eyeMask);
+         G.her.eye.upperEyelid.mask = G.her.eye.eyebrowMask;
+         G.her.eye.upperEyelid.maskInverted = true;
+         G.her.eye.ball.mask = eyeMask;
+         G.her.eye.ball.maskInverted = true;
+         G.her.eye.ball.irisContainer.iris.mask = eyeMask;
+         G.her.eye.ball.irisContainer.iris.maskInverted = true;
+
+         // Disable bitmap caching for her back
+         // I don't know why but only her back glitches out after a while
+         G.her.torso.back.cacheAsBitmap = false;
 
 #if js
          untyped js.Browser.console.log($hxClasses);
@@ -677,37 +667,21 @@ class Main extends Sprite {
       //    param1.target.stop();
       //    param1.target.removeEventListener(TimerEvent.TIMER_COMPLETE,this.loadDelayDone);
       // }
-
     private function resizeDisplay(event:Event) {
-        var width = stage.stageWidth;
-        var height = stage.stageHeight;
+        // var stageScaleX:Float = stage.stageWidth / G.screenSize.x;
+        // var stageScaleY:Float = stage.stageHeight / G.screenSize.y;
 
+        // var stageScale:Float = Math.min(stageScaleX, stageScaleY);
 
+        // openfl.Lib.current.x = 0;
+        // openfl.Lib.current.y = 0;
+        // openfl.Lib.current.scaleX = stageScale;
+        // openfl.Lib.current.scaleY = stageScale;
 
-        // G.container.width = width;
-        // G.container.height = height;
-        // G.container.scaleX = G.container.scaleY;
+        // if (stageScaleX > stageScaleY) {
+        //     openfl.Lib.current.x = (stage.stageWidth - G.screenSize.x * stageScale) / 2;
+        // } else {
+        //     openfl.Lib.current.y = (stage.stageHeight - G.screenSize.y * stageScale) / 2;
+        // }
     }
-
-    // TODO: Temporary until UI is reimplemented
-	static function stopAllClips(target: DisplayObjectContainer) {
-        if (Std.isOfType(target, MovieClip)) {
-            var clip = cast(target, MovieClip);
-            try {
-                clip.gotoAndStop("None");
-            }
-            catch (e) {
-                clip.stop();
-            }
-        }
-        var length = target.numChildren;
-        var i = 0;
-		while (i < length) {
-            var value = target.getChildAt(i);
-			if (Std.isOfType(value, DisplayObjectContainer)) {
-				stopAllClips(cast(value, DisplayObjectContainer));
-			}
-            i += 1;
-		}
-	}
 }

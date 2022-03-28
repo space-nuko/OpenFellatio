@@ -223,14 +223,11 @@ class Him extends MovieClip
 
 	public function new()
 	{
-        trace(Reflect.field(this, "__rtti"));
         var library = swf.exporters.animate.AnimateLibrary.get("sdthx-lib");
 		var symbol = library.symbols.get(448);
 		symbol.__init(library);
-        trace(Reflect.field(this, "__rtti"));
 
 		super();
-        trace(Reflect.field(this, "__rtti"));
 
         this.x = 420;
         this.y = 135;

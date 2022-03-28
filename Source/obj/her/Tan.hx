@@ -110,11 +110,11 @@ class Tan
             CharacterControl.tryToSetFrameLabel(tannable.tan, this._tanNameList[this._currentTanID]);
             if(this._currentTanID == 0)
             {
-               item.visible = false;
+               tannable.tan.visible = false;
             }
             else
             {
-               item.visible = true;
+               tannable.tan.visible = true;
             }
          }
       }
