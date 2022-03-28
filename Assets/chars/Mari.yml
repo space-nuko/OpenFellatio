@@ -1,0 +1,23 @@
+char:
+  charName: "Mari Illustrious Makinami"
+  charShortName: "Mari"
+  ordering: 4
+  skinType: 0
+  iris: "normal"
+  breastSize: 80
+  hairTop: "Mari"
+  hairUnder: "Mari"
+  hairBack: "Mari"
+  hairBottom: "Mari"
+  costume: "nude"
+  bodyScale: 1.006
+  irisFill: "#2E6F64"
+  eyebrowFill: "#322221"
+  eyebrowLine: "#1E1313"
+  scalpFill: "#322221"
+  eyeShadow: "#371A6380"
+  eyewear: "Mari"
+  eyewearFill: "#712E44"
+  bg: 1
+  elements:
+  - chars.mari.MariHair

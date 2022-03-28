@@ -1,0 +1,26 @@
+char:
+  charName: "Nami"
+  charShortName: "Nami"
+  ordering: 18
+  skinType: 0
+  iris: "wide"
+  noseType: 1
+  eyebrowType: 2
+  earType: "Small"
+  breastSize: 104
+  hairTop: "Nami"
+  hairUnder: "Nami"
+  hairBack: "Nami"
+  hairBottom: "Nami"
+  costume: "nude"
+  bodyScale: 1.021
+  irisFill: "#4C2200"
+  eyebrowFill: "#4F2815"
+  eyebrowLine: "#4F2815"
+  scalpFill: "#A1421E"
+  eyeShadow: "#371A6325" # 0.1
+  bg: 4
+  elements:
+  - chars.nami.NamiHair
+  # TODO
+  defaultCostume: ";lipstick:0,0,0,0,0;eyeshadow:55,26,99,0.1;sclera:255,255,255,1;blush:196,80,77,0.35;freckles:60,24,24,0.8,0;mascara:0,0,0,1,20;nailpolish:0,0,0,0;eyebrow:lines,79,40,21,1,79,40,21,1;collar:none,0,0,0,1,233,233,233,1;cuffs:none,0,0,0,1,0,0,0,1;gag:none,0,0,0,1;panties:bikini,104,185,128,1;top:bikini,104,185,128,1;armwear:none,0,0,0,1;bottoms:jeanshorts,74,106,137,1,106,187,190,1;legwear:none,0,0,0,1,0,0,0,1;footwear:none,0,0,0,1,0,0,0,1;eyewear:none,0,0,0,1;headwear:none,24,24,24,1,139,42,95,1;tonguePiercing:none,183,187,195,1;herTan:none,0"

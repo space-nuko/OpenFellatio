@@ -1,0 +1,25 @@
+char:
+  charName: "Zelda (TP)"
+  charShortName: "Zelda (TP)"
+  ordering: 15
+  skinType: 0
+  iris: "normal"
+  breastSize: 76
+  hairTop: "ZeldaTP"
+  hairUnder: "ZeldaTP"
+  hairBack: "ZeldaTP"
+  hairBottom: "ZeldaTP"
+  costume: "nude"
+  earType: "Elf"
+  headwear: "Zelda's Circlet"
+  headwearFill: "#B37C37"
+  headwearFill2: "#3E8EC1"
+  bodyScale: 1.025
+  irisFill: "#3C5272"
+  eyebrowFill: "#4E2D15"
+  eyebrowLine: "#1E1313"
+  scalpFill: "#4E2D15"
+  eyeShadow: "#371A63C0"
+  bg: 4
+  elements:
+  - chars.zelda_tp.ZeldaTPHair

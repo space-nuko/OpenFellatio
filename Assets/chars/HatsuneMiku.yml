@@ -1,0 +1,23 @@
+char:
+  charName: "Hatsune Miku"
+  charShortName: "Miku"
+  ordering: 19
+  skinType: 0
+  iris: "bright"
+  breastSize: 63
+  hairTop: "Miku"
+  hairUnder: "Miku"
+  hairBack: "Miku"
+  hairBottom: "Miku"
+  costume: "nude"
+  bodyScale: 1.006
+  irisFill: "#2C606C"
+  eyebrowFill: "#003530"
+  eyebrowLine: "#003530"
+  scalpFill: "#136B73"
+  eyeShadow: "#371A6340"
+  bg: 2
+  elements:
+  - chars.miku.MikuHair
+  # TODO
+  defaultCostume: ";lipstick:0,0,0,0,0;eyeshadow:55,26,99,0.25;sclera:255,255,255,1;blush:196,80,77,0.35;freckles:60,24,24,0.8,0;mascara:0,0,0,1,20;nailpolish:0,0,0,0;eyebrow:normal,0,53,48,1,0,53,48,0;collar:tie,106,187,190,1,233,233,233,1;cuffs:none,0,0,0,1,0,0,0,1;gag:none,0,0,0,1;panties:highleg,0,0,0,1;top:bra,0,0,0,1;armwear:elbowglove,0,0,0,1;bottoms:skirt,0,0,0,1,106,187,190,1;tops:shirt,209,209,219,0.976;legwear:latexthighhigh,0,0,0,1,0,0,0,1;footwear:school,106,187,190,1,0,0,0,1;eyewear:none,0,0,0,1;headwear:none,24,24,24,1,139,42,95,1;tonguePiercing:none,183,187,195,1;herTan:none,0"

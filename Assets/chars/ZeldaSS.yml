@@ -1,0 +1,22 @@
+char:
+  charName: "Zelda (SS)"
+  charShortName: "Zelda (SS)"
+  ordering: 16
+  skinType: 0
+  iris: "wide"
+  breastSize: 66
+  hairTop: "ZeldaSS"
+  hairUnder: "ZeldaSS"
+  hairBack: "ZeldaSS"
+  hairBottom: "ZeldaSS"
+  costume: "nude"
+  earType: "Elf"
+  bodyScale: 0.9925
+  irisFill: "#3C5272"
+  eyebrowFill: "#DD9317"
+  eyebrowLine: "#533D2E"
+  scalpFill: "#DD9317"
+  eyeShadow: "#371A6340"
+  bg: 4
+  elements:
+  - chars.zelda_ss.ZeldaSSHair

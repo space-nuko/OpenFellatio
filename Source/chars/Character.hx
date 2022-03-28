@@ -64,7 +64,9 @@ class Character {
 	public var defaultCostume:String = "";
 	public var altCostume:String = "";
 
+    // TODO: elements are defined separately, then this list will hold their IDs
     @:nosave public var elements: Array<CharacterElement> = [];
+
     public var ordering: Int = 0;
     public var extraData: Null<Dynamic>;
 
@@ -93,13 +95,18 @@ class Character {
 
             for (v in types) {
                 var klassName = cast(v, String);
-                var klass = Type.resolveClass(klassName);
-                var value = Type.createInstance(klass, []);
 
-                if (Std.isOfType(value, CharacterElement)) {
-                    this.elements.push(cast(value, CharacterElement));
-                } else {
-                    throw "Type " + klassName + " is not a subclass of CharacterElement";
+                try {
+                    var klass = Type.resolveClass(klassName);
+                    var value = Type.createInstance(klass, []);
+
+                    if (Std.isOfType(value, CharacterElement)) {
+                        this.elements.push(cast(value, CharacterElement));
+                    } else {
+                        throw "Type " + klassName + " is not a subclass of CharacterElement";
+                    }
+                } catch (e) {
+                    throw "Could not instantiate type " + klassName + ": " + e;
                 }
             }
         }

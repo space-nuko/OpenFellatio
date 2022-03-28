@@ -1,0 +1,22 @@
+char:
+  charName: "Chun Li"
+  charShortName: "Chun Li"
+  ordering: 21
+  skinType: 0
+  iris: "normal"
+  breastSize: 92
+  hairTop: "ChunLi"
+  hairUnder: "ChunLi"
+  hairBack: "ChunLi"
+  hairBottom: "ChunLi"
+  costume: "nude"
+  headwear: "Ox Horns"
+  headwearFill: "#EFFFF8"
+  headwearFill2: "#FED21A"
+  bodyScale: 1.02
+  irisFill: "#2A1A13"
+  eyebrowFill: "#381F0F"
+  eyebrowLine: "#1E1313"
+  scalpFill:   "#381F0F"
+  eyeShadow: "#371A6326" # 0.15
+  bg: 2

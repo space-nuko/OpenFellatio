@@ -1,0 +1,22 @@
+char:
+  charName: "Misato Katsuragi"
+  charShortName: "Misato"
+  ordering: 5
+  skinType: 0
+  iris: "bright"
+  breastSize: 110
+  hairTop: "Misato"
+  hairUnder: "Misato"
+  hairBack: "Misato"
+  hairBottom: "Misato"
+  costume: "nude"
+  earring: "Stud"
+  earringFill: "#CEDADF"
+  bodyScale: 1.035
+  irisFill: "#3E271D"
+  eyebrowFill: "#212133"
+  eyebrowLine: "#1E1313"
+  scalpFill: "#212133"
+  bg: 1
+  elements:
+  - chars.misato.MisatoHair

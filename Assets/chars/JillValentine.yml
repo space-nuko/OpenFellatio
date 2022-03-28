@@ -1,0 +1,21 @@
+char:
+  charName: "Jill Valentine"
+  charShortName: "Jill Valentine"
+  skinType: 0
+  ordering: 7
+  iris: "normal"
+  breastSize: 100
+  hairTop: "JillValentine"
+  hairUnder: "JillValentine"
+  hairBack: "JillValentine"
+  hairBottom: "JillValentine"
+  costume: "nude"
+  bodyScale: 1.025
+  irisFill: "#425A78"
+  eyebrowFill: "#2D1910"
+  eyebrowLine: "#1E1313"
+  scalpFill: "#2D1910"
+  eyeShadow: "#371A6380"
+  bg: 2
+  elements:
+  - chars.jill_valentine.JillValentineHair

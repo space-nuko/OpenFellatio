@@ -174,27 +174,6 @@ class CharacterControl {
         }
 
         this.characters.sort(function(a, b) { return Std.int(b.ordering - a.ordering); });
-        // this.characters[1] = new SDChan2();
-		// this.characters[2] = new Asuka();
-		// this.characters[3] = new Rei();
-		// this.characters[4] = new Mari();
-		// this.characters[5] = new Misato();
-		// this.characters[6] = new Ino();
-		// this.characters[7] = new JillValentine();
-		// this.characters[8] = new Samus();
-		// this.characters[9] = new Misty();
-		// this.characters[10] = new Peach();
-		// this.characters[11] = new Noel();
-		// this.characters[12] = new Android18();
-		// this.characters[13] = new Seras();
-		// this.characters[14] = new TifaLockhart();
-		// this.characters[15] = new ZeldaTP();
-		// this.characters[16] = new ZeldaSS();
-		// this.characters[17] = new Rikku();
-		// this.characters[18] = new Nami();
-		// this.characters[19] = new HatsuneMiku();
-		// this.characters[20] = new Morrigan();
-		// this.characters[21] = new ChunLi();
 		G.baseCharNum = this.characters.length;
 		this.skinPalettes = new ASDictionary<String, SkinPalette>();
 		this.skinPalettes[SkinPalette.LIGHT_SKIN] = new SkinPalette(16178890, 14925224, 13541515, 11306097, 13014407, 10974573);

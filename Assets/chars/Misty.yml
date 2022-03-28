@@ -1,0 +1,21 @@
+char:
+  charName: "Misty"
+  charShortName: "Misty"
+  ordering: 9
+  skinType: 0
+  iris: "normal"
+  breastSize: 50
+  hairTop: "Misty"
+  hairUnder: "Misty"
+  hairBack: "Misty"
+  hairBottom: "Misty"
+  costume: "nude"
+  bodyScale: 0.98
+  irisFill: "#2E6F64"
+  eyebrowFill: "#B94700"
+  eyebrowLine: "#533D2E"
+  scalpFill: "#B94700"
+  eyeShadow: "#371A6380"
+  bg: 4
+  elements:
+  - chars.misty.MistyHair

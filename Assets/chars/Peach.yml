@@ -1,0 +1,25 @@
+char:
+  charName: "Princess Peach"
+  charShortName: "Peach"
+  ordering: 10
+  skinType: 0
+  iris: "normal"
+  breastSize: 100
+  hairTop: "Peach"
+  hairUnder: "Peach"
+  hairBack: "Peach"
+  hairBottom: "Peach"
+  costume: "nude"
+  earring: "Ball"
+  earringFill: "#125AB8"
+  headwear: "Peach's Crown"
+  headwearFill: "#FFD019"
+  bodyScale: 1.035
+  irisFill: "#386489"
+  eyebrowFill: "#A98725"
+  eyebrowLine: "#594333"
+  scalpFill: "#A98725"
+  lipstickFill: "#EB3C7466"
+  bg: 4
+  elements:
+  - chars.peach.PeachHair
