@@ -327,8 +327,13 @@ class Main extends Sprite {
          // ----------------------------------------
 
          // TEMP
-         G.strandControl.maxStrands = 1;
          G.her.tan.setTan(1);
+
+         // Disable some expensive features
+         // Hopefully these can be moved to shaders
+         G.strandControl.maxStrands = 1;
+         G.tears = false;
+         G.mascara = false;
 
          // Setup masking for her eye
          // Uses GL masking this time
@@ -347,6 +352,7 @@ class Main extends Sprite {
          // Disable bitmap caching for her back
          // I don't know why but only her back glitches out after a while
          G.her.torso.back.cacheAsBitmap = false;
+         G.her.torso.backMask.cacheAsBitmap = false;
 
 #if js
          untyped js.Browser.console.log($hxClasses);

@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <project>
-	
 	<meta title="HelloWorld" package="com.sample.helloworld" version="1.0.0" company="Company Name" />
 	<app main="Main" path="Export" file="HelloWorld" />
     <window width="700" height="600" fps="60" vsync="true"/>
@@ -10,15 +9,17 @@
 	
     <haxelib name="openfl" />
 	<haxelib name="swf" />
+	<haxelib name="yaml" />
 	
 	<assets path="Assets" rename="assets" exclude="*.swf"/>
 	<assets path="Assets/audio" rename="audio"/>
 	<library path="Assets/SDT.swf" id="sdt2" generate="true"/>
+
+    <haxeflag name="--macro" value='include("chars")' />
 
     <haxedef name="HXCPP_CHECK_POINTER" if="cpp"/>
     <haxedef name="HXCPP_STACK_LINE" if="cpp"/>
     <haxedef name="HXCPP_STACK_TRACE" if="cpp"/>
     <haxedef name="HXCPP_DEBUG_LINK" if="cpp"/>
     <haxedef name="HXCPP_CATCH_SEGV" if="cpp"/>
-
 </project>

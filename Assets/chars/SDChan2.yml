@@ -1,0 +1,18 @@
+char:
+  charName: "SD chan 2"
+  charShortName: "SD chan 2"
+  ordering: 1
+  skinType: 2
+  iris: "normal"
+  breastSize: 110
+  hairTop: "SDChan"
+  hairUnder: "SDChan"
+  hairBack: "SDChan"
+  hairBottom: "SDChan"
+  costume: "nude"
+  irisFill: "#386489"
+  eyebrowFill: "#594333"
+  eyebrowLine: "#000000"
+  scalpFill: "#D39E5A"
+  lipstickFill: "#FF2C8F80"
+  bg: 3

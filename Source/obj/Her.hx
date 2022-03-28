@@ -2783,10 +2783,10 @@ class Her extends MovieClip {
 
 	public function updateNeck() {
 		this.head.neck.render(G.penisOut ? 0 : this.penisInMouthDist / 400);
-		var _loc1_:Color = new Color();
-		_loc1_.tintColor = G.characterControl.currentSkinPalette.shade1.rgb;
-		_loc1_.tintMultiplier = G.penisOut ? 0 : this.penisInMouthDist / 400 * G.him.getPenisWidthWithTwitch() * 0.6;
-		this.head.jaw.jawBulge.transform.colorTransform = _loc1_;
+		// var _loc1_:Color = new Color();
+		// _loc1_.tintColor = G.characterControl.currentSkinPalette.shade1.rgb;
+		// _loc1_.tintMultiplier = G.penisOut ? 0 : this.penisInMouthDist / 400 * G.him.getPenisWidthWithTwitch() * 0.6;
+		// this.head.jaw.jawBulge.transform.colorTransform = _loc1_;
 		var _loc2_:Point = this.globalToLocal(this.head.localToGlobal(new Point(this.head.neck.x,this.head.neck.y)));
 		var _loc3_:Point = this.globalToLocal(this.torso.localToGlobal(new Point(0,0)));
 		var _loc4_:Float = Maths.getAngle(_loc3_.x - _loc2_.x,_loc3_.y - _loc2_.y) + 180;

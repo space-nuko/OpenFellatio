@@ -14,9 +14,11 @@ git checkout https://github.com/space-nuko/openfl -b blendmode-erase
 git checkout https://github.com/space-nuko/swf -b animate-morph-shapes
 ```
 
-Then setup haxelib to use them:
+Then setup the dependencies:
 
 ```
+haxelib install yaml
+
 haxelib dev openfl path/to/openfl
 haxelib dev swf path/to/swf
 ```

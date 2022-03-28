@@ -17,7 +17,7 @@ import chars.Character;
 // import chars.Peach;
 // import chars.Rei;
 // import chars.Rikku;
-import chars.SDChan;
+// import chars.SDChan;
 // import chars.SDChan2;
 // import chars.Samus;
 // import chars.Seras;
@@ -31,6 +31,8 @@ import openfl.events.Event;
 import openfl.filters.ColorMatrixFilter;
 import openfl.geom.ColorTransform;
 import openfl.geom.Point;
+import openfl.Assets;
+import openfl.utils.AssetType;
 import obj.dialogue.Dialogue;
 import obj.her.SkinPalette;
 import obj.Maths;
@@ -163,8 +165,16 @@ class CharacterControl {
 		this.currentBreastOffset = this.breastOffset[0];
 		this.currentSkinType = G.dataName(this.skinNameList[0]);
 		this.characters = new Array<Character>();
-		this.characters[0] = new SDChan();
-		// this.characters[1] = new SDChan2();
+
+        var regex = new EReg(".*/chars/.*\\.yml$", "g");
+        for (path in Assets.list(AssetType.TEXT)) {
+            if (regex.match(path)) {
+                this.characters.push(Character.loadFromYaml(path));
+            }
+        }
+
+        this.characters.sort(function(a, b) { return Std.int(b.ordering - a.ordering); });
+        // this.characters[1] = new SDChan2();
 		// this.characters[2] = new Asuka();
 		// this.characters[3] = new Rei();
 		// this.characters[4] = new Mari();
@@ -1410,14 +1420,18 @@ class CharacterControl {
 	}
 
 	public function nextCharacter() {
+        // TODO
 		// G.inGameMenu.characterMenu.selectNextCharacter();
+        tryToSetChar(currentChar - 1);
 	}
 
 	public function prevCharacter() {
+        // TODO
 		// G.inGameMenu.characterMenu.selectPrevCharacter();
-	}
+        tryToSetChar(currentChar + 1);
+    }
 
-	public function toggleBackground() {
+    public function toggleBackground() {
 		if (G.bgID == G.bgNum) {
 			G.bgID = 1;
 		} else {
