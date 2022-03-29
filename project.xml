@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <project>
-	<meta title="HelloWorld" package="com.sample.helloworld" version="1.0.0" company="Company Name" />
-	<app main="Main" path="Export" file="HelloWorld" />
+	<meta title="OpenFellatio" package="xyz.ofl.openfellatio" version="0.1.0" company="OpenFellatio Authors" />
+	<app main="Main" path="Export" file="OpenFellatio" />
     <window width="700" height="600" fps="60" vsync="true"/>
 
 	<source path="Lib/compat" />
@@ -13,7 +13,7 @@
 	
 	<assets path="Assets" rename="assets" exclude="*.swf"/>
 	<assets path="Assets/audio" rename="audio"/>
-	<library path="Assets/SDT.swf" id="sdt2" generate="true"/>
+	<library path="Assets/SDT.swf" id="sdt" generate="true"/>
 
     <haxeflag name="--macro" value='include("chars")' />
     <haxeflag name="-D" value='ofl_disable_cacheasbitmap' />

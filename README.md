@@ -7,11 +7,11 @@
 First checkout the forked versions of these dependencies:
 
 - [openfl](https://github.com/space-nuko/openfl/tree/blendmode-erase) at the `blendmode-erase` branch
-- [swf](https://github.com/space-nuko/swf/tree/animate-morph-shapes) at the `animate-morph-shapes` branch
+- [swf](https://github.com/space-nuko/swf/tree/persist-uuids) at the `persist-uuids` branch
 
 ```
 git clone https://github.com/space-nuko/openfl -b blendmode-erase
-git clone https://github.com/space-nuko/swf -b animate-morph-shapes
+git clone https://github.com/space-nuko/swf -b persist-uuids
 ```
 
 Then setup the dependencies:
