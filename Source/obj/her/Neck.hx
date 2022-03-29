@@ -63,7 +63,7 @@ class Neck extends MovieClip {
 	@:keep public var highlight11(default, null):MovieClip;
 
 	public function new() {
-		var library = swf.exporters.animate.AnimateLibrary.get("sdthx-lib");
+		var library = swf.exporters.animate.AnimateLibrary.get("sdt");
 		var symbol = library.symbols.get(992);
 		symbol.__init(library);
 

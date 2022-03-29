@@ -243,7 +243,7 @@ class LeftHandOver extends MovieClip {
 	public function new() {
 		super();
 
-		var library = swf.exporters.animate.AnimateLibrary.get("sdthx-lib");
+		var library = swf.exporters.animate.AnimateLibrary.get("sdt");
 		var symbol = library.symbols.get(2051);
 		symbol.__initObject(library, this);
 	}
@@ -307,7 +307,7 @@ class HerLeftArmContainer extends MovieClip {
 	public function new() {
 		super();
 
-		var library = swf.exporters.animate.AnimateLibrary.get("sdthx-lib");
+		var library = swf.exporters.animate.AnimateLibrary.get("sdt");
 		var symbol = library.symbols.get(581);
 		symbol.__initObject(library, this);
 	}
@@ -343,7 +343,7 @@ class HerRightForeArmContainer extends MovieClip {
 	public function new() {
 		super();
 
-		var library = swf.exporters.animate.AnimateLibrary.get("sdthx-lib");
+		var library = swf.exporters.animate.AnimateLibrary.get("sdt");
 		var symbol = library.symbols.get(2036);
 		symbol.__initObject(library, this);
 	}
@@ -359,7 +359,7 @@ class HerRightArmContainer extends MovieClip {
 	public function new() {
 		super();
 
-		var library = swf.exporters.animate.AnimateLibrary.get("sdthx-lib");
+		var library = swf.exporters.animate.AnimateLibrary.get("sdt");
 		var symbol = library.symbols.get(1998);
 		symbol.__initObject(library, this);
 	}
@@ -374,7 +374,7 @@ class HerRightArmEraseContainer extends MovieClip {
 	public function new() {
 		super();
 
-		var library = swf.exporters.animate.AnimateLibrary.get("sdthx-lib");
+		var library = swf.exporters.animate.AnimateLibrary.get("sdt");
 		var symbol = library.symbols.get(98);
 		symbol.__initObject(library, this);
 	}
@@ -466,7 +466,7 @@ class HairBackContainer extends MovieClip {
 	public function new() {
 		super();
 
-		var library = swf.exporters.animate.AnimateLibrary.get("sdthx-lib");
+		var library = swf.exporters.animate.AnimateLibrary.get("sdt");
 		var symbol = library.symbols.get(598);
 		symbol.__initObject(library, this);
 	}
@@ -981,7 +981,7 @@ class Her extends MovieClip {
     public function new() {
         super();
 
-        var library = swf.exporters.animate.AnimateLibrary.get("sdthx-lib");
+        var library = swf.exporters.animate.AnimateLibrary.get("sdt");
         var symbol = library.symbols.get(1982);
         symbol.__initObject(library, this);
 

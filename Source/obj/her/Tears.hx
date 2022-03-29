@@ -59,7 +59,7 @@ class Tears extends openfl.display.MovieClip {
     private var __smudgeCol2 = new ARGBObject();
 
 	public function new() {
-		var library = swf.exporters.animate.AnimateLibrary.get("sdthx-lib");
+		var library = swf.exporters.animate.AnimateLibrary.get("sdt");
 		var symbol = library.symbols.get(1240);
 		symbol.__init(library);
 

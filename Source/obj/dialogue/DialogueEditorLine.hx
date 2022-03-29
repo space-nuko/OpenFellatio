@@ -37,7 +37,7 @@ class DialogueEditorLine extends openfl.display.MovieClip {
 	@:keep @:noCompletion @:dox(hide) public var hitbox(default, null):openfl.display.MovieClip;
 
 	public function new(param1:DialogueLine, param2:String, param3:ASFunction, param4:ASFunction, param5:Bool = false) {
-		var library = swf.exporters.animate.AnimateLibrary.get("sdthx-lib");
+		var library = swf.exporters.animate.AnimateLibrary.get("sdt");
 		var symbol = library.symbols.get(2946);
 		symbol.__init(library);
 

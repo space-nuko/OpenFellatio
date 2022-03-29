@@ -13,7 +13,7 @@ class Droplet extends openfl.display.MovieClip {
 	public var sizeDecrease:Float = Math.NaN;
 
 	public function new(param1:Point, param2:Point, param3:Float, param4:Float = 0.2, param5:Float = 1.0, param6:Bool = false) {
-		var library = swf.exporters.animate.AnimateLibrary.get("sdthx-lib");
+		var library = swf.exporters.animate.AnimateLibrary.get("sdt");
 		var symbol = library.symbols.get(2057);
 		symbol.__init(library);
 

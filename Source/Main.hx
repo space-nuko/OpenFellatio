@@ -64,7 +64,7 @@ class Main extends Sprite {
         stage.frameRate = 180;
         stage.addEventListener(Event.RESIZE, resizeDisplay);
 
-		Assets.loadLibrary("sdt2").onComplete(onLoaded);
+		Assets.loadLibrary("sdt").onComplete(onLoaded);
 	}
 
 	public function onLoaded(library: AssetLibrary) {
