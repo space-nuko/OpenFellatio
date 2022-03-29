@@ -992,8 +992,10 @@ class Her extends MovieClip {
 
         this.leftBreastController = new BreastController(this.torsoBack.leftBreast, [this.torsoBackCostume.breastCostume]);
         this.rightBreastController = new BreastController(this.torso.midLayer.rightBreast, [this.torso.breastCostume, this.torso.topContainer.breastTop]);
+#if !ofl_disable_cacheasbitmap
         this.torso.back.cacheAsBitmap = true;
         this.torso.backMask.cacheAsBitmap = true;
+#end
         this.torso.back.mask = this.torso.backMask;
         this.backModContainer.name = "backModContainer";
         this.backModContainer.x = this.torso.back.x;
@@ -1048,7 +1050,9 @@ class Her extends MovieClip {
         this.head.face.gotoAndStop("Normal");
         this.head.headTan.face.gotoAndStop("Normal");
         EventBus.addListener("penisTipPosChanged", this.updatePenisTipPos);
+#if !ofl_disable_cacheasbitmap
         this.freckles.cacheAsBitmap = true;
+#end
     }
 
     public function getDataString():String {

@@ -16,6 +16,7 @@
 	<library path="Assets/SDT.swf" id="sdt2" generate="true"/>
 
     <haxeflag name="--macro" value='include("chars")' />
+    <haxeflag name="-D" value='ofl_disable_cacheasbitmap' />
 
     <haxedef name="HXCPP_CHECK_POINTER" if="cpp"/>
     <haxedef name="HXCPP_STACK_LINE" if="cpp"/>

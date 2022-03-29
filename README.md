@@ -10,8 +10,8 @@ First checkout the forked versions of these dependencies:
 - [swf](https://github.com/space-nuko/swf/tree/animate-morph-shapes) at the `animate-morph-shapes` branch
 
 ```
-git checkout https://github.com/space-nuko/openfl -b blendmode-erase
-git checkout https://github.com/space-nuko/swf -b animate-morph-shapes
+git clone https://github.com/space-nuko/openfl -b blendmode-erase
+git clone https://github.com/space-nuko/swf -b animate-morph-shapes
 ```
 
 Then setup the dependencies:

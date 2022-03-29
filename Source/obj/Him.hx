@@ -397,8 +397,10 @@ class Him extends MovieClip
 		this.bentPenis = param1;
 		this.bpMask = new BentPenisMask();
 		addChild(this.bpMask);
+#if !ofl_disable_cacheasbitmap
 		this.bentPenis.cacheAsBitmap = true;
 		this.bpMask.cacheAsBitmap = true;
+#end
 		this.bentPenis.mask = this.bpMask;
 	}
 

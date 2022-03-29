@@ -342,8 +342,7 @@ class Main extends Sprite {
          eyeMask.addChild(G.her.eye.ball.lowerEyelidMask);
          eyeMask.addChild(G.her.eye.ball.upperEyelidMask);
          G.her.eye.ball.addChild(eyeMask);
-         G.her.eye.upperEyelid.mask = G.her.eye.eyebrowMask;
-         G.her.eye.upperEyelid.maskInverted = true;
+         G.her.eye.eyebrowUnderMask.mask = G.her.eye.eyebrowMask;
          G.her.eye.ball.mask = eyeMask;
          G.her.eye.ball.maskInverted = true;
          G.her.eye.ball.irisContainer.iris.mask = eyeMask;
