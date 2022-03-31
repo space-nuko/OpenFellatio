@@ -424,7 +424,7 @@ class Main extends Sprite {
                   G.currentMousePos.y = Math.max(-1,Math.min(1,(this.currentMousePos.y - 100) / 200 - 1));
                   if(G.autoModeOn)
                   {
-                     G.currentPos = G.automaticControl.getPos().clone();
+                     G.currentPos = G.automaticControl.getPos(deltaTime).clone();
                   }
                   else
                   {

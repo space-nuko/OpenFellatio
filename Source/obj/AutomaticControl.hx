@@ -6,7 +6,7 @@ class AutomaticControl {
 	public static var autoModeNameList:Array<String> = ["Normal", "Soft", "Hard", "Self"];
 
 	public var t:UInt = 0;
-	public var nextModeTimer:Int = 0;
+	public var nextModeTimer:Float = 0;
 	public var randomMode:ASFunction;
 	public var transitioning:Bool = false;
 	public var transitionSpeed:Float = 0.01;
@@ -19,8 +19,8 @@ class AutomaticControl {
 	public var currentMode:ASFunction;
 	public var singleAction:ASFunction;
 	public var waitingForSingleAction:Bool = false;
-	public var singleActionTimer:UInt = 0;
-	public var singleActionTime:UInt = 0;
+	public var singleActionTimer:Float = 0;
+	public var singleActionTime:Float = 0;
 	public var standardModes:Array<ASFunction>;
 	public var softModes:Array<ASFunction>;
 	public var hardModes:Array<ASFunction>;
@@ -36,7 +36,7 @@ class AutomaticControl {
 	public var lastModeNo:UInt = 0;
 	public var offTilt:Float = 0;
 	public var offTiltTarget:Float = 0;
-	public var offTiltChangeTimer:UInt = 0;
+	public var offTiltChangeTimer:Float = 0;
 	public var ejaculatingModes:Array<ASFunction>;
 	public var normalEjacModes:Array<ASFunction>;
 	public var hardEjacModes:Array<ASFunction>;
@@ -401,15 +401,16 @@ class AutomaticControl {
 		this.transitionSpeed = 0.05;
 	}
 
-	public function getPos():Point {
+	public function getPos(deltaTime:Float):Point {
+        deltaTime /= (1.0 / 30);
 		var _loc1_:Point = null;
 		var _loc2_:Point = null;
 		++this.t;
 		if (G.her.released && !G.handsOff) {
-			this.lastPos.x = Math.max(0, this.lastPos.x - 0.1);
-			this.lastPos.y *= 0.8;
+			this.lastPos.x = Math.max(0, this.lastPos.x - 0.1 * deltaTime);
+			this.lastPos.y *= 0.8 * deltaTime;
 		} else if (this.transitioning) {
-			this.modeRatio += this.transitionSpeed;
+			this.modeRatio += this.transitionSpeed * deltaTime;
 			if (this.modeRatio >= 1) {
 				if (this.waitingForSingleAction) {
 					this.waitingForSingleAction = false;
@@ -428,22 +429,22 @@ class AutomaticControl {
 		} else {
 			this.lastPos = this.currentMode().clone();
 			if (this.singleActionTimer < this.singleActionTime) {
-				++this.singleActionTimer;
+				this.singleActionTimer += deltaTime;
 			} else if (this.nextModeTimer > 0) {
-				--this.nextModeTimer;
+				this.nextModeTimer -= deltaTime;
 			} else {
 				this.runRandomMode();
 			}
 		}
-		this.offTilt += (this.offTiltTarget - this.offTilt) * 0.2;
+		this.offTilt += (this.offTiltTarget - this.offTilt) * 0.2 * deltaTime;
 		if (this.offTiltChangeTimer > 0) {
-			--this.offTiltChangeTimer;
+			this.offTiltChangeTimer -= deltaTime;
 		} else {
 			this.randomOffTilt();
 		}
 		this.deepthroatProgress = Math.max(this.deepthroatProgress, this.lastPos.x);
 		if (G.handJobMode) {
-			this.lastPos.x = this.lastPos.x * 0.9 + 0.1;
+			this.lastPos.x = this.lastPos.x * 0.9 * deltaTime + 0.1 * deltaTime;
 		}
 		return this.lastPos;
 	}
