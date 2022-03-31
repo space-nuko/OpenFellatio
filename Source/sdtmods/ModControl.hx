@@ -7,6 +7,7 @@ import openfl.utils.AssetType;
 import bguiz.struct.graph.AdjacencyGraph;
 import bguiz.struct.graph.TopologicalSortGraph;
 import chars.Character;
+import obj.SoundSet;
 
 class ModControl
 {
@@ -74,10 +75,30 @@ class ModControl
                 }
             }
         }
+
         G.characterControl.characters.sort(function(a, b) {
             return Std.int(a.ordering - b.ordering);
         });
         G.baseCharNum = G.characterControl.characters.length;
+    }
+
+    public function loadSoundSets() {
+        if (this.loadStage != ModsScanned)
+            throw "Mods have already been loaded!";
+
+        // TODO O(n^2)
+        for (mod in this.loadedMods) {
+            for (assetPath in Assets.list(AssetType.TEXT)) {
+                var regex = new EReg(Path.join([mod.path, "SoundSets"]) + "/.*\\.yml$", "g");
+                if (StringTools.startsWith(assetPath, mod.path) && regex.match(assetPath)) {
+                    var soundSet = SoundSet.loadFromYaml(assetPath);
+                    G.soundControl.soundSets.push(soundSet);
+                    trace("Loaded sound set: " + soundSet.name);
+                }
+            }
+        }
+
+        G.soundControl.initSoundEffects();
     }
 
     public function initMods()

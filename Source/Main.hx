@@ -130,6 +130,7 @@ class Main extends Sprite {
 
          modCtrl.scanMods();
          modCtrl.loadCharacters();
+         modCtrl.loadSoundSets();
 
          G.bg = new Background();
          this.sceneLayer = G.newSceneLayer(G.defaultZoom);

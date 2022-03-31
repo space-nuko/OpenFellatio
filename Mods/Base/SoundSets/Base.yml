@@ -1,0 +1,167 @@
+soundSet:
+  name: Base
+  normalBreath:
+  - audio/sfxBreathe10.mp3
+  - audio/sfxBreathe11.mp3
+  - audio/sfxBreathe12.mp3
+  - audio/sfxBreathe13.mp3
+  - audio/sfxBreathe14.mp3
+  - audio/sfxBreathe15.mp3
+  - audio/sfxBreathe16.mp3
+  - audio/sfxBreathe17.mp3
+  - audio/sfxMoanBreathe8.mp3
+  - audio/sfxMoanBreathe9.mp3
+  - audio/sfxBreathe4.mp3
+  breatheIn:
+  - audio/sfxBreatheIn2.mp3
+  - audio/sfxBreatheIn3.mp3
+  - audio/sfxBreatheIn4.mp3
+  - audio/sfxBreatheIn5.mp3
+  - audio/sfxBreatheIn6.mp3
+  fastBreath:
+  - audio/sfxBreathe5.mp3
+  - audio/sfxBreathe6.mp3
+  - audio/sfxBreathe7.mp3
+  - audio/sfxBreathe8.mp3
+  - audio/sfxBreathe9.mp3
+  suddenBreath:
+  - audio/sfxCoughBreathe2.mp3
+  - audio/sfxCoughBreathe6.mp3
+  - audio/sfxCoughBreathe7.mp3
+  - audio/sfxCoughBreathe8.mp3
+  - audio/sfxCoughBreathe10.mp3
+  - audio/sfxBreatheIn1.mp3
+  - audio/sfxMoanBreathe6.mp3
+  - audio/sfxMoanBreathe7.mp3
+  quietBreath:
+  - audio/sfxQuietBreath1.mp3
+  - audio/sfxQuietBreath2.mp3
+  - audio/sfxQuietBreath3.mp3
+  - audio/sfxQuietBreath4.mp3
+  down:
+  - audio/sfxDown1.mp3
+  - audio/sfxDown2.mp3
+  - audio/sfxDown3.mp3
+  - audio/sfxDown4.mp3
+  - audio/sfxDown5.mp3
+  - audio/sfxDown6.mp3
+  - audio/sfxDown7.mp3
+  - audio/sfxDown8.mp3
+  - audio/sfxDown9.mp3
+  - audio/sfxDown10.mp3
+  touch:
+  - audio/sfxTouch1.mp3
+  - audio/sfxTouch2.mp3
+  - audio/sfxTouch3.mp3
+  gag:
+  - audio/sfxGag1.mp3
+  - audio/sfxGag2.mp3
+  - audio/sfxGag3.mp3
+  - audio/sfxGag4.mp3
+  - audio/sfxGag5.mp3
+  - audio/sfxGag6.mp3
+  - audio/sfxGag7.mp3
+  - audio/sfxGag8.mp3
+  - audio/sfxGag9.mp3
+  - audio/sfxGag10.mp3
+  - audio/sfxGag11.mp3
+  - audio/sfxGag12.mp3
+  - audio/sfxGag13.mp3
+  - audio/sfxGag14.mp3
+  - audio/sfxGag15.mp3
+  suck:
+  - audio/sfxSuck1.mp3
+  - audio/sfxSuck2.mp3
+  - audio/sfxSuck3.mp3
+  - audio/sfxSuck4.mp3
+  - audio/sfxSuck5.mp3
+  - audio/sfxSuck6.mp3
+  - audio/sfxSuck7.mp3
+  - audio/sfxSuck8.mp3
+  - audio/sfxSuck9.mp3
+  - audio/sfxSuck10.mp3
+  - audio/sfxSuck11.mp3
+  - audio/sfxSuck12.mp3
+  - audio/sfxSuck13.mp3
+  - audio/sfxSuck14.mp3
+  - audio/sfxSuck15.mp3
+  - audio/sfxSuck16.mp3
+  - audio/sfxSuck17.mp3
+  - audio/sfxSuck18.mp3
+  - audio/sfxMoanSuck1.mp3
+  - audio/sfxMoanSuck2.mp3
+  cough:
+  - audio/sfxCough1.mp3
+  - audio/sfxCough2.mp3
+  - audio/sfxCough3.mp3
+  - audio/sfxCough4.mp3
+  - audio/sfxCough5.mp3
+  - audio/sfxCough6.mp3
+  - audio/sfxCough7.mp3
+  openCough:
+  - audio/sfxOpenCough1.mp3
+  - audio/sfxOpenCough2.mp3
+  - audio/sfxOpenCough3.mp3
+  - audio/sfxOpenCough4.mp3
+  - audio/sfxOpenCough5.mp3
+  - audio/sfxOpenCough6.mp3
+  - audio/sfxOpenCough7.mp3
+  - audio/sfxOpenCough8.mp3
+  - audio/sfxOpenCough9.mp3
+  - audio/sfxOpenCough10.mp3
+  - audio/sfxOpenCough11.mp3
+  - audio/sfxOpenCough12.mp3
+  held:
+  - audio/sfxHeld1.mp3
+  - audio/sfxHeld2.mp3
+  - audio/sfxHeld3.mp3
+  - audio/sfxHeld4.mp3
+  - audio/sfxHeld5.mp3
+  - audio/sfxHeld6.mp3
+  - audio/sfxHeld7.mp3
+  - audio/sfxHeld8.mp3
+  - audio/sfxHeld9.mp3
+  - audio/sfxHeld10.mp3
+  - audio/sfxHeld11.mp3
+  - audio/sfxHeld12.mp3
+  - audio/sfxHeld13.mp3
+  splat:
+  - audio/sfxSplat1.mp3
+  - audio/sfxSplat2.mp3
+  - audio/sfxSplat3.mp3
+  passOut:
+  - audio/sfxPassOut1.mp3
+  - audio/sfxPassOut2.mp3
+  - audio/sfxPassOut3.mp3
+  swallow:
+  - audio/sfxSwallow1.mp3
+  - audio/sfxSwallow2.mp3
+  - audio/sfxSwallow3.mp3
+  - audio/sfxSwallow4.mp3
+  - audio/sfxSwallow5.mp3
+  - audio/sfxSwallow6.mp3
+  - audio/sfxSwallow7.mp3
+  - audio/sfxSwallow8.mp3
+  - audio/sfxSwallow9.mp3
+  - audio/sfxSwallow10.mp3
+  - audio/sfxSwallow11.mp3
+  - audio/sfxSwallow12.mp3
+  lick:
+  - audio/sfxLick1.mp3
+  - audio/sfxLick2.mp3
+  - audio/sfxLick3.mp3
+  - audio/sfxLick4.mp3
+  - audio/sfxLick5.mp3
+  - audio/sfxLick6.mp3
+  - audio/sfxLick7.mp3
+  - audio/sfxLick8.mp3
+  cum:
+  - audio/sfxCum1.mp3
+  - audio/sfxCum2.mp3
+  cumInside:
+  - audio/sfxCumInside1.mp3
+  - audio/sfxCumInside2.mp3
+  grab:
+    - audio/sfxGrab.mp3
+  rub: audio/sfxRub.mp3
+  intro: audio/sfxIntro.mp3

@@ -38,6 +38,7 @@ class SoundControl {
 	public var lastRandomPassOut:UInt = 0;
 	public var lastRandomSwallow:UInt = 0;
 	public var lastRandomLick:UInt = 0;
+	public var lastRandomGrab:UInt = 0;
 	public var breathStartTime:Int = 0;
 	public var leftPan:Float = -0.4;
 	public var rightPan:Float = 0.4;
@@ -56,41 +57,16 @@ class SoundControl {
 	public var dialogueResumeTime:Int = 0;
 	public var currentBreathSound:Sound;
 	public var customCoughs:Array<AudioMod>;
-	public var normalBreath:Array<Sound>;
-	public var breatheIn:Array<Sound>;
-	public var fastBreath:Array<Sound>;
-	public var suddenBreath:Array<Sound>;
-	public var quietBreath:Array<Sound>;
-	public var down:Array<Sound>;
-	public var gag:Array<Sound>;
-	public var suck:Array<Sound>;
-	public var touch:Array<Sound>;
-	public var splat:Array<Sound>;
-	public var cough:Array<Sound>;
-	public var openCough:Array<Sound>;
-	public var held:Array<Sound>;
-	public var passOut:Array<Sound>;
-	public var swallow:Array<Sound>;
-	public var lick:Array<Sound>;
-	public var cum:Array<Sound>;
-	public var cumInside:Array<Sound>;
-	public var grab:Sound;
-	public var rub:Sound;
 	public var rubSC:SoundChannel;
 	public var rubST:SoundTransform;
-	public var intro:Sound;
-	public var moan1:Sound;
-	public var moan2:Sound;
-	public var moanSuck1:Sound;
-	public var moanSuck2:Sound;
-	public var wretch1:Sound;
-	public var wretch2:Sound;
-	public var wretch3:Sound;
+
+	public var soundSet(default, null):SoundSet;
+	public var soundSetIndex(default, null):UInt;
+	public var soundSets:Array<SoundSet> = [];
 
 	public function new() {
 		// super();
 		this.currentBreathST = new SoundTransform(0, 0);
-		this.initSoundEffects();
 	}
 
 	public function loadAudioMod(param1:String, param2:AudioMod) {
@@ -266,9 +242,21 @@ class SoundControl {
 		this.queuedCoughs = Std.int(Math.min(5, this.queuedCoughs + 1));
 	}
 
+	private static inline function pickRandom(sounds:Array<Dynamic>, lastRandom:UInt):UInt {
+        if (sounds.length <= 1) {
+            return 0;
+        }
+
+		var i = 0;
+		do {
+			i = Math.floor(Math.random() * sounds.length);
+		} while (i == lastRandom);
+		return i;
+	}
+
 	public function playIntro() {
 		var _loc2_:SoundTransform = null;
-		var _loc1_ = this.intro.play();
+		var _loc1_ = this.soundSet.intro.play();
 		if (_loc1_ != null) {
 			_loc2_ = new SoundTransform(1);
 			_loc1_.soundTransform = _loc2_;
@@ -276,71 +264,54 @@ class SoundControl {
 	}
 
 	public function playTouch() {
-		var _loc1_:UInt = 0;
-		var _loc3_:SoundTransform = null;
-		do {
-			_loc1_ = Math.floor(Math.random() * this.touch.length);
-		} while (_loc1_ == this.lastRandomTouch);
-
-		this.lastRandomTouch = _loc1_;
-		var _loc2_:SoundChannel = this.touch[_loc1_].play();
+		var sound:UInt = pickRandom(this.soundSet.touch, this.lastRandomTouch);
+		this.lastRandomTouch = sound;
+		var _loc2_:SoundChannel = this.soundSet.touch[sound].play();
 		if (_loc2_ != null) {
-			_loc3_ = new SoundTransform(0.5, this.leftPan);
-			_loc2_.soundTransform = _loc3_;
+			var transform = new SoundTransform(0.5, this.leftPan);
+			_loc2_.soundTransform = transform;
 		}
 	}
 
 	public function playDown(param1:Float, param2:Float) {
-		var _loc4_:UInt = 0;
-		var _loc6_:SoundTransform = null;
+		var sound:UInt = pickRandom(this.soundSet.down, this.lastRandomDown);
 		var _loc3_ = Math.min(1, param2 / 40);
-		while ((_loc4_ = Math.floor(Math.random() * this.down.length)) == this.lastRandomDown) {}
-		this.lastRandomDown = _loc4_;
-		var _loc5_:SoundChannel;
-		if ((_loc5_ = this.down[_loc4_].play()) != null) {
-			_loc6_ = new SoundTransform(_loc3_, Math.max(this.leftPan, Math.min(this.rightPan, param1 * 2 - 1)));
-			_loc5_.soundTransform = _loc6_;
+		this.lastRandomDown = sound;
+		var _loc5_:SoundChannel = this.soundSet.down[sound].play();
+		if (_loc5_ != null) {
+			var transform = new SoundTransform(_loc3_, Math.max(this.leftPan, Math.min(this.rightPan, param1 * 2 - 1)));
+			_loc5_.soundTransform = transform;
 		}
 	}
 
 	public function playUp(param1:Float, param2:Float) {
-		var _loc4_:UInt = 0;
-		var _loc6_:SoundTransform = null;
+		var sound:UInt = pickRandom(this.soundSet.suck, this.lastRandomSuck);
 		var _loc3_ = Math.min(1, param2 / 40);
-		while ((_loc4_ = Math.floor(Math.random() * this.suck.length)) == this.lastRandomSuck) {}
-		this.lastRandomSuck = _loc4_;
+		this.lastRandomSuck = sound;
 		var _loc5_:SoundChannel;
-		if ((_loc5_ = this.suck[_loc4_].play()) != null) {
-			_loc6_ = new SoundTransform(_loc3_, Math.max(this.leftPan, Math.min(this.rightPan, param1 * 2 - 1)));
+		if ((_loc5_ = this.soundSet.suck[sound].play()) != null) {
+			var _loc6_ = new SoundTransform(_loc3_, Math.max(this.leftPan, Math.min(this.rightPan, param1 * 2 - 1)));
 			_loc5_.soundTransform = _loc6_;
 		}
 	}
 
 	public function playGag(param1:Float) {
-		var _loc3_:UInt = 0;
 		var _loc5_:SoundTransform = null;
 		var _loc2_ = 0.5 + Math.random() * 0.2;
-		do {
-			_loc3_ = Math.floor(Math.random() * this.gag.length);
-		} while (_loc3_ == this.lastRandomGag);
-
-		this.lastRandomGag = _loc3_;
+		var sound:UInt = pickRandom(this.soundSet.gag, this.lastRandomGag);
+		this.lastRandomGag = sound;
 		var _loc4_:SoundChannel;
-		if ((_loc4_ = this.gag[_loc3_].play()) != null) {
+		if ((_loc4_ = this.soundSet.gag[sound].play()) != null) {
 			_loc5_ = new SoundTransform(_loc2_, Math.max(this.leftPan, Math.min(this.rightPan, param1 * 2 - 1)));
 			_loc4_.soundTransform = _loc5_;
 		}
 	}
 
 	public function playCough() {
-		var _loc1_:UInt = 0;
 		var _loc3_:SoundTransform = null;
-		do {
-			_loc1_ = Math.floor(Math.random() * this.cough.length);
-		} while (_loc1_ == this.lastRandomCough);
-
-		this.lastRandomCough = _loc1_;
-		var _loc2_:SoundChannel = this.cough[_loc1_].play();
+		var sound:UInt = pickRandom(this.soundSet.cough, this.lastRandomCough);
+		this.lastRandomCough = sound;
+		var _loc2_:SoundChannel = this.soundSet.cough[sound].play();
 		if (_loc2_ != null) {
 			_loc3_ = new SoundTransform(1, this.rightPan);
 			_loc2_.soundTransform = _loc3_;
@@ -348,14 +319,10 @@ class SoundControl {
 	}
 
 	public function playSplat() {
-		var _loc1_:UInt = 0;
 		var _loc3_:SoundTransform = null;
-		do {
-			_loc1_ = Math.floor(Math.random() * this.splat.length);
-		} while (_loc1_ == this.lastRandomSplat);
-
-		this.lastRandomSplat = _loc1_;
-		var _loc2_:SoundChannel = this.splat[_loc1_].play();
+		var sound:UInt = pickRandom(this.soundSet.splat, this.lastRandomSplat);
+		this.lastRandomSplat = sound;
+		var _loc2_:SoundChannel = this.soundSet.splat[sound].play();
 		if (_loc2_ != null) {
 			_loc3_ = new SoundTransform(1, this.rightPan);
 			_loc2_.soundTransform = _loc3_;
@@ -363,14 +330,10 @@ class SoundControl {
 	}
 
 	public function playPassOut(param1:Float = 0) {
-		var _loc2_:UInt = 0;
 		var _loc4_:SoundTransform = null;
-		do {
-			_loc2_ = Math.floor(Math.random() * this.passOut.length);
-		} while (_loc2_ == this.lastRandomPassOut);
-
-		this.lastRandomPassOut = _loc2_;
-		var _loc3_:SoundChannel = this.passOut[_loc2_].play();
+		var sound:UInt = pickRandom(this.soundSet.passOut, this.lastRandomPassOut);
+		this.lastRandomPassOut = sound;
+		var _loc3_:SoundChannel = this.soundSet.passOut[sound].play();
 		if (_loc3_ != null) {
 			_loc4_ = new SoundTransform(1, Math.max(this.leftPan, Math.min(this.rightPan, param1 * 2 - 1)));
 			_loc3_.soundTransform = _loc4_;
@@ -379,7 +342,9 @@ class SoundControl {
 
 	public function playGrab(param1:Float = 0, param2:Float = 1) {
 		var _loc4_:SoundTransform = null;
-		var _loc3_ = this.grab.play();
+		var sound:UInt = pickRandom(this.soundSet.grab, this.lastRandomGrab);
+		this.lastRandomGrab = sound;
+		var _loc3_ = this.soundSet.grab[sound].play();
 		if (_loc3_ != null) {
 			_loc4_ = new SoundTransform(0.5 * param2, Math.max(this.leftPan, Math.min(this.rightPan, param1 * 2 - 1)));
 			_loc3_.soundTransform = _loc4_;
@@ -387,14 +352,10 @@ class SoundControl {
 	}
 
 	public function playSwallow(param1:Float = 0) {
-		var _loc2_:UInt = 0;
 		var _loc4_:SoundTransform = null;
-		do {
-			_loc2_ = Math.floor(Math.random() * this.swallow.length);
-		} while (_loc2_ == this.lastRandomSwallow);
-
-		this.lastRandomSwallow = _loc2_;
-		var _loc3_:SoundChannel = this.swallow[_loc2_].play();
+		var sound:UInt = pickRandom(this.soundSet.swallow, this.lastRandomSwallow);
+		this.lastRandomSwallow = sound;
+		var _loc3_:SoundChannel = this.soundSet.swallow[sound].play();
 		if (_loc3_ != null) {
 			_loc4_ = new SoundTransform(1, Math.max(this.leftPan, Math.min(this.rightPan, param1 * 2 - 1)));
 			_loc3_.soundTransform = _loc4_;
@@ -402,14 +363,10 @@ class SoundControl {
 	}
 
 	public function playLick(param1:Float = 0) {
-		var _loc2_:UInt = 0;
 		var _loc4_:SoundTransform = null;
-		do {
-			_loc2_ = Math.floor(Math.random() * this.lick.length);
-		} while (_loc2_ == this.lastRandomLick);
-
-		this.lastRandomLick = _loc2_;
-		var _loc3_:SoundChannel = this.lick[_loc2_].play();
+		var sound:UInt = pickRandom(this.soundSet.lick, this.lastRandomLick);
+		this.lastRandomLick = sound;
+		var _loc3_:SoundChannel = this.soundSet.lick[sound].play();
 		if (_loc3_ != null) {
 			_loc4_ = new SoundTransform(0.4, Math.max(this.leftPan, Math.min(this.rightPan, param1 * 2 - 1)));
 			_loc3_.soundTransform = _loc4_;
@@ -418,7 +375,7 @@ class SoundControl {
 
 	public function startRub() {
 		if (this.rubSC == null) {
-			this.rubSC = this.rub.play();
+			this.rubSC = this.soundSet.rub.play();
 			this.rubSC.addEventListener(Event.SOUND_COMPLETE, this.rubFinished);
 			this.updateRub();
 		}
@@ -451,11 +408,11 @@ class SoundControl {
 
 	public function playCum(param1:Bool = false) {
 		var _loc2_:SoundTransform = null;
-		this.cumPlaying = Math.floor(Math.random() * this.cum.length);
+		this.cumPlaying = Math.floor(Math.random() * this.soundSet.cum.length);
 		if (param1) {
-			this.currentCum = this.cumInside[this.cumPlaying].play();
+			this.currentCum = this.soundSet.cumInside[this.cumPlaying].play();
 		} else {
-			this.currentCum = this.cum[this.cumPlaying].play();
+			this.currentCum = this.soundSet.cum[this.cumPlaying].play();
 		}
 		this.currentCumVolume = 0.8;
 		if (this.currentCum != null) {
@@ -470,7 +427,7 @@ class SoundControl {
 		if (this.currentCum != null) {
 			_loc1_ = this.currentCum.position;
 			this.currentCum.stop();
-			this.currentCum = this.cumInside[this.cumPlaying].play(_loc1_);
+			this.currentCum = this.soundSet.cumInside[this.cumPlaying].play(_loc1_);
 			if (this.currentCum != null) {
 				_loc2_ = new SoundTransform(this.currentCumVolume, this.leftPan);
 				this.currentCum.soundTransform = _loc2_;
@@ -484,7 +441,7 @@ class SoundControl {
 		if (this.currentCum != null) {
 			_loc1_ = this.currentCum.position;
 			this.currentCum.stop();
-			this.currentCum = this.cum[this.cumPlaying].play(_loc1_);
+			this.currentCum = this.soundSet.cum[this.cumPlaying].play(_loc1_);
 			if (this.currentCum != null) {
 				_loc2_ = new SoundTransform(this.currentCumVolume, this.leftPan);
 				this.currentCum.soundTransform = _loc2_;
@@ -515,14 +472,10 @@ class SoundControl {
 	}
 
 	public function newRandomHoldSound() {
-		var _loc1_:UInt = 0;
 		var _loc2_:SoundTransform = null;
-		do {
-			_loc1_ = Math.floor(Math.random() * this.held.length);
-		} while (_loc1_ == this.lastRandomHold);
-
-		this.lastRandomHold = _loc1_;
-		this.currentHoldSound = this.held[_loc1_].play();
+		var sound:UInt = pickRandom(this.soundSet.held, this.lastRandomHold);
+		this.lastRandomHold = sound;
+		this.currentHoldSound = this.soundSet.held[sound].play();
 		if (this.currentHoldSound != null) {
 			_loc2_ = new SoundTransform(1, this.rightPan);
 			this.currentHoldSound.soundTransform = _loc2_;
@@ -537,36 +490,27 @@ class SoundControl {
 	}
 
 	public function newRandomBreath() {
-		var _loc1_:UInt = 0;
+		var sound:UInt = 0;
 		if (G.breathing) {
 			this.consecutiveCoughs = 0;
 			this.playingInBreath = false;
 			this.justStartedBreath = true;
 			if (G.breathLevel > G.outOfBreathPoint && !G.her.passedOut) {
-				do {
-					_loc1_ = Math.floor(Math.random() * this.fastBreath.length);
-				} while (_loc1_ == this.lastBreath);
-
-				this.lastBreath = _loc1_;
-				this.currentBreathSound = this.fastBreath[_loc1_];
+				sound = pickRandom(this.soundSet.fastBreath, this.lastBreath);
+				this.lastBreath = sound;
+				this.currentBreathSound = this.soundSet.fastBreath[sound];
 				this.currentBreath = this.currentBreathSound.play();
 				G.addBreath(-2);
 			} else if (G.breathLevel < this.quietBreathingLevel) {
-				do {
-					_loc1_ = Math.floor(Math.random() * this.quietBreath.length);
-				} while (_loc1_ == this.lastBreath);
-
-				this.lastBreath = _loc1_;
-				this.currentBreathSound = this.quietBreath[_loc1_];
+				sound = pickRandom(this.soundSet.quietBreath, this.lastBreath);
+				this.lastBreath = sound;
+				this.currentBreathSound = this.soundSet.quietBreath[sound];
 				this.currentBreath = this.currentBreathSound.play();
 				G.addBreath(-0.5);
 			} else {
-				do {
-					_loc1_ = Math.floor(Math.random() * this.normalBreath.length);
-				} while (_loc1_ == this.lastBreath);
-
-				this.lastBreath = _loc1_;
-				this.currentBreathSound = this.normalBreath[_loc1_];
+				sound = pickRandom(this.soundSet.normalBreath, this.lastBreath);
+				this.lastBreath = sound;
+				this.currentBreathSound = this.soundSet.normalBreath[sound];
 				this.currentBreath = this.currentBreathSound.play();
 				G.addBreath(-1);
 			}
@@ -588,15 +532,11 @@ class SoundControl {
 	}
 
 	public function newInBreath() {
-		var _loc1_:UInt = 0;
 		this.consecutiveCoughs = 0;
 		this.playingInBreath = true;
-		do {
-			_loc1_ = Math.floor(Math.random() * this.breatheIn.length);
-		} while (this.lastInBreath == _loc1_);
-
-		this.lastInBreath = _loc1_;
-		this.currentBreathSound = this.breatheIn[_loc1_];
+		var sound:UInt = pickRandom(this.soundSet.breatheIn, this.lastInBreath);
+		this.lastInBreath = sound;
+		this.currentBreathSound = this.soundSet.breatheIn[sound];
 		this.currentBreath = this.currentBreathSound.play();
 		if (this.currentBreath != null) {
 			this.currentBreathVolume = Math.min(1, G.breathLevel / 20 + 0.5);
@@ -609,15 +549,11 @@ class SoundControl {
 	}
 
 	public function newSuddenBreath() {
-		var _loc1_:UInt = 0;
 		this.consecutiveCoughs = 0;
 		this.playingInBreath = true;
-		do {
-			_loc1_ = Math.floor(Math.random() * this.suddenBreath.length);
-		} while (this.lastSuddenBreath == _loc1_);
-
-		this.lastSuddenBreath = _loc1_;
-		this.currentBreathSound = this.suddenBreath[_loc1_];
+		var sound:UInt = pickRandom(this.soundSet.suddenBreath, this.lastSuddenBreath);
+		this.lastSuddenBreath = sound;
+		this.currentBreathSound = this.soundSet.suddenBreath[sound];
 		this.currentBreath = this.currentBreathSound.play();
 		if (this.currentBreath != null) {
 			this.currentBreathVolume = Math.min(1, G.breathLevel / 20 + 0.5);
@@ -630,7 +566,7 @@ class SoundControl {
 	}
 
 	public function playOpenCough() {
-		var _loc2_:UInt = 0;
+		var sound:UInt = 0;
 		if (this.consecutiveCoughs == 0) {
 			this.maxConsecutiveCoughs = Std.int(Math.min(Math.max(1, this.queuedCoughs), Math.fceil(Math.random() * 2) + 1));
 		}
@@ -645,22 +581,17 @@ class SoundControl {
 			_loc1_ = _loc3_.volume;
 		} else if (this.customCoughs != null) {
 			if (this.customCoughs.length > 1) {
-				do {
-					_loc2_ = Math.floor(Math.random() * this.customCoughs.length);
-				} while (this.lastRandomOpenCough == _loc2_);
+				sound = pickRandom(this.customCoughs, this.lastRandomOpenCough);
 			} else {
-				_loc2_ = 0;
+				sound = 0;
 			}
-			this.lastRandomOpenCough = _loc2_;
-			this.currentOpenCough = this.customCoughs[_loc2_].audio.play();
-			_loc1_ = this.customCoughs[_loc2_].volume;
+			this.lastRandomOpenCough = sound;
+			this.currentOpenCough = this.customCoughs[sound].audio.play();
+			_loc1_ = this.customCoughs[sound].volume;
 		} else {
-			do {
-				_loc2_ = Math.floor(Math.random() * this.openCough.length);
-			} while (this.lastRandomOpenCough == _loc2_);
-
-			this.lastRandomOpenCough = _loc2_;
-			this.currentOpenCough = this.openCough[_loc2_].play();
+			sound = pickRandom(this.soundSet.openCough, this.lastRandomOpenCough);
+			this.lastRandomOpenCough = sound;
+			this.currentOpenCough = this.soundSet.openCough[sound].play();
 		}
 		var _loc4_ = new SoundTransform(_loc1_, this.leftPan);
 		if (this.currentOpenCough != null) {
@@ -801,169 +732,56 @@ class SoundControl {
 	}
 
 	public function initSoundEffects() {
-		this.normalBreath = new Array<Sound>();
-		this.normalBreath.push(Assets.getSound("audio/sfxBreathe10.mp3"));
-		this.normalBreath.push(Assets.getSound("audio/sfxBreathe11.mp3"));
-		this.normalBreath.push(Assets.getSound("audio/sfxBreathe12.mp3"));
-		this.normalBreath.push(Assets.getSound("audio/sfxBreathe13.mp3"));
-		this.normalBreath.push(Assets.getSound("audio/sfxBreathe14.mp3"));
-		this.normalBreath.push(Assets.getSound("audio/sfxBreathe15.mp3"));
-		this.normalBreath.push(Assets.getSound("audio/sfxBreathe16.mp3"));
-		this.normalBreath.push(Assets.getSound("audio/sfxBreathe17.mp3"));
-		this.normalBreath.push(Assets.getSound("audio/sfxMoanBreathe8.mp3"));
-		this.normalBreath.push(Assets.getSound("audio/sfxMoanBreathe9.mp3"));
-		this.normalBreath.push(Assets.getSound("audio/sfxBreathe4.mp3"));
-		this.breatheIn = new Array<Sound>();
-		this.breatheIn.push(Assets.getSound("audio/sfxBreatheIn2.mp3"));
-		this.breatheIn.push(Assets.getSound("audio/sfxBreatheIn3.mp3"));
-		this.breatheIn.push(Assets.getSound("audio/sfxBreatheIn4.mp3"));
-		this.breatheIn.push(Assets.getSound("audio/sfxBreatheIn5.mp3"));
-		this.breatheIn.push(Assets.getSound("audio/sfxBreatheIn6.mp3"));
-		this.fastBreath = new Array<Sound>();
-		this.fastBreath.push(Assets.getSound("audio/sfxBreathe5.mp3"));
-		this.fastBreath.push(Assets.getSound("audio/sfxBreathe6.mp3"));
-		this.fastBreath.push(Assets.getSound("audio/sfxBreathe7.mp3"));
-		this.fastBreath.push(Assets.getSound("audio/sfxBreathe8.mp3"));
-		this.fastBreath.push(Assets.getSound("audio/sfxBreathe9.mp3"));
-		this.suddenBreath = new Array<Sound>();
-		this.suddenBreath.push(Assets.getSound("audio/sfxCoughBreathe2.mp3"));
-		this.suddenBreath.push(Assets.getSound("audio/sfxCoughBreathe6.mp3"));
-		this.suddenBreath.push(Assets.getSound("audio/sfxCoughBreathe7.mp3"));
-		this.suddenBreath.push(Assets.getSound("audio/sfxCoughBreathe8.mp3"));
-		this.suddenBreath.push(Assets.getSound("audio/sfxCoughBreathe10.mp3"));
-		this.suddenBreath.push(Assets.getSound("audio/sfxBreatheIn1.mp3"));
-		this.suddenBreath.push(Assets.getSound("audio/sfxMoanBreathe6.mp3"));
-		this.suddenBreath.push(Assets.getSound("audio/sfxMoanBreathe7.mp3"));
-		this.quietBreath = new Array<Sound>();
-		this.quietBreath.push(Assets.getSound("audio/sfxQuietBreath1.mp3"));
-		this.quietBreath.push(Assets.getSound("audio/sfxQuietBreath2.mp3"));
-		this.quietBreath.push(Assets.getSound("audio/sfxQuietBreath3.mp3"));
-		this.quietBreath.push(Assets.getSound("audio/sfxQuietBreath4.mp3"));
-		this.down = new Array<Sound>();
-		this.down.push(Assets.getSound("audio/sfxDown1.mp3"));
-		this.down.push(Assets.getSound("audio/sfxDown2.mp3"));
-		this.down.push(Assets.getSound("audio/sfxDown3.mp3"));
-		this.down.push(Assets.getSound("audio/sfxDown4.mp3"));
-		this.down.push(Assets.getSound("audio/sfxDown5.mp3"));
-		this.down.push(Assets.getSound("audio/sfxDown6.mp3"));
-		this.down.push(Assets.getSound("audio/sfxDown7.mp3"));
-		this.down.push(Assets.getSound("audio/sfxDown8.mp3"));
-		this.down.push(Assets.getSound("audio/sfxDown9.mp3"));
-		this.down.push(Assets.getSound("audio/sfxDown10.mp3"));
-		this.touch = new Array<Sound>();
-		this.touch.push(Assets.getSound("audio/sfxTouch1.mp3"));
-		this.touch.push(Assets.getSound("audio/sfxTouch2.mp3"));
-		this.touch.push(Assets.getSound("audio/sfxTouch3.mp3"));
-		this.gag = new Array<Sound>();
-		this.gag.push(Assets.getSound("audio/sfxGag1.mp3"));
-		this.gag.push(Assets.getSound("audio/sfxGag2.mp3"));
-		this.gag.push(Assets.getSound("audio/sfxGag3.mp3"));
-		this.gag.push(Assets.getSound("audio/sfxGag4.mp3"));
-		this.gag.push(Assets.getSound("audio/sfxGag5.mp3"));
-		this.gag.push(Assets.getSound("audio/sfxGag6.mp3"));
-		this.gag.push(Assets.getSound("audio/sfxGag7.mp3"));
-		this.gag.push(Assets.getSound("audio/sfxGag8.mp3"));
-		this.gag.push(Assets.getSound("audio/sfxGag9.mp3"));
-		this.gag.push(Assets.getSound("audio/sfxGag10.mp3"));
-		this.gag.push(Assets.getSound("audio/sfxGag11.mp3"));
-		this.gag.push(Assets.getSound("audio/sfxGag12.mp3"));
-		this.gag.push(Assets.getSound("audio/sfxGag13.mp3"));
-		this.gag.push(Assets.getSound("audio/sfxGag14.mp3"));
-		this.gag.push(Assets.getSound("audio/sfxGag15.mp3"));
-		this.suck = new Array<Sound>();
-		this.suck.push(Assets.getSound("audio/sfxSuck1.mp3"));
-		this.suck.push(Assets.getSound("audio/sfxSuck2.mp3"));
-		this.suck.push(Assets.getSound("audio/sfxSuck3.mp3"));
-		this.suck.push(Assets.getSound("audio/sfxSuck4.mp3"));
-		this.suck.push(Assets.getSound("audio/sfxSuck5.mp3"));
-		this.suck.push(Assets.getSound("audio/sfxSuck6.mp3"));
-		this.suck.push(Assets.getSound("audio/sfxSuck7.mp3"));
-		this.suck.push(Assets.getSound("audio/sfxSuck8.mp3"));
-		this.suck.push(Assets.getSound("audio/sfxSuck9.mp3"));
-		this.suck.push(Assets.getSound("audio/sfxSuck10.mp3"));
-		this.suck.push(Assets.getSound("audio/sfxSuck11.mp3"));
-		this.suck.push(Assets.getSound("audio/sfxSuck12.mp3"));
-		this.suck.push(Assets.getSound("audio/sfxSuck13.mp3"));
-		this.suck.push(Assets.getSound("audio/sfxSuck14.mp3"));
-		this.suck.push(Assets.getSound("audio/sfxSuck15.mp3"));
-		this.suck.push(Assets.getSound("audio/sfxSuck16.mp3"));
-		this.suck.push(Assets.getSound("audio/sfxSuck17.mp3"));
-		this.suck.push(Assets.getSound("audio/sfxSuck18.mp3"));
-		this.suck.push(Assets.getSound("audio/sfxMoanSuck1.mp3"));
-		this.suck.push(Assets.getSound("audio/sfxMoanSuck2.mp3"));
-		this.cough = new Array<Sound>();
-		this.cough.push(Assets.getSound("audio/sfxCough1.mp3"));
-		this.cough.push(Assets.getSound("audio/sfxCough2.mp3"));
-		this.cough.push(Assets.getSound("audio/sfxCough3.mp3"));
-		this.cough.push(Assets.getSound("audio/sfxCough4.mp3"));
-		this.cough.push(Assets.getSound("audio/sfxCough5.mp3"));
-		this.cough.push(Assets.getSound("audio/sfxCough6.mp3"));
-		this.cough.push(Assets.getSound("audio/sfxCough7.mp3"));
-		this.openCough = new Array<Sound>();
-		this.openCough.push(Assets.getSound("audio/sfxOpenCough1.mp3"));
-		this.openCough.push(Assets.getSound("audio/sfxOpenCough2.mp3"));
-		this.openCough.push(Assets.getSound("audio/sfxOpenCough3.mp3"));
-		this.openCough.push(Assets.getSound("audio/sfxOpenCough4.mp3"));
-		this.openCough.push(Assets.getSound("audio/sfxOpenCough5.mp3"));
-		this.openCough.push(Assets.getSound("audio/sfxOpenCough6.mp3"));
-		this.openCough.push(Assets.getSound("audio/sfxOpenCough7.mp3"));
-		this.openCough.push(Assets.getSound("audio/sfxOpenCough8.mp3"));
-		this.openCough.push(Assets.getSound("audio/sfxOpenCough9.mp3"));
-		this.openCough.push(Assets.getSound("audio/sfxOpenCough10.mp3"));
-		this.openCough.push(Assets.getSound("audio/sfxOpenCough11.mp3"));
-		this.openCough.push(Assets.getSound("audio/sfxOpenCough12.mp3"));
-		this.held = new Array<Sound>();
-		this.held.push(Assets.getSound("audio/sfxHeld1.mp3"));
-		this.held.push(Assets.getSound("audio/sfxHeld2.mp3"));
-		this.held.push(Assets.getSound("audio/sfxHeld3.mp3"));
-		this.held.push(Assets.getSound("audio/sfxHeld4.mp3"));
-		this.held.push(Assets.getSound("audio/sfxHeld5.mp3"));
-		this.held.push(Assets.getSound("audio/sfxHeld6.mp3"));
-		this.held.push(Assets.getSound("audio/sfxHeld7.mp3"));
-		this.held.push(Assets.getSound("audio/sfxHeld8.mp3"));
-		this.held.push(Assets.getSound("audio/sfxHeld9.mp3"));
-		this.held.push(Assets.getSound("audio/sfxHeld10.mp3"));
-		this.held.push(Assets.getSound("audio/sfxHeld11.mp3"));
-		this.held.push(Assets.getSound("audio/sfxHeld12.mp3"));
-		this.held.push(Assets.getSound("audio/sfxHeld13.mp3"));
-		this.splat = new Array<Sound>();
-		this.splat.push(Assets.getSound("audio/sfxSplat1.mp3"));
-		this.splat.push(Assets.getSound("audio/sfxSplat2.mp3"));
-		this.splat.push(Assets.getSound("audio/sfxSplat3.mp3"));
-		this.passOut = new Array<Sound>();
-		this.passOut.push(Assets.getSound("audio/sfxPassOut1.mp3"));
-		this.passOut.push(Assets.getSound("audio/sfxPassOut2.mp3"));
-		this.passOut.push(Assets.getSound("audio/sfxPassOut3.mp3"));
-		this.swallow = new Array<Sound>();
-		this.swallow.push(Assets.getSound("audio/sfxSwallow1.mp3"));
-		this.swallow.push(Assets.getSound("audio/sfxSwallow2.mp3"));
-		this.swallow.push(Assets.getSound("audio/sfxSwallow3.mp3"));
-		this.swallow.push(Assets.getSound("audio/sfxSwallow4.mp3"));
-		this.swallow.push(Assets.getSound("audio/sfxSwallow5.mp3"));
-		this.swallow.push(Assets.getSound("audio/sfxSwallow6.mp3"));
-		this.swallow.push(Assets.getSound("audio/sfxSwallow7.mp3"));
-		this.swallow.push(Assets.getSound("audio/sfxSwallow8.mp3"));
-		this.swallow.push(Assets.getSound("audio/sfxSwallow9.mp3"));
-		this.swallow.push(Assets.getSound("audio/sfxSwallow10.mp3"));
-		this.swallow.push(Assets.getSound("audio/sfxSwallow11.mp3"));
-		this.swallow.push(Assets.getSound("audio/sfxSwallow12.mp3"));
-		this.lick = new Array<Sound>();
-		this.lick.push(Assets.getSound("audio/sfxLick1.mp3"));
-		this.lick.push(Assets.getSound("audio/sfxLick2.mp3"));
-		this.lick.push(Assets.getSound("audio/sfxLick3.mp3"));
-		this.lick.push(Assets.getSound("audio/sfxLick4.mp3"));
-		this.lick.push(Assets.getSound("audio/sfxLick5.mp3"));
-		this.lick.push(Assets.getSound("audio/sfxLick6.mp3"));
-		this.lick.push(Assets.getSound("audio/sfxLick7.mp3"));
-		this.lick.push(Assets.getSound("audio/sfxLick8.mp3"));
-		this.cum = new Array<Sound>();
-		this.cum.push(Assets.getSound("audio/sfxCum1.mp3"));
-		this.cum.push(Assets.getSound("audio/sfxCum2.mp3"));
-		this.cumInside = new Array<Sound>();
-		this.cumInside.push(Assets.getSound("audio/sfxCumInside1.mp3"));
-		this.cumInside.push(Assets.getSound("audio/sfxCumInside2.mp3"));
-		this.grab = Assets.getSound("audio/sfxGrab.mp3");
-		this.rub = Assets.getSound("audio/sfxRub.mp3");
-		this.intro = Assets.getSound("audio/sfxIntro.mp3");
+        // TODO: config
+		setSoundSetByName("Base");
+	}
+
+	public function setSoundSetByName(name: String) {
+        var i = 0;
+        for (soundSet in this.soundSets) {
+            if (soundSet.name == name) {
+                setSoundSet(i);
+                return;
+            }
+            i++;
+        }
+    }
+
+    public function setSoundSet(idx:UInt) {
+        this.soundSetIndex = idx;
+		this.soundSet = this.soundSets[this.soundSetIndex];
+		this.cumPlaying = 0;
+		this.lastBreath = 0;
+		this.lastInBreath = 0;
+		this.lastSuddenBreath = 0;
+		this.lastRandomGag = 0;
+		this.lastRandomHold = 0;
+		this.lastRandomCough = 0;
+		this.lastRandomOpenCough = 0;
+		this.lastRandomDown = 0;
+		this.lastRandomSuck = 0;
+		this.lastRandomTouch = 0;
+		this.lastRandomSplat = 0;
+		this.lastRandomPassOut = 0;
+		this.lastRandomSwallow = 0;
+		this.lastRandomLick = 0;
+		this.lastRandomGrab = 0;
+		if (this.currentBreath != null) {
+			this.currentBreath.stop();
+			this.currentBreath = null;
+		}
+		if (this.currentOpenCough != null) {
+			this.currentOpenCough.stop();
+			this.currentOpenCough = null;
+		}
+		if (this.currentHoldSound != null) {
+			this.currentHoldSound.stop();
+			this.currentHoldSound = null;
+		}
+		if (this.currentCum != null) {
+			this.currentCum.stop();
+			this.currentCum = null;
+		}
+		this.stopRub();
 	}
 }
