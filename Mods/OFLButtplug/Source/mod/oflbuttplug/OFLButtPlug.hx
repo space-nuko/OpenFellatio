@@ -19,6 +19,7 @@ class Settings {
 	public var hjTwist:Bool = false;
 	public var updateInterval:Float = /*0*/ 0.1;
 	public var minimumMove:Float = 0.03;
+	public var minimumDuration:Float = 0.2;
 	public var positionMin:Float = 0.1;
 	public var positionMax:Float = 0.9;
 	public var smoothing:Float = /*1.0*/ 20.0;
@@ -255,7 +256,7 @@ class OFLButtPlug extends Mod {
 			var request:Array<Dynamic> = [];
 
 			if (positionChange >= settings.minimumMove) {
-				var dur:Float = Math.fround(timePassed * settings.smoothing * 1000);
+				var dur:Int = Std.int(Math.max(timePassed * settings.smoothing, settings.minimumDuration) * 1000);
 
 				if (device.DeviceMessages.LinearCmd) {
 					var linear:Dynamic = {
