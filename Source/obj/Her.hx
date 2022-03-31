@@ -846,7 +846,7 @@ class Her extends MovieClip {
     public var torsoIK:IKController;
     public var leftLegStartPoint:Point;
     public var mHer:Matrix;
-    public var mZero:Matrix;
+    public var mZero:Matrix = new Matrix();
     public var currentLeftArmPosition:UInt = 0;
     public var currentRightArmPosition:UInt = 0;
     public var leftArmFree:Bool = false;
@@ -2436,6 +2436,8 @@ class Her extends MovieClip {
 		this.transform.matrix = this.mHer;
 	}
 
+    private var __pointZero: Point = new Point();
+
 	public function updateElements() {
 		var _loc7_ = Math.NaN;
 		var _loc8_ = 0;
@@ -2452,8 +2454,8 @@ class Her extends MovieClip {
 		G.hairTop.transform.matrix = this.mHer;
 		G.hairCostumeOver.transform.matrix = this.mHer;
 		G.hairCostumeUnderOver.transform.matrix = this.mHer;
-		var _loc1_ = this.globalToLocal(G.sceneLayer.localToGlobal(new Point()));
-		this.mZero = new Matrix();
+		var _loc1_ = this.globalToLocal(G.sceneLayer.localToGlobal(__pointZero));
+		this.mZero.identity();
 		this.mZero.rotate(-this.rotation / 180 * Math.PI);
 		this.mZero.translate(_loc1_.x, _loc1_.y);
 		this.hairMidContainer.hairUnderLayer.transform.matrix = this.mZero;
@@ -2717,10 +2719,6 @@ class Her extends MovieClip {
 		var _loc10_ = Math.NaN;
 		var _loc1_:UInt = Std.int(Math.max(2, Math.ffloor(this.eyelidMotion.pos)));
 		var _loc2_ = _loc1_;
-		var _loc3_:Float = 0;
-		var _loc4_:Float = 0;
-		var _loc5_ = new Point();
-		var _loc6_ = new Point();
 		if (this.eyebrowOffsets.length > 0) {
 			_loc2_ += this.eyebrowOffsets[0];
 			this.eyebrowOffsets.splice(0, 1);
@@ -2771,8 +2769,9 @@ class Her extends MovieClip {
 	public function lookAt(param1:Point) {
 		var _loc2_ = this.globalToLocal(G.sceneLayer.localToGlobal(param1));
 		var _loc3_ = this.eyeAim;
-		var _loc4_ = new Point(_loc2_.x - _loc3_.x, _loc2_.y - _loc3_.y);
-		this.eyeMotion.target = Maths.clampf(Maths.getAngle(_loc4_.x, _loc4_.y), 75, 110);
+		var px = _loc2_.x - _loc3_.x;
+        var py = _loc2_.y - _loc3_.y;
+		this.eyeMotion.target = Maths.clampf(Maths.getAngle(px, py), 75, 110);
 		if (this.mood == AHEGAO_MOOD) {
 			this.eyeMotion.target = 62 + this.eyelidMotion.pos * 0.05 + Math.random() * 2 - 1;
 		}
@@ -2792,7 +2791,7 @@ class Her extends MovieClip {
 		// _loc1_.tintMultiplier = G.penisOut ? 0 : this.penisInMouthDist / 400 * G.him.getPenisWidthWithTwitch() * 0.6;
 		// this.head.jaw.jawBulge.transform.colorTransform = _loc1_;
 		var _loc2_:Point = this.globalToLocal(this.head.localToGlobal(new Point(this.head.neck.x,this.head.neck.y)));
-		var _loc3_:Point = this.globalToLocal(this.torso.localToGlobal(new Point(0,0)));
+		var _loc3_:Point = this.globalToLocal(this.torso.localToGlobal(__pointZero));
 		var _loc4_:Float = Maths.getAngle(_loc3_.x - _loc2_.x,_loc3_.y - _loc2_.y) + 180;
 		this.head.neck.rotation = _loc4_;
 		this.collarContainer.rotation = this.head.neck.rotation;

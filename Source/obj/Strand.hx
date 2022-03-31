@@ -17,8 +17,8 @@ class Strand extends MovieClip {
 	public var age:UInt = 0;
 	public var ageMax:UInt = 600;
 	public var myGravity:Float = Math.NaN;
-	public var interPoints:Array<InterPoints>;
-	public var offsetPoints:Array<InterPoints>;
+	public var interPoints:Array<InterPoints> = [];
+	public var offsetPoints:Array<InterPoints> = [];
 	public var topCap:Point;
 	public var bottomCap:Point;
 	public var maxInterpDist:Float = 1000;
@@ -522,34 +522,35 @@ class Strand extends MovieClip {
 		return true;
 	}
 
+    private var __gradientMat: Matrix = new Matrix();
+    private var __strandPoint1: Point = new Point();
+
 	public function renderStrand() {
 		var _loc1_:InterPoints = null;
 		var _loc2_:StrandLink = null;
 		var _loc3_:StrandLink = null;
 		var _loc4_:InterPoints = null;
 		var _loc5_:InterPoints = null;
-		var _loc8_ = Math.NaN;
 		this.generateInterpolationPoints();
 		this.graphics.clear();
-		var _loc6_:UInt = this.getRGB();
-		var _loc7_:Float = this.getAlpha();
-		var _loc9_ = new Point();
-		var _loc10_ = new Point();
-		var _loc11_ = new Matrix();
+		var gradientFill:UInt = this.getRGB();
+		var gradientAlpha:Float = this.getAlpha();
+		// var __strandPoint2 = new Point();
+		__gradientMat.identity();
 		var _loc12_:UInt = 1;
 		while (_loc12_ < this.strandLength) {
 			_loc2_ = this.links[_loc12_];
 			_loc3_ = this.links[_loc12_ - 1];
 			_loc4_ = this.offsetPoints[_loc12_];
 			_loc5_ = this.offsetPoints[_loc12_ - 1];
-			_loc9_.x = _loc2_.x - _loc3_.x;
-			_loc9_.y = _loc2_.y - _loc3_.y;
-			_loc10_.x = _loc3_.x + _loc9_.x * 0.5;
-			_loc10_.y = _loc3_.y + _loc9_.y * 0.5;
-			_loc8_ = Math.max(Math.abs(_loc9_.x), Math.abs(_loc9_.y));
-			_loc11_.createGradientBox(_loc8_, _loc8_, Math.atan2(_loc9_.y, _loc9_.x), Math.min(_loc2_.x, _loc3_.x), Math.min(_loc2_.y, _loc3_.y));
-			this.graphics.beginGradientFill(GradientType.LINEAR, [_loc6_, _loc6_],
-				[Math.min(1, _loc3_.density) * _loc7_, Math.min(1, _loc2_.density) * _loc7_], [100, 155], _loc11_);
+            var px = _loc2_.x - _loc3_.x;
+            var py = _loc2_.y - _loc3_.y;
+			// __strandPoint2.x = _loc3_.x + __strandPoint1.x * 0.5;
+			// __strandPoint2.y = _loc3_.y + __strandPoint1.y * 0.5;
+			var gradientSize = Math.max(Math.abs(px), Math.abs(py));
+			__gradientMat.createGradientBox(gradientSize, gradientSize, Math.atan2(py, px), Math.min(_loc2_.x, _loc3_.x), Math.min(_loc2_.y, _loc3_.y));
+			this.graphics.beginGradientFill(GradientType.LINEAR, [gradientFill, gradientFill],
+				[Math.min(1, _loc3_.density) * gradientAlpha, Math.min(1, _loc2_.density) * gradientAlpha], [100, 155], __gradientMat);
 			if (_loc3_.hasStoredInterPoints) {
 				_loc1_ = _loc3_.getStoredInterPoints();
 			} else {
@@ -595,6 +596,10 @@ class Strand extends MovieClip {
 		return _loc2_;
 	}
 
+    private var __interPoints1: Array<Point> = [];
+    private var __interPoints2: Array<Point> = [];
+    private var __interLines: Array<InterLines> = [];
+
 	public function generateInterpolationPoints() {
 		var _loc1_:StrandLink = null;
 		var _loc2_:StrandLink = null;
@@ -615,11 +620,11 @@ class Strand extends MovieClip {
 		var _loc21_:Maths.Intersection = null;
 		var _loc22_:Point = null;
 		var _loc23_:Point = null;
-		this.interPoints = new Array<InterPoints>();
-		this.offsetPoints = new Array<InterPoints>();
-		var _loc3_ = new Array<Point>();
-		var _loc4_ = new Array<Point>();
-		var _loc5_ = new Array<InterLines>();
+		this.interPoints.resize(0);
+		this.offsetPoints.resize(0);
+		__interPoints1.resize(0);
+		__interPoints2.resize(0);
+		__interLines.resize(0);
 		var _loc6_:UInt = 0;
 		while (_loc6_ < this.strandLength - 1) {
 			_loc1_ = this.links[_loc6_];
@@ -629,23 +634,23 @@ class Strand extends MovieClip {
 				_loc17_.x /= _loc18_;
 				_loc17_.y /= _loc18_;
 			}
-			_loc3_[_loc6_ + 1] = _loc17_;
+			__interPoints1[_loc6_ + 1] = _loc17_;
 			_loc6_++;
 		}
 		if (this.strandLength > 1) {
-			_loc3_[0] = new Point(_loc3_[1].x, _loc3_[1].y);
-			_loc3_[Std.int(this.strandLength)] = new Point(_loc3_[Std.int(this.strandLength - 1)].x, _loc3_[Std.int(this.strandLength - 1)].y);
+			__interPoints1[0] = new Point(__interPoints1[1].x, __interPoints1[1].y);
+			__interPoints1[Std.int(this.strandLength)] = new Point(__interPoints1[Std.int(this.strandLength - 1)].x, __interPoints1[Std.int(this.strandLength - 1)].y);
 		} else {
-			_loc3_[0] = new Point(0, 1);
-			_loc3_[1] = new Point(0, 1);
+			__interPoints1[0] = new Point(0, 1);
+			__interPoints1[1] = new Point(0, 1);
 		}
 		_loc6_ = 0;
 		while (_loc6_ < this.strandLength) {
 			_loc1_ = this.links[_loc6_];
-			if ((_loc7_ = new Point(_loc3_[_loc6_ + 1].x + _loc3_[_loc6_].x, _loc3_[_loc6_ + 1].y + _loc3_[_loc6_].y)).x == 0 && _loc7_.y == 0) {
-				_loc7_ = new Point(_loc3_[_loc6_].x, _loc3_[_loc6_].y);
+			if ((_loc7_ = new Point(__interPoints1[_loc6_ + 1].x + __interPoints1[_loc6_].x, __interPoints1[_loc6_ + 1].y + __interPoints1[_loc6_].y)).x == 0 && _loc7_.y == 0) {
+				_loc7_ = new Point(__interPoints1[_loc6_].x, __interPoints1[_loc6_].y);
 			}
-			_loc4_[_loc6_] = _loc7_;
+			__interPoints2[_loc6_] = _loc7_;
 			_loc19_ = this.getLinkThickness(_loc6_);
 			_loc8_ = new Point(_loc1_.x - _loc7_.y * _loc19_, _loc1_.y + _loc7_.x * _loc19_);
 			_loc9_ = new Point(_loc1_.x + _loc7_.y * _loc19_, _loc1_.y - _loc7_.x * _loc19_);
@@ -657,7 +662,7 @@ class Strand extends MovieClip {
 			this.offsetPoints[_loc6_] = new InterPoints(_loc8_, _loc9_);
 			_loc11_ = new Line(new Point(_loc8_.x + _loc7_.x, _loc8_.y + _loc7_.y), new Point(_loc8_.x - _loc7_.x, _loc8_.y - _loc7_.y));
 			_loc10_ = new Line(new Point(_loc9_.x + _loc7_.x, _loc9_.y + _loc7_.y), new Point(_loc9_.x - _loc7_.x, _loc9_.y - _loc7_.y));
-			_loc5_[_loc6_] = new InterLines(_loc11_, _loc10_);
+			__interLines[_loc6_] = new InterLines(_loc11_, _loc10_);
 			_loc6_++;
 		}
 		_loc6_ = 0;
@@ -670,7 +675,7 @@ class Strand extends MovieClip {
 			if (!_loc1_.hasStoredInterPoints) {
 				_loc14_ = new Point((_loc1_.x + _loc2_.x) / 2, (_loc1_.y + _loc2_.y) / 2);
 				if (_loc6_ > 0 && _loc6_ < this.strandLength - 2) {
-					if ((_loc20_ = Maths.intersect(_loc5_[_loc6_].inside, _loc5_[_loc6_ + 1].inside)).intersect == true) {
+					if ((_loc20_ = Maths.intersect(__interLines[_loc6_].inside, __interLines[_loc6_ + 1].inside)).intersect == true) {
 						if ((_loc16_ = (_loc15_ = new Point(_loc20_.x - _loc14_.x, _loc20_.y - _loc14_.y)).x * _loc15_.x
 							+ _loc15_.y * _loc15_.y) > this.maxInterpDist) {
 							_loc15_.x *= this.maxInterpDist / _loc16_;
@@ -684,7 +689,7 @@ class Strand extends MovieClip {
 							this.offsetPoints[_loc6_ + 1].inside.y - this.offsetPoints[_loc6_].inside.y);
 						_loc12_ = new Point(this.offsetPoints[_loc6_].inside.x + _loc22_.x / 2, this.offsetPoints[_loc6_].inside.y + _loc22_.y / 2);
 					}
-					if ((_loc21_ = Maths.intersect(_loc5_[_loc6_].outside, _loc5_[_loc6_ + 1].outside)).intersect == true) {
+					if ((_loc21_ = Maths.intersect(__interLines[_loc6_].outside, __interLines[_loc6_ + 1].outside)).intersect == true) {
 						if ((_loc16_ = (_loc15_ = new Point(_loc21_.x - _loc14_.x, _loc21_.y - _loc14_.y)).x * _loc15_.x
 							+ _loc15_.y * _loc15_.y) > this.maxInterpDist) {
 							_loc15_.x *= this.maxInterpDist / _loc16_;
@@ -699,11 +704,11 @@ class Strand extends MovieClip {
 						_loc13_ = new Point(this.offsetPoints[_loc6_].outside.x + _loc23_.x / 2, this.offsetPoints[_loc6_].outside.y + _loc23_.y / 2);
 					}
 				} else if (_loc6_ == 0) {
-					_loc12_ = Maths.normal(_loc5_[1].inside.p1, _loc5_[1].inside.p2, _loc14_);
-					_loc13_ = Maths.normal(_loc5_[1].outside.p1, _loc5_[1].outside.p2, _loc14_);
+					_loc12_ = Maths.normal(__interLines[1].inside.p1, __interLines[1].inside.p2, _loc14_);
+					_loc13_ = Maths.normal(__interLines[1].outside.p1, __interLines[1].outside.p2, _loc14_);
 				} else if (_loc6_ == this.strandLength - 2) {
-					_loc12_ = Maths.normal(_loc5_[Std.int(this.strandLength - 2)].inside.p1, _loc5_[Std.int(this.strandLength - 2)].inside.p2, _loc14_);
-					_loc13_ = Maths.normal(_loc5_[Std.int(this.strandLength - 2)].outside.p1, _loc5_[Std.int(this.strandLength - 2)].outside.p2, _loc14_);
+					_loc12_ = Maths.normal(__interLines[Std.int(this.strandLength - 2)].inside.p1, __interLines[Std.int(this.strandLength - 2)].inside.p2, _loc14_);
+					_loc13_ = Maths.normal(__interLines[Std.int(this.strandLength - 2)].outside.p1, __interLines[Std.int(this.strandLength - 2)].outside.p2, _loc14_);
 				}
 				this.interPoints[_loc6_] = new InterPoints(_loc12_, _loc13_);
 			}
