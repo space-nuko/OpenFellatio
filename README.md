@@ -18,6 +18,7 @@ Then setup the dependencies:
 
 ```
 haxelib install yaml
+haxelib install haxe-ws
 
 haxelib dev openfl path/to/openfl
 haxelib dev swf path/to/swf

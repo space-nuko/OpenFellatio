@@ -6,4 +6,11 @@ package sdtmods;
  */
 abstract class Mod
 {
+    public function init()
+    {
+    }
+
+    public function tick(deltaTime:Float)
+    {
+    }
 }

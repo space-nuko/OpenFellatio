@@ -1,5 +1,6 @@
 package;
 
+import haxe.Timer;
 import com.kircode.debug.FPS_Mem;
 import obj.Her;
 import obj.SceneLayer;
@@ -53,6 +54,8 @@ class Main extends Sprite {
 	var arrowKeyUp:Bool;
 	var arrowKeyDown:Bool;
 	var container:Sprite;
+
+    var __prevTime: Float;
 
 	public function new() {
 		super();
@@ -365,6 +368,8 @@ class Main extends Sprite {
          js.Browser.console.log(this);
 #end
 
+         G.modControl.initMods();
+
          startGame();
       }
 
@@ -376,12 +381,18 @@ class Main extends Sprite {
          }
          G.soundControl.startBreathing();
          this.currentMousePos = new Point(700,0);
+         __prevTime = Timer.stamp();
          G.gameRunning = true;
       }
 
       public function tick(param1:Event)
       {
          var cursorX: Float = 0;
+
+         var now = Timer.stamp();
+         var deltaTime = now - __prevTime;
+         __prevTime = now;
+
          // if(this.fadingBG)
          // {
          //    this.menuBG.alpha -= 0.025;
@@ -396,6 +407,7 @@ class Main extends Sprite {
          {
             if(!G.gamePaused)
             {
+               G.modControl.tick(deltaTime);
                if(!G.controlLocked)
                {
                   var isFF = G.animationControl.currentAnimationName == AnimationControl.FACE_FUCK;

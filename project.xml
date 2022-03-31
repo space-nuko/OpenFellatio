@@ -11,6 +11,9 @@
     <haxelib name="openfl" />
 	<haxelib name="swf" />
 	<haxelib name="yaml" />
+
+    <!-- TODO: mod-added haxelib deps? -->
+	<haxelib name="haxe-ws" />
 	
 	<assets path="Assets" rename="assets" exclude="*.swf"/>
 	<assets path="Assets/audio" rename="audio"/>

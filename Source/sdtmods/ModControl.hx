@@ -16,6 +16,7 @@ class ModControl
      * Sorted in dependency order.
      */
     public var loadedMods:Array<ModInstance> = [];
+    public var updateEachFrameUserMods:Array<Mod> = [];
 
     public var loadStage:LoadStage = LoadStage.NotLoaded;
 
@@ -25,7 +26,7 @@ class ModControl
 
     public function scanMods()
     {
-        if (loadStage != NotLoaded)
+        if (this.loadStage != NotLoaded)
             throw "Mods have already been loaded!";
 
         var graph: AdjacencyGraph<ModInstance> = { vertices: [], adjacents: [] };
@@ -61,11 +62,13 @@ class ModControl
     }
 
     public function loadCharacters() {
+        if (this.loadStage != ModsScanned)
+            throw "Mods have already been loaded!";
+
         // TODO O(n^2)
         for (mod in this.loadedMods) {
             for (assetPath in Assets.list(AssetType.TEXT)) {
                 var regex = new EReg(Path.join([mod.path, "Chars"]) + "/.*\\.yml$", "g");
-                trace(mod.path + " " + assetPath);
                 if (StringTools.startsWith(assetPath, mod.path) && regex.match(assetPath)) {
                     G.characterControl.characters.push(Character.loadFromYaml(assetPath));
                 }
@@ -75,6 +78,30 @@ class ModControl
             return Std.int(a.ordering - b.ordering);
         });
         G.baseCharNum = G.characterControl.characters.length;
+    }
+
+    public function initMods()
+    {
+        if (this.loadStage != ModsScanned)
+            throw "Mods have already been loaded!";
+
+        for (mod in this.loadedMods) {
+            if (mod.userMod != null)
+            {
+                mod.userMod.init();
+                updateEachFrameUserMods.push(mod.userMod);
+            }
+        }
+
+        this.loadStage = FullyLoaded;
+    }
+
+    public function tick(deltaTime:Float)
+    {
+        for (userMod in this.updateEachFrameUserMods)
+        {
+            userMod.tick(deltaTime);
+        }
     }
 }
 
