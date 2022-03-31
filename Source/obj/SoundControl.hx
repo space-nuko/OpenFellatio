@@ -7,7 +7,6 @@ import openfl.media.SoundChannel;
 import openfl.media.SoundMixer;
 import openfl.media.SoundTransform;
 import openfl.utils.Timer;
-import openfl.Assets;
 
 class SoundControl {
 	public var globalVol:Float = 1.0;

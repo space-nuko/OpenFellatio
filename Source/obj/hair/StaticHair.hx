@@ -40,22 +40,22 @@ class StaticHair implements IHair {
         var hairImportSource = new BitmapData(asset.width, asset.height, true, 0);
 		hairImportSource.draw(asset);
 
-		var _loc_1 = new Rectangle(0, 0, hairWidth, hairHeight);
+		var bitmapArea = new Rectangle(0, 0, hairWidth, hairHeight);
 
 		var hairOverData = new BitmapData(hairWidth, hairHeight, true, 0);
 		hairOverLayer = new Bitmap(hairOverData, PixelSnapping.AUTO, true);
-		hairOverData.copyPixels(hairImportSource, _loc_1, new Point());
-		_loc_1.x = hairWidth;
+		hairOverData.copyPixels(hairImportSource, bitmapArea, new Point());
+		bitmapArea.x = hairWidth;
 
 		var hairUnderData = new BitmapData(hairWidth, hairHeight, true, 0);
 		hairUnderLayer = new Bitmap(hairUnderData, PixelSnapping.AUTO, true);
-		hairUnderData.copyPixels(hairImportSource, _loc_1, new Point());
-		_loc_1.x = 0;
-		_loc_1.y = hairHeight;
+		hairUnderData.copyPixels(hairImportSource, bitmapArea, new Point());
+		bitmapArea.x = 0;
+		bitmapArea.y = hairHeight;
 
 		var hairBackData = new BitmapData(hairWidth, hairHeight, true, 0);
 		hairBackLayer = new Bitmap(hairBackData, PixelSnapping.AUTO, true);
-		hairBackData.copyPixels(hairImportSource, _loc_1, new Point());
+		hairBackData.copyPixels(hairImportSource, bitmapArea, new Point());
 
 		var scale = 1 / 0.85;
 		hairOverLayer.x = -360;

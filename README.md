@@ -20,6 +20,7 @@ Then setup the dependencies:
 
 ```
 haxelib install yaml
+haxelib install feathersui
 haxelib install haxe-ws
 
 haxelib dev openfl path/to/openfl

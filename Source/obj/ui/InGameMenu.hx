@@ -16,6 +16,9 @@ import openfl.utils.ByteArray;
 import obj.dialogue.DialogueLibrary;
 // import obj.graphics.PaletteUtils;
 // import obj.ui.ScrollingArea;
+import feathers.controls.*;
+import feathers.layout.*;
+import feathers.events.*;
 
 class InGameMenu extends MovieClip {
     public var lipstickSwatch:Array<AlphaRGBObject> = [
@@ -80,6 +83,16 @@ class InGameMenu extends MovieClip {
     public var irisTypes:Array<String>;
     public var skinTypes:Array<String>;
 
+    public var menuOpen:Bool = false;
+    public var menuOver:Bool = false;
+    public var overTimer:UInt = 0;
+    public var offTimer:Int = 0;
+    public var openDelay:UInt = 15;
+    public var closeDelay:UInt = 15;
+    public var currentTab:UInt = 1;
+
+    public var drawer: Drawer;
+
     public function new() {
         super();
 
@@ -92,6 +105,61 @@ class InGameMenu extends MovieClip {
         // TODO
 
         G.her.setMenu(null, null);
+
+        this.drawer = new Drawer();
+        G.container.addChild(drawer);
+
+		// var content = new Panel();
+		// var contentLayout = new VerticalLayout();
+		// contentLayout.paddingTop = 10.0;
+		// contentLayout.paddingRight = 10.0;
+		// contentLayout.paddingBottom = 10.0;
+		// contentLayout.paddingLeft = 10.0;
+		// contentLayout.gap = 10.0;
+		// contentLayout.horizontalAlign = CENTER;
+		// contentLayout.verticalAlign = MIDDLE;
+		// content.layout = contentLayout;
+
+		// var header = new Header();
+		// header.text = "Drawer";
+		// content.header = header;
+
+		// var backButton = new Button();
+		// backButton.text = "Back";
+		// backButton.layoutData = AnchorLayoutData.middleLeft(0.0, 10.0);
+		// header.leftView = backButton;
+
+		// var openButton = new Button();
+		// openButton.text = "Open Drawer";
+		// openButton.addEventListener(TriggerEvent.TRIGGER, (event) -> { this.drawer.opened = true; });
+		// content.addChild(openButton);
+
+        // this.drawer.content = content;
+
+		var drawer = new Panel();
+		var drawerLayout = new VerticalLayout();
+		drawerLayout.paddingTop = 10.0;
+		drawerLayout.paddingRight = 10.0;
+		drawerLayout.paddingBottom = 10.0;
+		drawerLayout.paddingLeft = 10.0;
+
+		drawerLayout.horizontalAlign = CENTER;
+		drawerLayout.verticalAlign = MIDDLE;
+		drawer.layout = drawerLayout;
+
+		var closeButton = new Button();
+		closeButton.text = "Close Drawer";
+		closeButton.addEventListener(TriggerEvent.TRIGGER, (event) -> { this.drawer.closed = true; });
+		drawer.addChild(closeButton);
+
+        this.drawer.drawer = drawer;
+        this.drawer.pullableEdge = RelativePosition.BOTTOM;
+
+        this.drawer.addEventListener(FeathersEvent.CLOSING, (event) -> { this.closeMenu(); });
+        this.drawer.overlaySkin = null;
+        this.drawer.swipeOpenEnabled = true;
+        this.drawer.swipeCloseEnabled = true;
+        this.drawer.simulateTouch = true;
 
          // var _loc1_:UInt = 0;
          // while(_loc1_ <= 8)
@@ -488,29 +556,95 @@ class InGameMenu extends MovieClip {
 
 	public function mouseMoved(param1:Float, param2:Float) {}
 
-	public function tick(param1:Event) {}
+    public function tick(param1:Event) {
+        if (G.hoverOptions && G.gameRunning && !G.gamePaused && !this.menuOpen && this.menuOver && !G.penisOut) {
+            ++this.overTimer;
+            if (this.overTimer >= this.openDelay) {
+                this.openMenu();
+            }
+        }
+        if (G.hoverOptions && this.menuOpen && !this.menuOver) {
+            ++this.offTimer;
+            if ((this.offTimer : UInt) >= this.closeDelay) {
+                this.closeMenu();
+            }
+        }
+    }
 
-	public function finishSlideout() {}
+    public function finishSlideout() {}
 
-	public function rolledOver(param1:MouseEvent) {}
+    public function rolledOver(param1:MouseEvent) {}
 
-	public function rolledOut(param1:MouseEvent) {}
+    public function rolledOut(param1:MouseEvent) {}
 
-	public function drawerArrowClicked(param1:MouseEvent) {}
+    public function drawerArrowClicked(param1:MouseEvent) {}
 
 	public function menuClicked(param1:MouseEvent) {}
 
-	public function toggleMenu(param1:Bool = false, param2:UInt = 1) {}
+	public function toggleMenu(withOffTimer:Bool = false, tabIndex:UInt = 1) {
+         if(tabIndex == this.currentTab)
+         {
+            if(this.menuOpen)
+            {
+               this.closeMenu();
+            }
+            else
+            {
+               this.openMenu(withOffTimer);
+            }
+         }
+         else if(this.menuOpen)
+         {
+            this.currentTab = tabIndex;
+            this.updateTabs();
+         }
+         else
+         {
+            this.currentTab = tabIndex;
+            this.updateTabs();
+            this.openMenu(withOffTimer);
+         }
+    }
 
-	public function openMenu(param1:Bool = false) {}
+	public function openMenu(withOffTimer:Bool = false) {
+        G.gamePaused = true;
+        // this.slidingIn = true;
+        // this.slidingOut = false;
+        this.menuOpen = true;
+        this.mouseEnabled = true;
+        Mouse.show();
+        if (withOffTimer) {
+            this.offTimer = -15;
+        }
+        this.drawer.opened = true;
+        // if (this.drawerArrowShowing) {
+        //     // this.menuDrawerLip.arrow.gotoAndPlay("FadeOut");
+        //     this.drawerArrowShowing = false;
+        // }
+    }
 
-	public function closeMenu() {}
+    public function closeMenu() {
+        if (this.menuOpen) {
+            G.gamePaused = false;
+            G.inTextField = false;
+            this.drawer.opened = false;
+            this.menuOpen = false;
+            // this.slidingOut = true;
+            // this.slidingIn = false;
+            // this.clipboardSwatch.visible = false;
+            if (G.showMouse) {
+                Mouse.show();
+            } else if (G.gameRunning) {
+                Mouse.hide();
+            }
+        }
+    }
 
-	public function closeClicked(param1:MouseEvent) {}
+    public function closeClicked(param1:MouseEvent) {}
 
-	public function tab1Clicked(param1:MouseEvent) {}
+    public function tab1Clicked(param1:MouseEvent) {}
 
-	public function tab2Clicked(param1:MouseEvent) {}
+    public function tab2Clicked(param1:MouseEvent) {}
 
 	public function tab3Clicked(param1:MouseEvent) {}
 

@@ -11,6 +11,7 @@
     <haxelib name="openfl" />
 	<haxelib name="swf" />
 	<haxelib name="yaml" />
+	<haxelib name="feathersui" />
 
     <!-- TODO: mod-added haxelib deps? -->
 	<haxelib name="haxe-ws" />
