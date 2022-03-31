@@ -913,6 +913,7 @@ class Her extends MovieClip {
     public var blinkTimer:UInt = 0;
     public var winceTimer:UInt = 0;
     public var lookChangeTimer:Int = -1;
+    public var lookChangeMode:LookChangeMode = Default;
     public var cumInEye:UInt = 0;
     public var leftEyebrowNormalTween:LinearTween;
     public var rightEyebrowNormalTween:LinearTween;
@@ -2627,15 +2628,26 @@ class Her extends MovieClip {
 		}
 		this.head.cheekBulge.alpha += (this.cheekBulgeTarget - this.head.cheekBulge.alpha) / 5;
 		this.head.cheekSuck.alpha += (this.cheekSuckTarget - this.head.cheekSuck.alpha) / 5;
-		if(this.lookChangeTimer > 0)
-		{
-		   --this.lookChangeTimer;
-		}
-		else if(this.lookChangeTimer == 0)
-		{
-		   this.currentLookTarget = this.nextLookTarget;
-		   this.lookChangeTimer = -1;
-		}
+        if (this.lookChangeMode == Default) {
+		   if(this.lookChangeTimer > 0)
+		   {
+		      --this.lookChangeTimer;
+		   }
+		   else if(this.lookChangeTimer == 0)
+		   {
+		      this.currentLookTarget = this.nextLookTarget;
+		      this.lookChangeTimer = -1;
+		   }
+        }
+        else if (this.lookChangeMode == Down) {
+            this.currentLookTarget = this.eyesDown;
+        }
+        else if (this.lookChangeMode == HisFace) {
+            this.currentLookTarget = this.hisFace;
+        }
+        else if (this.lookChangeMode == Unfocused) {
+            this.currentLookTarget = this.eyesUnfocused;
+        }
 		this.lookAt(this.currentLookTarget);
 		if(this.eyelidMotion.shock > 0)
 		{
@@ -3452,6 +3464,26 @@ class Her extends MovieClip {
 		this.droolingCum = true;
 	}
 
+    public function setLookChangeMode(mode:LookChangeMode) {
+        var target = new Point();
+
+        this.lookChangeMode = mode;
+
+        switch (this.lookChangeMode) {
+            case HisFace:
+                target = this.hisFace;
+            case Unfocused:
+                target = this.eyesUnfocused;
+            case Down:
+            case Default:
+            default:
+                target = this.eyesDown;
+        }
+
+        this.currentLookTarget = target;
+        this.changeLookTarget(target);
+    }
+
 	public function getRandomMotion():Float {
 		if (this.randomMotion.next > 0) {
 			--this.randomMotion.next;
@@ -3488,4 +3520,12 @@ class Her extends MovieClip {
 	function get_penisOn():Bool {
 		return this.penisControl.currentPenisID > 0;
 	}
+}
+
+enum LookChangeMode
+{
+    Default;
+    Down;
+    HisFace;
+    Unfocused;
 }

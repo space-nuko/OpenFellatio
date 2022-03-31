@@ -264,7 +264,7 @@ class Tears extends openfl.display.MovieClip {
 					__matrix.rotate(-rot);
 					__matrix.translate(this.tearList[i].x, this.tearList[i].y);
 
-					// this.tearsData.draw(this.tearGraphic, __matrix, __color);
+					this.tearsData.draw(this.tearGraphic, __matrix, __color);
 					var tearAge = this.tearList[i].getAge();
 
 					if (G.mascara && this.tearList[i].hasMascara) {
@@ -276,7 +276,7 @@ class Tears extends openfl.display.MovieClip {
                             __color.greenOffset = this.mascaraRGB.g;
                             __color.blueOffset = this.mascaraRGB.b;
 
-							// this.mascaraData.draw(this.mascaraGraphic, __matrix, __color);
+							this.mascaraData.draw(this.mascaraGraphic, __matrix, __color);
 						}
 					}
 				}

@@ -23,6 +23,8 @@ import openfl.utils.AssetLibrary;
 // import openfl.utils.ByteArray;
 // import obj.CustomElementLoader;
 // import obj.ui.IMouseWheelScrollable;
+using haxe.EnumTools;
+using haxe.EnumTools.EnumValueTools;
 
 class Main extends Sprite {
 	// public var preloaderBG:MenuBackground;
@@ -633,6 +635,14 @@ class Main extends Sprite {
                case Keyboard.Q:
                   G.toggleQuality();
                   G.saveData.saveOptionsData();
+
+               // Some keybinds ported from loader
+               case Keyboard.NUMBER_4:
+                   var mode = G.her.lookChangeMode;
+                   var index = mode.getIndex() + 1;
+                   if (index >= obj.Her.LookChangeMode.getConstructors().length)
+                       index = 0;
+                   G.her.setLookChangeMode(obj.Her.LookChangeMode.createByIndex(index));
             }
          }
       }
