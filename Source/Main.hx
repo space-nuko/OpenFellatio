@@ -334,6 +334,7 @@ class Main extends Sprite {
          G.strandControl.maxStrands = 1;
          G.tears = false;
          G.mascara = false;
+         G.sweat = false;
 
          // Setup masking for her eye
          // Uses GL masking this time
@@ -352,6 +353,8 @@ class Main extends Sprite {
          // I don't know why but only her back glitches out after a while
          G.her.torso.back.cacheAsBitmap = false;
          G.her.torso.backMask.cacheAsBitmap = false;
+         G.her.head.cacheAsBitmap = false;
+         G.her.head.neck.cacheAsBitmap = true;
 
 #if js
          untyped js.Browser.console.log($hxClasses);
