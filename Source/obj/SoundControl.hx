@@ -209,9 +209,9 @@ class SoundControl {
 		return this.breathing;
 	}
 
-	public function tick() {
+	public function tick(deltaTime:Float) {
 		if (this.fadingBreath) {
-			this.currentBreathVolume = Math.max(0, this.currentBreathVolume - 0.25);
+			this.currentBreathVolume = Math.max(0, this.currentBreathVolume - 0.25 * deltaTime);
 			if (this.currentBreathVolume <= 0) {
 				if (this.currentBreath != null) {
 					this.currentBreath.stop();
@@ -678,7 +678,7 @@ class SoundControl {
 	public function coughFinished(param1:Event) {
 		this.resumeDialogue();
 		this.currentOpenCough.removeEventListener(Event.SOUND_COMPLETE, this.coughFinished);
-		var _loc2_ = new Timer(Math.ffloor(Math.random() * 100), 1);
+		var _loc2_ = new Timer(Math.ffloor(Math.random() * 100 * G.timeScale), 1);
 		_loc2_.addEventListener(TimerEvent.TIMER_COMPLETE, this.delayedCoughFinish);
 		_loc2_.start();
 	}

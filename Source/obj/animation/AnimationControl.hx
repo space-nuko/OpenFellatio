@@ -72,8 +72,8 @@ class AnimationControl {
         animations[FACE_FUCK] = faceFuckAnimation;
 	}
 
-	public function stepAnimation() {
-		var _loc1_:Float = G.her.move(G.currentPos.x, G.currentPos.y);
+	public function stepAnimation(deltaTime:Float = 0.0) {
+		var _loc1_:Float = G.her.move(deltaTime, G.currentPos.x, G.currentPos.y);
 		G.herCurrentPos = _loc1_;
 		G.him.move(_loc1_, G.currentPos.x, G.currentPos.y);
 		G.her.updateArms();
@@ -123,12 +123,12 @@ class AnimationControl {
 		G.him.animationChanged();
 	}
 
-	public function update() {
+	public function update(deltaTime:Float) {
 		if (G.penisOut && this.linearPenisOutTransition < 1) {
-			this.linearPenisOutTransition = Math.min(1, this.linearPenisOutTransition + 0.1);
+			this.linearPenisOutTransition = Math.min(1, this.linearPenisOutTransition + 0.1 * deltaTime);
 			this.smoothedPenisOutTransition = (1 - Math.cos(this.linearPenisOutTransition * Math.PI)) * 0.5;
 		} else if (!G.penisOut && this.linearPenisOutTransition > 0) {
-			this.linearPenisOutTransition = Math.max(0, this.linearPenisOutTransition - 0.1);
+			this.linearPenisOutTransition = Math.max(0, this.linearPenisOutTransition - 0.1 * deltaTime);
 			this.smoothedPenisOutTransition = (1 - Math.cos(this.linearPenisOutTransition * Math.PI)) * 0.5;
 		}
 	}

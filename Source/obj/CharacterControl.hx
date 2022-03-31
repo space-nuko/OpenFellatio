@@ -350,7 +350,7 @@ class CharacterControl {
 		}
 	}
 
-	public function tick() {
+	public function tick(deltaTime:Float) {
 		if (this.waitingToSetHeadwearPosition) {
 			G.characterControl.tryToLandHeadwear();
 			this.waitingToSetHeadwearPosition = false;

@@ -74,6 +74,7 @@ class G {
 	public static var gravity:Float = 5.5;
 	public static var friction:Float = 1.18;
 	public static var spitMass:Float = 0.4;
+    public static var timeScale:Float = 2.0;
 	public static var massGenerateSpeed:Float = 0.001;
 	public static var massFlow:Float = 0.005;
 	public static var maxMass:Float = 1.1;

@@ -909,7 +909,7 @@ class Her extends MovieClip {
     public var eyelidMotion:EyelidMotion = new EyelidMotion(50, 0, 50, false, 0);
     public var eyePosBlink:UInt = 150;
     public var eyePosWince:UInt = 200;
-    public var blinkTime:UInt = 1;
+    public var blinkTime:Float = 1;
     public var blinkTimer:UInt = 0;
     public var winceTimer:UInt = 0;
     public var lookChangeTimer:Int = -1;
@@ -1688,10 +1688,10 @@ class Her extends MovieClip {
 		this.updateElements();
 	}
 
-	public function move(param1:Float, param2:Float):Float {
+	public function move(deltaTime:Float, param1:Float, param2:Float):Float {
 		var _loc4_:Point = null;
-		G.animationControl.update();
-		this.updateBlink();
+		G.animationControl.update(deltaTime);
+		this.updateBlink(deltaTime);
 		Sweat.staticTick();
 		if (Math.random() < G.breathLevel / G.breathLevelMax && Math.random() > 0.9) {
 			if (Math.random() > 0.5) {
@@ -1957,9 +1957,9 @@ class Her extends MovieClip {
 		}
 	}
 
-	public function updateBlink() {
+	public function updateBlink(deltaTime:Float) {
 		if (this.blinkTime > 0) {
-			--this.blinkTime;
+			this.blinkTime -= deltaTime;
 		} else {
 			this.blink();
 		}
@@ -1967,9 +1967,9 @@ class Her extends MovieClip {
 
 	public function blink(param1:Bool = true) {
 		if (Math.random() > 0.8) {
-			this.blinkTime = Math.floor(Math.random() * 5 + 5);
+			this.blinkTime = Math.random() * 5 + 5;
 		} else {
-			this.blinkTime = Math.floor(Math.random() * 60 + 90);
+			this.blinkTime = Math.random() * 60 + 90;
 		}
 		this.blinkTimer = 2;
 		this.tears.releaseTears();
