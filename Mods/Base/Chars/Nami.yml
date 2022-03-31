@@ -8,10 +8,9 @@ char:
   eyebrowType: 2
   earType: "Small"
   breastSize: 104
-  hairTop: "Nami"
-  hairUnder: "Nami"
-  hairBack: "Nami"
-  hairBottom: "Nami"
+  hair:
+    type: obj.hair.BuiltInHair
+    frame: "Nami"
   costume: "nude"
   bodyScale: 1.021
   irisFill: "#4C2200"

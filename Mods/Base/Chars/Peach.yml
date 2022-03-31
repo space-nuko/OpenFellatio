@@ -5,10 +5,9 @@ char:
   skinType: 0
   iris: "normal"
   breastSize: 100
-  hairTop: "Peach"
-  hairUnder: "Peach"
-  hairBack: "Peach"
-  hairBottom: "Peach"
+  hair:
+    type: obj.hair.BuiltInHair
+    frame: "Peach"
   costume: "nude"
   earring: "Ball"
   earringFill: "#125AB8"

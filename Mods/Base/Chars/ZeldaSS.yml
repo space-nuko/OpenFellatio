@@ -5,10 +5,9 @@ char:
   skinType: 0
   iris: "wide"
   breastSize: 66
-  hairTop: "ZeldaSS"
-  hairUnder: "ZeldaSS"
-  hairBack: "ZeldaSS"
-  hairBottom: "ZeldaSS"
+  hair:
+    type: obj.hair.BuiltInHair
+    frame: "ZeldaSS"
   costume: "nude"
   earType: "Elf"
   bodyScale: 0.9925

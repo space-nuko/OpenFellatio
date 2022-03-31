@@ -5,7 +5,7 @@ import obj.Rope;
 import obj.CostumeElement;
 import chars.CharacterElement;
 
-class TifaLockhartHair extends CharacterElement {
+class TifaHair extends CharacterElement {
 	public function new() {}
 
 	override public function get_type() {

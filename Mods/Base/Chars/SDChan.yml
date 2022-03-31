@@ -5,10 +5,9 @@ char:
   skinType: 0
   iris: "normal"
   breastSize: 70
-  hairTop: "SDChan"
-  hairUnder: "SDChan"
-  hairBack: "SDChan"
-  hairBottom: "SDChan"
+  hair:
+    type: obj.hair.BuiltInHair
+    frame: "SDChan"
   costume: "nude"
   irisFill: "#386489"
   eyebrowFill: "#594333"

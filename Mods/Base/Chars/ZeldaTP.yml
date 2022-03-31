@@ -5,10 +5,9 @@ char:
   skinType: 0
   iris: "normal"
   breastSize: 76
-  hairTop: "ZeldaTP"
-  hairUnder: "ZeldaTP"
-  hairBack: "ZeldaTP"
-  hairBottom: "ZeldaTP"
+  hair:
+    type: obj.hair.BuiltInHair
+    frame: "ZeldaTP"
   costume: "nude"
   earType: "Elf"
   headwear: "Zelda's Circlet"

@@ -5,10 +5,9 @@ char:
   ordering: 7
   iris: "normal"
   breastSize: 100
-  hairTop: "JillValentine"
-  hairUnder: "JillValentine"
-  hairBack: "JillValentine"
-  hairBottom: "JillValentine"
+  hair:
+    type: obj.hair.BuiltInHair
+    frame: "JillValentine"
   costume: "nude"
   bodyScale: 1.025
   irisFill: "#425A78"

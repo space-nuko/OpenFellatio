@@ -5,10 +5,9 @@ char:
   skinType: 1
   iris: "bright"
   breastSize: 75
-  hairTop: "Rei"
-  hairUnder: "Rei"
-  hairBack: "Rei"
-  hairBottom: "Rei"
+  hair:
+    type: obj.hair.BuiltInHair
+    frame: "Rei"
   costume: "nude"
   bodyScale: 0.995
   irisFill: "#47121C"

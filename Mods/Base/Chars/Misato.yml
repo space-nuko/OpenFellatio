@@ -5,10 +5,9 @@ char:
   skinType: 0
   iris: "bright"
   breastSize: 110
-  hairTop: "Misato"
-  hairUnder: "Misato"
-  hairBack: "Misato"
-  hairBottom: "Misato"
+  hair:
+    type: obj.hair.BuiltInHair
+    frame: "Misato"
   costume: "nude"
   earring: "Stud"
   earringFill: "#CEDADF"

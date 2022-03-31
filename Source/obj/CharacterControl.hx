@@ -634,16 +634,14 @@ class CharacterControl {
 		// }
 		// G.customElementLoader.clearModTypes([ModTypes.HAIR, ModTypes.DYNAMIC_HAIR, ModTypes.HAIR_COSTUME]);
 		this.clearElements();
-		var chara:Character = this.characters[param1];
-		G.her.hairTop.gotoAndStop(chara.hairTop);
-		G.her.hairMidContainer.hairUnder.gotoAndStop(chara.hairUnder);
-		G.her.hairMidContainer.hairBottom.gotoAndStop(chara.hairBottom);
-		G.her.hairBackContainer.hairBack.gotoAndStop(chara.hairBack);
+		var char:Character = this.characters[param1];
+        this.characters[this.currentHair].hair.unapply(char);
+        char.hair.apply(char);
 		if (param2) {
-			this.setEyebrowFill(chara.eyebrowFill);
-			this.setEyebrowLine(chara.eyebrowLine);
+			this.setEyebrowFill(char.eyebrowFill);
+			this.setEyebrowLine(char.eyebrowLine);
 		}
-		this.currentElements = chara.generateElements();
+		this.currentElements = char.generateElements();
 		for (elem in this.currentElements) {
 			elem.addEventListener("toggled", this.currentElementToggled, false, 0, true);
 		}

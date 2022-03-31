@@ -5,10 +5,9 @@ char:
   skinType: 0
   iris: "bright"
   breastSize: 70
-  hairTop: "Asuka"
-  hairUnder: "Asuka"
-  hairBack: "Asuka"
-  hairBottom: "Asuka"
+  hair:
+    type: obj.hair.BuiltInHair
+    frame: "Asuka"
   costume: "nude"
   bodyScale: 1.005
   irisFill: "#173966"

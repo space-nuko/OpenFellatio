@@ -7,10 +7,9 @@ char:
   noseType: 1
   iris: "sharp"
   breastSize: 105
-  hairTop: "Android18"
-  hairUnder: "Android18"
-  hairBack: "Android18"
-  hairBottom: "Android18"
+  hair:
+    type: obj.hair.BuiltInHair
+    frame: "Android18"
   costume: "nude"
   earring: "Ring"
   earringFill: "#99150D"

@@ -6,10 +6,9 @@ char:
   noseType: 1
   iris: "bright"
   breastSize: 110
-  hairTop: "Seras"
-  hairUnder: "Seras"
-  hairBack: "Seras"
-  hairBottom: "Seras"
+  hair:
+    type: obj.hair.BuiltInHair
+    frame: "Seras"
   costume: "nude"
   bodyScale: 1.025
   irisFill: "#620A0E"

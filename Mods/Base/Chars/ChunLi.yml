@@ -5,10 +5,9 @@ char:
   skinType: 0
   iris: "normal"
   breastSize: 92
-  hairTop: "ChunLi"
-  hairUnder: "ChunLi"
-  hairBack: "ChunLi"
-  hairBottom: "ChunLi"
+  hair:
+    type: obj.hair.BuiltInHair
+    frame: "ChunLi"
   costume: "nude"
   headwear: "Ox Horns"
   headwearFill: "#EFFFF8"

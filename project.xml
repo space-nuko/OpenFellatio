@@ -24,7 +24,7 @@
     <!-- All mod code has to be under the "mod" package -->
     <!-- because of dead code elimination. -->
     <haxeflag name="--macro" value='include("mod")' />
-
+    <haxeflag name="--macro" value='include("obj.hair")' />
 
     <haxeflag name="-D" value='ofl_disable_cacheasbitmap' />
 

@@ -5,10 +5,9 @@ char:
   skinType: 0
   iris: "solid"
   breastSize: 70
-  hairTop: "Ino"
-  hairUnder: "Ino"
-  hairBack: "Ino"
-  hairBottom: "Ino"
+  hair:
+    type: obj.hair.BuiltInHair
+    frame: "Ino"
   costume: "nude"
   earring: "Stud"
   earringFill: "#CEDADF"

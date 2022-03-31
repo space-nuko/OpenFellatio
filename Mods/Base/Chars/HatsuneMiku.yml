@@ -5,10 +5,9 @@ char:
   skinType: 0
   iris: "bright"
   breastSize: 63
-  hairTop: "Miku"
-  hairUnder: "Miku"
-  hairBack: "Miku"
-  hairBottom: "Miku"
+  hair:
+    type: obj.hair.BuiltInHair
+    frame: "Miku"
   costume: "nude"
   bodyScale: 1.006
   irisFill: "#2C606C"

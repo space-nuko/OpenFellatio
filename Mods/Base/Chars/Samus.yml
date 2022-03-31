@@ -5,10 +5,9 @@ char:
   skinType: 0
   iris: "normal"
   breastSize: 80
-  hairTop: "Samus"
-  hairUnder: "Samus"
-  hairBack: "Samus"
-  hairBottom: "Samus"
+  hair:
+    type: obj.hair.BuiltInHair
+    frame: "Samus"
   costume: "nude"
   bodyScale: 1.028
   irisFill: "#386489"

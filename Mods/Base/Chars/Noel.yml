@@ -5,10 +5,9 @@ char:
   skinType: 0
   iris: "bright"
   breastSize: 40
-  hairTop: "Noel"
-  hairUnder: "Noel"
-  hairBack: "Noel"
-  hairBottom: "Noel"
+  hair:
+    type: obj.hair.BuiltInHair
+    frame: "Noel"
   costume: "nude"
   headwear: "Noel's Cap"
   headwearFill: "#2F38DD"

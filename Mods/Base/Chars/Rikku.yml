@@ -5,10 +5,9 @@ char:
   skinType: 0
   iris: "swirl"
   breastSize: 88
-  hairTop: "Rikku"
-  hairUnder: "Rikku"
-  hairBack: "Rikku"
-  hairBottom: "Rikku"
+  hair:
+    type: obj.hair.BuiltInHair
+    frame: "Rikku"
   costume: "nude"
   earring: "Feather"
   earringFill: "#DE5606"

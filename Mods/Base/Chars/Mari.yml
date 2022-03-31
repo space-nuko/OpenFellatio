@@ -5,10 +5,9 @@ char:
   skinType: 0
   iris: "normal"
   breastSize: 80
-  hairTop: "Mari"
-  hairUnder: "Mari"
-  hairBack: "Mari"
-  hairBottom: "Mari"
+  hair:
+    type: obj.hair.BuiltInHair
+    frame: "Mari"
   costume: "nude"
   bodyScale: 1.006
   irisFill: "#2E6F64"

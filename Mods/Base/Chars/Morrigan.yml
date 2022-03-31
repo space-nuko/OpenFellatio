@@ -5,10 +5,9 @@ char:
   skinType: 0
   iris: "bright"
   breastSize: 110
-  hairTop: "Morrigan"
-  hairUnder: "Morrigan"
-  hairBack: "Morrigan"
-  hairBottom: "Morrigan"
+  hair:
+    type: obj.hair.BuiltInHair
+    frame: "Morrigan"
   costume: "nude"
   headwear: "Bat Wings"
   headwearFill: "#181818"

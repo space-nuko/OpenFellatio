@@ -1,0 +1,17 @@
+char:
+  charName: "Asuna"
+  charShortName: "Asuna"
+  ordering: 0
+  skinType: 0
+  iris: "bright"
+  breastSize: 110
+  hair:
+    type: obj.hair.StaticHair
+    assetPath: "Mods/TestMod/Hairs/Asuna Yuuki (normal) V2 - SAO 2.png"
+  costume: "nude"
+  bodyScale: 1.025
+  irisFill: "#235943"
+  eyebrowFill: "#235943"
+  eyebrowLine: "#0B3A2D"
+  scalpFill: "#235943"
+  bg: 2

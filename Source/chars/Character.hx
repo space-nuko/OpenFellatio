@@ -5,6 +5,8 @@ import obj.AlphaRGBObject;
 import obj.CostumeElement;
 import openfl.Assets;
 import yaml.Yaml;
+import obj.hair.IHair;
+import obj.hair.BuiltInHair;
 import utils.TypeUtils;
 using ArrayTools;
 
@@ -18,6 +20,7 @@ class Character {
 	@:save public var earType:String = "normal";
 	@:save public var iris:String = "normal";
 	@:save public var breastSize:UInt = 70;
+	public var hair:IHair = new BuiltInHair("SDChan");
 	@:save public var hairTop:String = "SDChan";
 	@:save public var hairUnder:String = "SDChan";
 	@:save public var hairBack:String = "SDChan";
@@ -86,6 +89,13 @@ class Character {
     public function fromYaml(yaml: Dynamic)
     {
         obj.serial.Serial.fromYaml(yaml);
+
+        if (yaml.exists("hair")) {
+            var hairDict = yaml.get("hair");
+            var klassName = cast(hairDict.get("type"), String);
+            this.hair = cast(TypeUtils.tryInstantiate(klassName, IHair), IHair);
+            this.hair.fromYaml(hairDict);
+        }
 
         this.elements.resize(0);
 
