@@ -1401,13 +1401,13 @@ class CharacterControl {
 	public function nextCharacter() {
         // TODO
 		// G.inGameMenu.characterMenu.selectNextCharacter();
-        tryToSetChar(currentChar - 1);
+        tryToSetChar(currentChar + 1);
 	}
 
 	public function prevCharacter() {
         // TODO
 		// G.inGameMenu.characterMenu.selectPrevCharacter();
-        tryToSetChar(currentChar + 1);
+        tryToSetChar(currentChar - 1);
     }
 
     public function toggleBackground() {
