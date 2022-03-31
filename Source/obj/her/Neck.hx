@@ -62,6 +62,14 @@ class Neck extends MovieClip {
 	@:keep public var highlight10(default, null):MovieClip;
 	@:keep public var highlight11(default, null):MovieClip;
 
+    var __neckPoints: Array<Point> = [];
+	var __neckArr1A: Array<Point> = [];
+	var __neckArr1B: Array<Point> = [];
+	var __neckArr2A: Array<Point> = [];
+	var __neckArr2B: Array<Point> = [];
+	var __neckArr3A: Array<Point> = [];
+	var __neckArr3B: Array<Float> = [];
+
 	public function new() {
 		var library = swf.exporters.animate.AnimateLibrary.get("sdt");
 		var symbol = library.symbols.get(992);
@@ -164,157 +172,186 @@ class Neck extends MovieClip {
 		this.frontEndPoint = this.neckPoints.length;
 		this.neckPoints = this.neckPoints.concat(_loc1_.slice(Std.int(_loc12_ + 1)));
 		this.numPoints = this.neckPoints.length;
-	}
 
-	public function swallow() {
-		this.swallowing = true;
+        __neckPoints = [];
+        __neckArr1A = [];
+        __neckArr1B = [];
+        __neckArr2A = [];
+        __neckArr2B = [];
+        __neckArr3A = [];
+        __neckArr3B = [];
+        for (point in this.neckPoints) {
+            __neckPoints.push(point.clone());
+            __neckArr1A.push(new Point());
+            __neckArr1B.push(new Point());
+            __neckArr2A.push(new Point());
+            __neckArr2B.push(new Point());
+            __neckArr3A.push(new Point());
+            __neckArr3B.push(0);
+        }
+    }
+
+    public function swallow() {
+        this.swallowing = true;
 		this.swallowProgress = this.swallowStart;
 	}
 
+    private static inline var NECK_FACTOR: Float = 0.6;
+
 	public function render(param1:Float) {
-		var _loc2_:UInt = 0;
-		var _loc4_:Point = null;
-		var _loc14_ = Math.NaN;
-		var _loc15_ = Math.NaN;
-		var _loc16_ = Math.NaN;
-		var _loc17_ = Math.NaN;
-		var _loc18_:Point = null;
-		var _loc19_ = Math.NaN;
-		var _loc20_:Point = null;
-		var _loc21_ = Math.NaN;
-		var _loc22_:Point = null;
-		var _loc3_ = new Array<Point>();
-		for (_tmp_ in this.neckPoints) {
-			_loc4_ = _tmp_;
-			_loc3_.push(_loc4_.clone());
-		}
+		var i:UInt = 0;
+        var px: Float = 0;
+        var py: Float = 0;
+
+		while (i < this.neckPoints.length) {
+            // Assuming the base neck points are always static here
+            __neckPoints[i].x = this.neckPoints[i].x;
+            __neckPoints[i].y = this.neckPoints[i].y;
+            i++;
+        }
+
 		this.bulgeSize = 35 * (1 + (G.him.getPenisWidthWithTwitch() - 1) * 1.5);
-		_loc2_ = 0;
-		while (_loc2_ < this.frontEndPoint) {
+
+		i = 0;
+		while (i < this.frontEndPoint) {
 			if (this.throatBulgeAmount > 0) {
-				_loc14_ = _loc2_ / this.frontEndPoint - param1;
-				_loc15_ = 1 / (1 + Math.pow(2, _loc14_ * 35)) * this.throatBulgeAmount;
-				_loc16_ = Math.min(1, 0.6 + 0.6 * param1) * Math.min(35, this.bulgeSize * _loc15_ * Math.pow(1 - _loc2_ / this.frontEndPoint, 1.4));
-				_loc3_[_loc2_].x += _loc16_;
-				_loc3_[_loc2_].y += 0.3 * _loc16_;
+				var bulge1 = i / this.frontEndPoint - param1;
+				var bulge2 = 1 / (1 + Math.pow(2, bulge1 * 35)) * this.throatBulgeAmount;
+				var bulge3 = Math.min(1, 0.6 + 0.6 * param1) * Math.min(35, this.bulgeSize * bulge2 * Math.pow(1 - i / this.frontEndPoint, 1.4));
+				__neckPoints[i].x += bulge3;
+				__neckPoints[i].y += 0.3 * bulge3;
 			}
 			if (this.swallowing) {
-				_loc17_ = (_loc17_ = this.swallowSize * Math.max(0,
-					2 / (2
-						+ Math.pow(8 * (_loc2_ / this.frontEndPoint - this.swallowProgress),
-							2)) - 0.2)) * Math.min(1, Math.min((this.swallowProgress - this.swallowStart) * 5, 2 - this.swallowProgress * 2));
-				_loc3_[_loc2_].x += _loc17_ * 0.8;
-				_loc3_[_loc2_].y += _loc17_ * 0.5;
+				var swallowFactor = this.swallowSize * Math.max(0, 2 / (2 + Math.pow(8 * (i / this.frontEndPoint - this.swallowProgress), 2)) - 0.2);
+                swallowFactor *= Math.min(1, Math.min((this.swallowProgress - this.swallowStart) * 5, 2 - this.swallowProgress * 2));
+				__neckPoints[i].x += swallowFactor * 0.8;
+				__neckPoints[i].y += swallowFactor * 0.5;
 			}
-			_loc2_++;
+			i++;
 		}
+
 		if (this.swallowing) {
 			this.swallowProgress += 0.05;
 			if (this.swallowProgress > 1) {
 				this.swallowing = false;
 			}
 		}
+
 		this.graphics.clear();
 		this.graphics.beginGradientFill(GradientType.RADIAL, [this.shade1, this.shade3], [1, 1], [209, 250], this.mainGradient, "pad", "rgb", 0.1);
-		var _loc5_:Point;
-		var _loc6_ = (_loc5_ = new Point((_loc3_[0].x + _loc3_[1].x) * 0.5, (_loc3_[0].y + _loc3_[1].y) * 0.5)).clone();
+
+        var ptx = (__neckPoints[0].x + __neckPoints[1].x) * 0.5;
+        var pty = (__neckPoints[0].y + __neckPoints[1].y) * 0.5;
 		if (this.tanAlpha > 0) {
 			this._tanLayer.graphics.clear();
 			this._tanLayer.graphics.beginFill(0, this.tanAlpha);
-			this._tanLayer.graphics.moveTo(_loc3_[0].x, _loc3_[0].y);
-			this._tanLayer.graphics.lineTo(_loc6_.x, _loc6_.y);
+			this._tanLayer.graphics.moveTo(__neckPoints[0].x, __neckPoints[0].y);
+			this._tanLayer.graphics.lineTo(ptx, pty);
 		}
-		this.graphics.moveTo(_loc3_[0].x, _loc3_[0].y);
-		this.graphics.lineTo(_loc6_.x, _loc6_.y);
-		_loc2_ = 1;
-		while (_loc2_ < this.numPoints - 1) {
-			_loc5_ = new Point((_loc3_[_loc2_].x + _loc3_[_loc2_ + 1].x) * 0.5, (_loc3_[_loc2_].y + _loc3_[_loc2_ + 1].y) * 0.5);
-			this.graphics.curveTo(_loc3_[_loc2_].x, _loc3_[_loc2_].y, _loc5_.x, _loc5_.y);
+		this.graphics.moveTo(__neckPoints[0].x, __neckPoints[0].y);
+		this.graphics.lineTo(ptx, pty);
+
+		i = 1;
+		while (i < this.numPoints - 1) {
+            px = (__neckPoints[i].x + __neckPoints[i + 1].x) * 0.5;
+			py = (__neckPoints[i].y + __neckPoints[i + 1].y) * 0.5;
+			this.graphics.curveTo(__neckPoints[i].x, __neckPoints[i].y, px, py);
 			if (this.tanAlpha > 0) {
-				this._tanLayer.graphics.curveTo(_loc3_[_loc2_].x, _loc3_[_loc2_].y, _loc5_.x, _loc5_.y);
+				this._tanLayer.graphics.curveTo(__neckPoints[i].x, __neckPoints[i].y, px, py);
 			}
-			_loc2_++;
+			i++;
 		}
-		_loc5_ = new Point((_loc3_[_loc3_.length - 1].x + _loc3_[0].x) * 0.5, (_loc3_[_loc3_.length - 1].y + _loc3_[0].y) * 0.5);
-		this.graphics.lineTo(_loc3_[_loc2_].x, _loc3_[_loc2_].y);
+
+        px = (__neckPoints[__neckPoints.length - 1].x + __neckPoints[0].x) * 0.5;
+		py = (__neckPoints[__neckPoints.length - 1].y + __neckPoints[0].y) * 0.5;
+		this.graphics.lineTo(__neckPoints[i].x, __neckPoints[i].y);
 		this.graphics.lineStyle();
-		this.graphics.curveTo(_loc5_.x, _loc5_.y, _loc3_[0].x, _loc3_[0].y);
+		this.graphics.curveTo(px, py, __neckPoints[0].x, __neckPoints[0].y);
 		this.graphics.endFill();
 		if (this.tanAlpha > 0) {
-			this._tanLayer.graphics.lineTo(_loc3_[_loc2_].x, _loc3_[_loc2_].y);
+			this._tanLayer.graphics.lineTo(__neckPoints[i].x, __neckPoints[i].y);
 			this._tanLayer.graphics.lineStyle();
-			this._tanLayer.graphics.curveTo(_loc5_.x, _loc5_.y, _loc3_[0].x, _loc3_[0].y);
+			this._tanLayer.graphics.curveTo(px, py, __neckPoints[0].x, __neckPoints[0].y);
 			this._tanLayer.graphics.endFill();
 		}
+
 		this.graphics.beginGradientFill(GradientType.RADIAL, [this.shadeLight, this.shade1], [1, 1], [215, 250], this.highlightGradient, "pad", "rgb", 0.1);
 		this.graphics.moveTo(this.highlightPoints[0].x, this.highlightPoints[0].y);
-		_loc6_ = (_loc5_ = new Point((this.highlightPoints[0].x + this.highlightPoints[1].x) * 0.5,
-			(this.highlightPoints[0].y + this.highlightPoints[1].y) * 0.5)).clone();
-		this.graphics.lineTo(_loc6_.x, _loc6_.y);
-		_loc2_ = 1;
-		while (_loc2_ < this.numHighlightPoints - 1) {
-			_loc5_ = new Point((this.highlightPoints[_loc2_].x + this.highlightPoints[_loc2_ + 1].x) * 0.5,
-				(this.highlightPoints[_loc2_].y + this.highlightPoints[_loc2_ + 1].y) * 0.5);
-			this.graphics.curveTo(this.highlightPoints[_loc2_].x, this.highlightPoints[_loc2_].y, _loc5_.x, _loc5_.y);
-			_loc2_++;
+
+        px = (this.highlightPoints[0].x + this.highlightPoints[1].x) * 0.5;
+        py = (this.highlightPoints[0].y + this.highlightPoints[1].y) * 0.5;
+		this.graphics.lineTo(px, py);
+
+		i = 1;
+		while (i < this.numHighlightPoints - 1) {
+            px = (this.highlightPoints[i].x + this.highlightPoints[i + 1].x) * 0.5;
+            py = (this.highlightPoints[i].y + this.highlightPoints[i + 1].y) * 0.5;
+			this.graphics.curveTo(this.highlightPoints[i].x, this.highlightPoints[i].y, px, py);
+			i++;
 		}
-		this.graphics.lineTo(this.highlightPoints[_loc2_].x, this.highlightPoints[_loc2_].y);
+		this.graphics.lineTo(this.highlightPoints[i].x, this.highlightPoints[i].y);
 		this.graphics.lineStyle();
-		_loc5_ = new Point((this.highlightPoints[this.highlightPoints.length - 1].x + this.highlightPoints[0].x) * 0.5,
-			(this.highlightPoints[this.highlightPoints.length - 1].y + this.highlightPoints[0].y) * 0.5);
-		this.graphics.curveTo(_loc5_.x, _loc5_.y, this.highlightPoints[0].x, this.highlightPoints[0].y);
+
+        px = (this.highlightPoints[this.highlightPoints.length - 1].x + this.highlightPoints[0].x) * 0.5;
+        py = (this.highlightPoints[this.highlightPoints.length - 1].y + this.highlightPoints[0].y) * 0.5;
+		this.graphics.curveTo(px, py, this.highlightPoints[0].x, this.highlightPoints[0].y);
 		this.graphics.endFill();
+
 		graphics.beginFill(5849907, 1);
-		graphics.moveTo(_loc3_[0].x, _loc3_[0].y);
-		var _loc7_ = new Array<Point>();
-		var _loc8_ = new Array<Point>();
-		var _loc9_ = new Array<Point>();
-		var _loc10_ = new Array<Point>();
-		var _loc11_ = new Array<Point>();
-		var _loc12_ = new Array<Float>();
-		var _loc13_ = 0.6;
-		_loc7_[0] = new Point(_loc3_[0].x, _loc3_[0].y);
-		_loc8_[0] = new Point(_loc3_[0].x, _loc3_[0].y);
-		_loc2_ = 0;
-		while (_loc2_ < this.numPoints - 1) {
-			_loc18_ = new Point(_loc3_[_loc2_ + 1].x - _loc3_[_loc2_].x, _loc3_[_loc2_ + 1].y - _loc3_[_loc2_].y);
-			_loc19_ = Math.sqrt(_loc18_.x * _loc18_.x + _loc18_.y * _loc18_.y);
-			_loc18_.x /= _loc19_;
-			_loc18_.y /= _loc19_;
-			_loc11_[_loc2_] = _loc18_;
-			_loc12_[_loc2_] = Math.atan2(_loc18_.y, _loc18_.x);
-			if (_loc2_ > 0) {
-				_loc20_ = _loc11_[_loc2_ - 1];
-				_loc21_ = _loc13_;
-				_loc22_ = new Point((_loc20_.y + _loc18_.y) * _loc21_, -((_loc20_.x + _loc18_.x) * _loc21_));
-				_loc7_[_loc2_] = new Point(_loc3_[_loc2_].x - _loc22_.x, _loc3_[_loc2_].y - _loc22_.y);
-				_loc8_[_loc2_] = new Point(_loc3_[_loc2_].x + _loc22_.x, _loc3_[_loc2_].y + _loc22_.y);
-				_loc9_[_loc2_] = new Point(_loc7_[_loc2_ - 1].x + (_loc7_[_loc2_].x - _loc7_[_loc2_ - 1].x) * 0.5,
-					_loc7_[_loc2_ - 1].y + (_loc7_[_loc2_].y - _loc7_[_loc2_ - 1].y) * 0.5);
-				_loc10_[_loc2_] = new Point(_loc8_[_loc2_ - 1].x + (_loc8_[_loc2_].x - _loc8_[_loc2_ - 1].x) * 0.5,
-					_loc8_[_loc2_ - 1].y + (_loc8_[_loc2_].y - _loc8_[_loc2_ - 1].y) * 0.5);
+		graphics.moveTo(__neckPoints[0].x, __neckPoints[0].y);
+
+		__neckArr1A[0].x = __neckPoints[0].x;
+		__neckArr1A[0].y = __neckPoints[0].y;
+		__neckArr1B[0].x = __neckPoints[0].x;
+        __neckArr2B[0].y = __neckPoints[0].y;
+
+		i = 0;
+		while (i < this.numPoints - 1) {
+            px = __neckPoints[i + 1].x - __neckPoints[i].x;
+            py = __neckPoints[i + 1].y - __neckPoints[i].y;
+			var pLen = Math.sqrt(px * px + py * py);
+			px /= pLen;
+			py /= pLen;
+			__neckArr3A[i].x = px;
+			__neckArr3A[i].y = py;
+			__neckArr3B[i] = Math.atan2(px, py);
+			if (i > 0) {
+				var neckPoint = __neckArr3A[i - 1];
+                var ppx = (neckPoint.y + py) * NECK_FACTOR;
+                var ppy = -((neckPoint.x + px) * NECK_FACTOR);
+				__neckArr1A[i].x = __neckPoints[i].x - ppx;
+				__neckArr1A[i].y = __neckPoints[i].y - ppy;
+				__neckArr1B[i].x = __neckPoints[i].x + ppx;
+				__neckArr1B[i].y = __neckPoints[i].y + ppy;
+				__neckArr2A[i].x = __neckArr1A[i - 1].x + (__neckArr1A[i].x - __neckArr1A[i - 1].x) * 0.5;
+                __neckArr2A[i].y = __neckArr1A[i - 1].y + (__neckArr1A[i].y - __neckArr1A[i - 1].y) * 0.5;
+				__neckArr2B[i].x = __neckArr1B[i - 1].x + (__neckArr1B[i].x - __neckArr1B[i - 1].x) * 0.5;
+                __neckArr2B[i].y = __neckArr1B[i - 1].y + (__neckArr1B[i].y - __neckArr1B[i - 1].y) * 0.5;
 			}
-			_loc2_++;
+			i++;
 		}
-		_loc9_[_loc2_] = new Point(_loc7_[_loc2_ - 1].x + (_loc3_[_loc2_].x - _loc7_[_loc2_ - 1].x) * 0.5,
-			_loc7_[_loc2_ - 1].y + (_loc3_[_loc2_].y - _loc7_[_loc2_ - 1].y) * 0.5);
-		_loc10_[_loc2_] = new Point(_loc8_[_loc2_ - 1].x + (_loc3_[_loc2_].x - _loc8_[_loc2_ - 1].x) * 0.5,
-			_loc8_[_loc2_ - 1].y + (_loc3_[_loc2_].y - _loc8_[_loc2_ - 1].y) * 0.5);
-		graphics.lineTo(_loc9_[1].x, _loc9_[1].y);
-		_loc2_ = 1;
-		while (_loc2_ < this.numPoints - 1) {
-			graphics.curveTo(_loc7_[_loc2_].x, _loc7_[_loc2_].y, _loc9_[_loc2_ + 1].x, _loc9_[_loc2_ + 1].y);
-			_loc2_++;
+
+		__neckArr2A[i].x = __neckArr1A[i - 1].x + (__neckPoints[i].x - __neckArr1A[i - 1].x) * 0.5;
+		__neckArr2A[i].y = __neckArr1A[i - 1].y + (__neckPoints[i].y - __neckArr1A[i - 1].y) * 0.5;
+		__neckArr2B[i].x = __neckArr1B[i - 1].x + (__neckPoints[i].x - __neckArr1B[i - 1].x) * 0.5;
+		__neckArr2B[i].y = __neckArr1B[i - 1].y + (__neckPoints[i].y - __neckArr1B[i - 1].y) * 0.5;
+
+		graphics.lineTo(__neckArr2A[1].x, __neckArr2A[1].y);
+		i = 1;
+
+		while (i < this.numPoints - 1) {
+			graphics.curveTo(__neckArr1A[i].x, __neckArr1A[i].y, __neckArr2A[i + 1].x, __neckArr2A[i + 1].y);
+			i++;
 		}
-		graphics.lineTo(_loc3_[this.numPoints - 1].x, _loc3_[this.numPoints - 1].y);
-		_loc2_ = this.numPoints - 1;
-		graphics.lineTo(_loc10_[_loc2_].x, _loc10_[_loc2_].y);
-		_loc2_ = this.numPoints - 1;
-		while (_loc2_ > 1) {
-			graphics.curveTo(_loc8_[_loc2_ - 1].x, _loc8_[_loc2_ - 1].y, _loc10_[_loc2_ - 1].x, _loc10_[_loc2_ - 1].y);
-			_loc2_--;
+		graphics.lineTo(__neckPoints[this.numPoints - 1].x, __neckPoints[this.numPoints - 1].y);
+		i = this.numPoints - 1;
+		graphics.lineTo(__neckArr2B[i].x, __neckArr2B[i].y);
+		i = this.numPoints - 1;
+		while (i > 1) {
+			graphics.curveTo(__neckArr1B[i - 1].x, __neckArr1B[i - 1].y, __neckArr2B[i - 1].x, __neckArr2B[i - 1].y);
+			i--;
 		}
-		graphics.lineTo(_loc3_[0].x, _loc3_[0].y);
+		graphics.lineTo(__neckPoints[0].x, __neckPoints[0].y);
 	}
 
 	@:flash.property public var throatBulge(never, set):Float;
