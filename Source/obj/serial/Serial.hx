@@ -178,7 +178,7 @@ class Serial {
 		var saveFields: Array<ClassField> = [];
 
 		for(field in fields){
-            if (!field.meta.has(":nosave")) {
+            if (field.meta.has(":save")) {
                 saveFields.push(field);
             }
         }

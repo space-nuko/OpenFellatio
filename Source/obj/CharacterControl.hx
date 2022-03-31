@@ -166,15 +166,6 @@ class CharacterControl {
 		this.currentSkinType = G.dataName(this.skinNameList[0]);
 
 		this.characters = new Array<Character>();
-        var regex = new EReg(".*/chars/.*\\.yml$", "g");
-        for (path in Assets.list(AssetType.TEXT)) {
-            if (regex.match(path)) {
-                this.characters.push(Character.loadFromYaml(path));
-            }
-        }
-        this.characters.sort(function(a, b) { return Std.int(a.ordering - b.ordering); });
-
-		G.baseCharNum = this.characters.length;
 		this.skinPalettes = new ASDictionary<String, SkinPalette>();
 		this.skinPalettes[SkinPalette.LIGHT_SKIN] = new SkinPalette(16178890, 14925224, 13541515, 11306097, 13014407, 10974573);
 		this.skinPalettes[SkinPalette.PALE_SKIN] = new SkinPalette(16050399, 14600895, 13151647, 10126976, 11509658, 9994117, 0.6);

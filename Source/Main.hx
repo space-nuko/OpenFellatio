@@ -115,12 +115,16 @@ class Main extends Sprite {
          G.container = new Sprite();
          addChild(G.container);
 
+         var modCtrl = G.getModControl();
          G.animationControl = new AnimationControl();
          G.getStrandControl();
          G.getSoundControl();
          G.getCharacterControl();
          G.getAutomaticControl();
          G.getDialogue();
+
+         modCtrl.scanMods();
+         modCtrl.loadCharacters();
 
          G.bg = new Background();
          this.sceneLayer = G.newSceneLayer(G.defaultZoom);

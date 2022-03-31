@@ -1,0 +1,19 @@
+char:
+  charName: "SD chan"
+  charShortName: "SD chan"
+  ordering: 0
+  skinType: 0
+  iris: "normal"
+  breastSize: 70
+  hairTop: "SDChan"
+  hairUnder: "SDChan"
+  hairBack: "SDChan"
+  hairBottom: "SDChan"
+  costume: "nude"
+  irisFill: "#386489"
+  eyebrowFill: "#594333"
+  eyebrowLine: "#000000"
+  scalpFill: "#D39E5A"
+  bg: 3
+  elements:
+  - mod.base.chars.sdchan.SDChanHair

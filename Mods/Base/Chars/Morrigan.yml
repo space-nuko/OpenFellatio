@@ -1,0 +1,23 @@
+char:
+  charName: "Morrigan"
+  charShortName: "Morrigan"
+  ordering: 20
+  skinType: 0
+  iris: "bright"
+  breastSize: 110
+  hairTop: "Morrigan"
+  hairUnder: "Morrigan"
+  hairBack: "Morrigan"
+  hairBottom: "Morrigan"
+  costume: "nude"
+  headwear: "Bat Wings"
+  headwearFill: "#181818"
+  headwearFill2: "#8B2A5F"
+  bodyScale: 1.025
+  irisFill: "#235943"
+  eyebrowFill: "#235943"
+  eyebrowLine: "#0B3A2D"
+  scalpFill: "#235943"
+  bg: 2
+  elements:
+  - mod.base.chars.morrigan.MorriganHair

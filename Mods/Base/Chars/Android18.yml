@@ -1,0 +1,25 @@
+char:
+  charName: "Android 18"
+  charShortName: "Android 18"
+  ordering: 12
+  mood: "Angry"
+  skinType: 0
+  noseType: 1
+  iris: "sharp"
+  breastSize: 105
+  hairTop: "Android18"
+  hairUnder: "Android18"
+  hairBack: "Android18"
+  hairBottom: "Android18"
+  costume: "nude"
+  earring: "Ring"
+  earringFill: "#99150D"
+  bodyScale: 1.027
+  irisFill: "#58726C"
+  eyebrowFill: "#573520"
+  eyebrowLine: "#1E131300"
+  scalpFill: "#2D1910"
+  eyeShadow: "#371A6340"
+  bg: 4
+  elements:
+  - mod.base.chars.android_18.Android18Hair

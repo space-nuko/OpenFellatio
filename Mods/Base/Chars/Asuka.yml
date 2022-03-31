@@ -1,0 +1,26 @@
+char:
+  charName: "Asuka Soryuu Shikinami"
+  charShortName: "Asuka"
+  ordering: 2
+  skinType: 0
+  iris: "bright"
+  breastSize: 70
+  hairTop: "Asuka"
+  hairUnder: "Asuka"
+  hairBack: "Asuka"
+  hairBottom: "Asuka"
+  costume: "nude"
+  bodyScale: 1.005
+  irisFill: "#173966"
+  eyebrowFill: "#573520"
+  eyebrowLine: "#382A20"
+  scalpFill: "#573520"
+  eyeShadow: "#371A6380"
+  bg: 1
+  elements:
+  - mod.base.chars.asuka.AsukaHair
+  dialogue:
+    resistance: ["Anta baka?!"]
+    pull_off: ["Anta baka?!"]
+    wake_up: ["You're the worst!"]
+    cum_in_nose: ["Anta baka?!"]

@@ -6,6 +6,7 @@
 
 	<source path="Lib/compat" />
 	<source path="Source" />
+	<source path="Mods" />
 	
     <haxelib name="openfl" />
 	<haxelib name="swf" />
@@ -13,9 +14,18 @@
 	
 	<assets path="Assets" rename="assets" exclude="*.swf"/>
 	<assets path="Assets/audio" rename="audio"/>
+	<assets path="Mods"/>
 	<library path="Assets/SDT.swf" id="sdt" generate="true"/>
 
-    <haxeflag name="--macro" value='include("chars")' />
+    <!-- This is a special directive for our fork of lime. -->
+    <!-- It adds all the "Source" files for mods to the compilation. -->
+	<mods path="Mods"/>
+
+    <!-- All mod code has to be under the "mod" package -->
+    <!-- because of dead code elimination. -->
+    <haxeflag name="--macro" value='include("mod")' />
+
+
     <haxeflag name="-D" value='ofl_disable_cacheasbitmap' />
 
     <haxedef name="HXCPP_CHECK_POINTER" if="cpp"/>

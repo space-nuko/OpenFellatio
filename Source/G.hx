@@ -29,6 +29,7 @@ import obj.CostumeElement;
 import obj.SceneLayer;
 import obj.StrandControl;
 import obj.ScreenEffects;
+import sdtmods.ModControl;
 
 class G {
 	public static var ver:String = "v1.21.1b-hx";
@@ -62,6 +63,7 @@ class G {
 	// public static var customElementLoader:CustomElementLoader;
 	public static var dialogueControl:Dialogue;
 	// public static var dialogueEditor:DialogueEditor;
+	public static var modControl:ModControl;
 	// public static var highlightShader:Shader;
 	// public static var highlight:ShaderFilter;
 	// public static var cumHighlightShader:Shader;
@@ -223,6 +225,11 @@ class G {
 	public static function getDialogue():Dialogue {
 		dialogueControl = new Dialogue();
 		return dialogueControl;
+	}
+
+	public static function getModControl():ModControl {
+		modControl = new ModControl();
+		return modControl;
 	}
 
 	public static function showError(param1:String) {}
